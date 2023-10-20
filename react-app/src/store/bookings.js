@@ -71,7 +71,7 @@ export const updateBookingThunk = (bookingData, bookingId) => async (dispatch) =
 
     if (response.ok) {
         const data = await response.json()
-        dispatch(updateBooking(data))
+        dispatch(updateBooking(data, data.id))
     } else {
         return "Error"
     }
