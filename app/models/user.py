@@ -2,8 +2,9 @@ from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from sqlalchemy import DateTime
-from .billing import Billing
-from .review import Review
+from sqlalchemy.sql import func
+# from .billing import Billing
+# from .review import Review
 
 
 class User(db.Model, UserMixin):
@@ -19,9 +20,9 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(50), nullable=False)
     hashed_password = db.Column(db.String(255), nullable=False)
     address = db.Column(db.String(255), nullable=False)
-    profile_picture = (db.Column(db.String(255), nullable=False))
-    created_at = Column(DateTime, default=func.now())
-    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+    profile_picture = db.Column(db.String(255), nullable=False)
+    created_at = db.Column(DateTime, default=func.now())
+    updated_at = db.Column(DateTime, default=func.now(), onupdate=func.now())
 
 
     billings = db.relationship(

@@ -1,7 +1,9 @@
 from .db import db
 from sqlalchemy import DateTime, CheckConstraint
-from .booking import Booking
-from .service import Service
+from sqlalchemy.sql import func
+# from .booking import Booking
+# from .user import User
+# from .service import Service
 
 
 class Billing(db.Model):
@@ -12,7 +14,7 @@ class Billing(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     booking_id = db.Column(db.Integer, db.ForeignKey('bookings.id'), nullable=False)
     card_full_name = db.Column(db.String(100), nullable=False)
-    card_number = db.Column(db.Integer, CheckConstraint('cardNumber >= 1000000000000000 AND cardNumber <= 9999999999999999'), nullable=false)
+    card_number = db.Column(db.Integer, CheckConstraint('cardNumber >= 1000000000000000 AND cardNumber <= 9999999999999999'), nullable=False)
     card_cvv = db.Column(db.Integer, nullable=False)
     card_zipcode = db.Column(db.Integer, nullable=False)
     card_exp_date = db.Column(db.Date, nullable=False)

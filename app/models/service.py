@@ -1,7 +1,9 @@
 from .db import db
 from .categories import categories
-from .user import User
-from .service_image import ServiceImage
+from sqlalchemy import DateTime
+from sqlalchemy.sql import func
+# from .user import User
+# from .service_image import ServiceImage
 
 
 class Service(db.Model):
@@ -15,8 +17,8 @@ class Service(db.Model):
     service_price = db.Column(db.Integer, nullable=False)
     service_length_est = db.Column(db.Integer, nullable=False)
     service_category = db.Column(db.Enum(*categories), nullable=False)
-    created_at = Column(DateTime, default=func.now())
-    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+    created_at = db.Column(DateTime, default=func.now())
+    updated_at = db.Column(DateTime, default=func.now(), onupdate=func.now())
 
 
     provider_id = db.relationship(

@@ -1,6 +1,8 @@
 from .db import db
-from .billing import Billing
-from .service import Service
+from sqlalchemy import DateTime
+from sqlalchemy.sql import func
+# from .billing import Billing
+# from .service import Service
 
 class Booking(db.Model):
     __tablename__ = 'bookings'
@@ -10,8 +12,8 @@ class Booking(db.Model):
     service_id = db.Column(db.Integer, db.ForeignKey('services.id'), nullable=False)
     start_date_and_time = db.Column(DateTime, nullable=False)
     status = db.Column(db.Boolean)
-    created_at = Column(DateTime, default=func.now())
-    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+    created_at = db.Column(DateTime, default=func.now())
+    updated_at = db.Column(DateTime, default=func.now(), onupdate=func.now())
 
 
     billing = db.relationship(
