@@ -74,7 +74,7 @@ export const getServiceThunk = (serviceId) => async (dispatch) => {
 }
 
 export const getServicesThunk = () => async (dispatch) => {
-    const response = await fetch("services", {
+    const response = await fetch("/services", {
         methods: "GET"
     })
 
@@ -87,7 +87,7 @@ export const getServicesThunk = () => async (dispatch) => {
 }
 
 export const updateServiceThunk = (serviceData, serviceId) => async (dispatch) => {
-    const response = await fetch(`services/${serviceId}`, {
+    const response = await fetch(`/services/${serviceId}`, {
         methods: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -107,7 +107,7 @@ export const updateServiceThunk = (serviceData, serviceId) => async (dispatch) =
 
 export const deleteServiceThunk = (serviceId) => async (dispatch) => {
     // Send an id, should be deleted in backend
-    const response = await fetch(`service/${serviceId}`, {
+    const response = await fetch(`/service/${serviceId}`, {
         methods: "DELETE"
     })
 
@@ -139,7 +139,7 @@ export default function servicesReducer(state = initialState, action) {
             action.serviceData
             return newState
         case DELETE_SERVICE:
-            
+
             return newState
         default:
             return state;
@@ -150,8 +150,8 @@ export default function servicesReducer(state = initialState, action) {
 //     const response = await fetch("", {})
 
 //     if (response.ok) {
-
+        //const data = await response.json()
 //     } else {
-
+        //return "Error"
 //     }
 // }
