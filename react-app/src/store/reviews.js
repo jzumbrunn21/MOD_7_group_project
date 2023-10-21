@@ -69,7 +69,7 @@ export default function reviewsReducer(state = initalState, action) {
     switch(action.type) {
         case SET_REVIEW:
             return newState
-        case READ_REVIEW:
+        case READ_REVIEWS:
             return newState
         case DELETE_REVIEW:
             return newState
