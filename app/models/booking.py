@@ -1,4 +1,4 @@
-from .db import db
+from .db import db, environment, SCHEMA, add_prefix_for_prod
 from sqlalchemy import DateTime
 from sqlalchemy.sql import func
 # from .billing import Billing
@@ -6,6 +6,9 @@ from sqlalchemy.sql import func
 
 class Booking(db.Model):
     __tablename__ = 'bookings'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
@@ -22,7 +25,7 @@ class Booking(db.Model):
         back_populates='booking'
     )
 
-    service = db.relationship(
+    services = db.relationship(
         'Service',
         back_populates='bookings'
     )

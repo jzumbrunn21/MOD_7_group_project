@@ -1,4 +1,4 @@
-from .db import db
+from .db import db, environment, SCHEMA, add_prefix_for_prod
 from .categories import categories
 from sqlalchemy import DateTime
 from sqlalchemy.sql import func
@@ -8,6 +8,9 @@ from sqlalchemy.sql import func
 
 class Service(db.Model):
     __tablename__ = 'services'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
 
 
     id = db.Column(db.Integer, primary_key=True)
@@ -21,12 +24,22 @@ class Service(db.Model):
     updated_at = db.Column(DateTime, default=func.now(), onupdate=func.now())
 
 
-    provider_id = db.relationship(
+    user = db.relationship(
         'User',
         back_populates='services'
     )
 
     service_images = db.relationship(
         'ServiceImage',
-        back_populates='service'
+        back_populates='services'
+    )
+
+    reviews = db.relationship(
+        'Review',
+        back_populates='services'
+    )
+
+    bookings = db.relationship(
+        'Booking',
+        back_populates='services'
     )

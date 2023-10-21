@@ -1,4 +1,4 @@
-from .db import db
+from .db import db, environment, SCHEMA, add_prefix_for_prod
 from sqlalchemy import DateTime, CheckConstraint
 from sqlalchemy.sql import func
 # from .booking import Booking
@@ -8,6 +8,9 @@ from sqlalchemy.sql import func
 
 class Billing(db.Model):
     __tablename__ = 'billings'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
 
 
     id = db.Column(db.Integer, primary_key=True)
@@ -28,5 +31,5 @@ class Billing(db.Model):
 
     booking = db.relationship(
         "Booking",
-        back_populates='bookings'
+        back_populates='billing'
     )
