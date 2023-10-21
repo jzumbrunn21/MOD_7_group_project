@@ -4,6 +4,7 @@ from .services import seed_services, undo_services
 from .service_images import seed_service_images, undo_service_images
 from .bookings import seed_bookings, undo_bookings
 from .reviews import seed_reviews, undo_reviews
+from .billings import seed_billings, undo_billings
 
 from app.models.db import db, environment, SCHEMA
 
@@ -25,11 +26,13 @@ def seed():
         undo_service_images()
         undo_bookings()
         undo_reviews()
+        undo_billings()
     seed_users()
     seed_services()
     seed_service_images()
     seed_bookings()
     seed_reviews()
+    seed_billings()
     # Add other seed functions here
 
 
@@ -41,4 +44,5 @@ def undo():
     undo_service_images()
     undo_bookings()
     undo_reviews()
+    undo_billings()
     # Add other undo functions here
