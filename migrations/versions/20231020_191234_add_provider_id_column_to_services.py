@@ -8,6 +8,9 @@ Create Date: 2023-10-20 19:12:34.049787
 from alembic import op
 import sqlalchemy as sa
 
+import os
+environment = os.getenv("FLASK_ENV")
+SCHEMA = os.environ.get("SCHEMA")
 
 # revision identifiers, used by Alembic.
 revision = '7570360dbd5a'
@@ -29,6 +32,9 @@ def upgrade():
     )
     op.add_column('services', sa.Column('provider_id', sa.Integer(), nullable=False))
     op.create_foreign_key(None, 'services', 'users', ['provider_id'], ['id'])
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE service_images SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
 
