@@ -13,6 +13,7 @@ class User(db.Model, UserMixin):
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
 
+
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     username = db.Column(db.String(40), nullable=False, unique=True)
@@ -35,7 +36,7 @@ class User(db.Model, UserMixin):
         back_populates='user'
     )
 
-    provider_id = db.relationship(
+    services = db.relationship(
         'Service',
         back_populates='user'
     )
