@@ -5,9 +5,11 @@ const UPDATE_BOOKING = "bookings/UPDATE_BOOKING"
 const DELETE_BOOKING = "bookings/DELETE_BOOKING"
 
 // Action creator
-const setBooking = (booking) => ({
+const setBooking = (booking, userId, serviceId) => ({
     type: SET_BOOKING,
-    booking
+    booking,
+    userId,
+    serviceId
 })
 
 const readBookings = (bookings) => ({
@@ -28,7 +30,7 @@ const removeBooking = (bookingId) => ({
 
 // Thunks
 
-export const createBookingThunk = (bookingData) => async (dispatch) => {
+export const createBookingThunk = (bookingData, userId, serviceId) => async (dispatch) => {
     const response = await fetch("/bookings/new", {
         method: "POST",
         headers: {
@@ -41,7 +43,7 @@ export const createBookingThunk = (bookingData) => async (dispatch) => {
 
     if (response.ok) {
         const data = await response.json()
-        dispatch(setBooking(data))
+        dispatch(setBooking(data, userId, serviceId))
     } else {
         return "Error"
     }

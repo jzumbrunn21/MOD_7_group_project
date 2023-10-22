@@ -8,7 +8,7 @@ const readBillings = (billings) => ({
     billings
 })
 
-const setBilling = (billingData) => ({
+const setBilling = (billingData, userId, bookingId) => ({
     type: SET_BILLING,
     billingData
 })
@@ -27,7 +27,7 @@ export const getBillingsThunk = () => async (dispatch) => {
     }
 }
 
-export const createBillingThunk = (billingData) => async (dispatch) => {
+export const createBillingThunk = (billingData, userId, bookingId) => async (dispatch) => {
     const response = await fetch("/billings/new", {
         methods: "POST",
         headers: {
@@ -40,7 +40,7 @@ export const createBillingThunk = (billingData) => async (dispatch) => {
 
     if (response.ok) {
         const data = await response.json()
-        dispatch(setBilling(data))
+        dispatch(setBilling(data, userId, bookingId))
     } else {
         return "Error"
     }
