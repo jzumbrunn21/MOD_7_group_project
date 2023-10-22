@@ -29,3 +29,14 @@ class Booking(db.Model):
         'Service',
         back_populates='bookings'
     )
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'service_id': self.service_id,
+            'start_date_and_time': self.start_date_and_time,
+            'status': self.status,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+        }

@@ -21,3 +21,13 @@ class ServiceImage(db.Model):
         'Service',
         back_populates='service_images'
     )
+
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'service_id': self.service_id,
+            'url': self.url,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+        }

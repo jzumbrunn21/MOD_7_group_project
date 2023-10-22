@@ -33,3 +33,16 @@ class Billing(db.Model):
         "Booking",
         back_populates='billing'
     )
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'booking_id': self.booking_id,
+            'card_full_name': self.card_full_name,
+            'card_number': self.card_number,
+            'card_cvv': self.card_cvv,
+            'card_zipcode': self.card_zipcode,
+            'card_exp_date': self.card_exp_date,
+            'purchase_date_and_time': self.purchase_date_and_time
+        }
