@@ -1,44 +1,38 @@
 from app.models import db, Review, User, Service, environment, SCHEMA
 from sqlalchemy.sql import text
 from faker import Faker
+from random import randint
 
 fake = Faker()
 
-
-
-
-reviewed_combinations = {}
-
 def seed_reviews():
     num_users = db.session.query(User).count()
-    num_services = db.session.query(Service).count()
+    services = Service.query.all()
 
-    for _ in range(3):
-        user_id = fake.random_int(min=1, max=num_users)
-        service_id = fake.random_int(min=1, max=num_services)
-        review = fake.paragraph(nb_sentences=3)
-        star_rating = fake.random_int(min=1, max=5)
-        review_image = fake.image_url()
+    for service in services:
+        num_reviews = randint(2, 5) 
 
-        # Check if this user has already reviewed this service
-        user_service_combo = (user_id, service_id)
-        if user_service_combo in reviewed_combinations:
-            continue  # Skip this iteration, user has already reviewed this service
+        for _ in range(num_reviews):
+            user_id = randint(1, num_users)
+            review = fake.paragraph(nb_sentences=3)
+            star_rating = randint(1, 5)
+            review_image = fake.image_url()
 
-        reviewed_combinations[user_service_combo] = True  # Mark this user-service combo as reviewed
+            # Check if this user has already reviewed this service
+            existing_review = Review.query.filter_by(user_id=user_id, service_id=service.id).first()
 
-        review = Review(
-            user_id=user_id,
-            service_id=service_id,
-            review=review,
-            star_rating=star_rating,
-            review_image=review_image
-        )
+            if not existing_review:
+                review = Review(
+                    user_id=user_id,
+                    service_id=service.id,
+                    review=review,
+                    star_rating=star_rating,
+                    review_image=review_image
+                )
 
-        db.session.add(review)
+                db.session.add(review)
 
     db.session.commit()
-
 
 # Uses a raw SQL query to TRUNCATE or DELETE the users table. SQLAlchemy doesn't
 # have a built in function to do this. With postgres in production TRUNCATE
