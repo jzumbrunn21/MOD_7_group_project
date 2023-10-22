@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, redirect
 from app.models import db, Service
 # Forms need importing
-# from app.forms import ServiceForm
+from app.forms import ServiceForm
 services_routes = Blueprint("services", __name__)
 
 # Could the below be used for error messages?
@@ -21,23 +21,25 @@ services_routes = Blueprint("services", __name__)
 # Returns all the services
 @services_routes.route('/')
 def all_services():
-    # response = [service.to_dict() for service in Service.query.all()]
+    response = [service.to_dict() for service in Service.query.all()]
     # return {"services": response}
-    response = Service.query.all()
-    return jsonify(response)
+    # response = Service.query.all()
+    return {"services": response}
 
 # Returns one service by id
 @services_routes.route('/<int:id>')
 def one_service(id):
-    response = Service.query.get(id)
+    response = Service.query.get(id).to_dict()
+
     # response = Service.query.get_or_404(id)
     # return {"service": response}  Is it like this?
-    return jsonify(response) # Or json.dumps()?
+    print(response)
+    return {"service": response} # Or json.dumps()?
 
 # Creates one service
 @services_routes.route('/new', methods=["POST"])
 def create_service(userId):
-    # form = ServiceForm()
+    form = ServiceForm()
     # imageForm = ImageForm()
     # !!! Shoud we create the images here too? !!!
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -61,7 +63,7 @@ def create_service(userId):
 # Updates one service
 @services_routes.route('/update/<int:id>', methods=["PUT"])
 def update_service(id):
-    # form = ServiceForm()
+    form = ServiceForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         service_to_update = Service.query.get(id)
@@ -74,7 +76,7 @@ def update_service(id):
         service_to_update.service_length_est=form.data['service_length_est'],
         service_to_update.service_category=form.data['service_category'],
         # !!! Do we include created_at, updated_at?
-        db.session.add(service)
+        # db.session.add(service)
         db.session.commit()
     # !!! Should this go to all services or the updated one?
     return redirect(f'/services/{id}')
