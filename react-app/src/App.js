@@ -5,6 +5,8 @@ import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
+import ViewServicesList from "./components/ViewServicesList";
+import ServiceDetailPage from './components/ServiceDetailPage'
 
 function App() {
   const dispatch = useDispatch();
@@ -18,6 +20,8 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
+          <Route exact path='/' component={ViewServicesList} />
+          <Route path="/service/:serviceId" component={ServiceDetailPage} />
           <Route path="/login" >
             <LoginFormPage />
           </Route>
