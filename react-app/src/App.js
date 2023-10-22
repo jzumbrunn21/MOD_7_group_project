@@ -21,7 +21,8 @@ function App() {
       {isLoaded && (
         <Switch>
           <Route exact path='/' component={ViewServicesList} />
-          <Route path="/service/:serviceId" component={ServiceDetailPage} />
+
+          <Route path="/services/:serviceId" component={ServiceDetailPage} />
           <Route path="/login" >
             <LoginFormPage />
           </Route>
