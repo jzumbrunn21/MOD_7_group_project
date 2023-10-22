@@ -78,7 +78,10 @@ def upgrade():
     op.add_column('users', sa.Column('updated_at', sa.DateTime(), nullable=True))
 
     if environment == "production":
-        op.execute(f"ALTER TABLE services, bookings, billings, reviews SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE services SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE bookings SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE billings SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE reviews SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###qqqqqqqqq
     # ### end Alembic commands ###
 
