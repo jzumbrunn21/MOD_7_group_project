@@ -1,51 +1,42 @@
-from app.models import db, Billing, environment, SCHEMA
+from app.models import db, Billing, Booking, User, environment, SCHEMA
 from sqlalchemy.sql import text
 from faker import Faker
 from random import choice
+import random
 
 
 fake = Faker()
 
 
-
-
 def seed_billings():
-    billing1 = Billing(
-        user_id = 1,
-        booking_id = 1,
-        card_full_name = fake.name(),
-        card_number = fake.credit_card_number(card_type="mastercard"),
-        card_cvv = 111,
-        card_zipcode = fake.zipcode(),
-        card_exp_date=fake.date_this_decade(after_today=True, before_today=False)
-    )
-    billing2 = Billing(
-        user_id = 2,
-        booking_id = 2,
-        card_full_name = fake.name(),
-        card_number = fake.credit_card_number(card_type="mastercard"),
-        card_cvv = 222,
-        card_zipcode = fake.zipcode(),
-        card_exp_date=fake.date_this_decade(after_today=True, before_today=False)
+    num_users = db.session.query(User).count()  # get number of users in db
+    print("!!!Number of users!!!", num_users)
+    num_bookings = db.session.query(Booking).count()  # get number of bookings in db
 
-    )
-    billing3 = Billing(
-        user_id = 3,
-        booking_id = 3,
-        card_full_name = fake.name(),
-        card_number = fake.credit_card_number(card_type="mastercard"),
-        card_cvv = 333,
-        card_zipcode = fake.zipcode(),
-        card_exp_date=fake.date_this_decade(after_today=True, before_today=False)
+    for _ in range(1, num_users + 1):
+        num_billings_per_user = random.randint(1, 5)  # Random number of billings per user
 
-    )
+        for _ in range(num_billings_per_user):
+            # Generate random user_id and booking_id based on existing records
+            random_user_id = random.randint(1, num_users)
+            random_booking_id = random.randint(1, num_bookings)
 
+            random_cvv = str(random.randint(1, 999)).zfill(3)
 
-    db.session.add(billing1)
-    db.session.add(billing2)
-    db.session.add(billing3)
+            billing = Billing(
+                user_id=random_user_id,
+                booking_id=random_booking_id,
+                card_full_name=fake.name(),
+                card_number=fake.credit_card_number(card_type="mastercard"),
+                card_cvv=random_cvv,
+                card_zipcode=fake.zipcode(),
+                card_exp_date=fake.date_this_decade(
+                    after_today=True, before_today=False
+                ),
+            )
+            db.session.add(billing)
+
     db.session.commit()
-
 
 # Uses a raw SQL query to TRUNCATE or DELETE the users table. SQLAlchemy doesn't
 # have a built in function to do this. With postgres in production TRUNCATE
@@ -55,7 +46,9 @@ def seed_billings():
 # it will reset the primary keys for you as well.
 def undo_billings():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.billings RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            f"TRUNCATE table {SCHEMA}.billings RESTART IDENTITY CASCADE;"
+        )
     else:
         db.session.execute(text("DELETE FROM billings"))
 
