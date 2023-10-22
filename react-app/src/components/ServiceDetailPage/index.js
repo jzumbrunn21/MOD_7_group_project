@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import PaymentInformationModal from '../PaymentInformationModal';
 
 const ServiceDetailPage = () => {
-  // To control the visibility of the booking modal
-  const [showBookingModal, setShowBookingModal] = useState(false);
+
+  const [showBookingModal, setShowBookingModal] = useState(false);  // To control the visibility of the booking modal
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [bookingDate, setBookingDate] = useState(new Date());
 
