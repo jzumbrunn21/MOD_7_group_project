@@ -1,4 +1,4 @@
-from app.models import db, Review, environment, SCHEMA
+from app.models import db, Review, User, Service, environment, SCHEMA
 from sqlalchemy.sql import text
 from faker import Faker
 
@@ -7,33 +7,36 @@ fake = Faker()
 
 
 
-# Adds a demo user, you can add other users here if you want
+reviewed_combinations = {}
+
 def seed_reviews():
-    review1 = Review(
-        user_id = 1,
-        service_id = 1,
-        review = fake.paragraph(nb_sentences=3),
-        star_rating=fake.random_int(min=1, max=5),
-        review_image=fake.image_url()
-        )
-    review2 = Review(
-        user_id = 2,
-        service_id = 2,
-        review = fake.paragraph(nb_sentences=3),
-        star_rating=fake.random_int(min=1, max=5),
-        review_image=fake.image_url()
-        )
-    review3 = Review(
-        user_id = 3,
-        service_id = 3,
-        review = fake.paragraph(nb_sentences=3),
-        star_rating=fake.random_int(min=1, max=5),
-        review_image=fake.image_url()
+    num_users = db.session.query(User).count()
+    num_services = db.session.query(Service).count()
+
+    for _ in range(3):
+        user_id = fake.random_int(min=1, max=num_users)
+        service_id = fake.random_int(min=1, max=num_services)
+        review = fake.paragraph(nb_sentences=3)
+        star_rating = fake.random_int(min=1, max=5)
+        review_image = fake.image_url()
+
+        # Check if this user has already reviewed this service
+        user_service_combo = (user_id, service_id)
+        if user_service_combo in reviewed_combinations:
+            continue  # Skip this iteration, user has already reviewed this service
+
+        reviewed_combinations[user_service_combo] = True  # Mark this user-service combo as reviewed
+
+        review = Review(
+            user_id=user_id,
+            service_id=service_id,
+            review=review,
+            star_rating=star_rating,
+            review_image=review_image
         )
 
-    db.session.add(review1)
-    db.session.add(review2)
-    db.session.add(review3)
+        db.session.add(review)
+
     db.session.commit()
 
 

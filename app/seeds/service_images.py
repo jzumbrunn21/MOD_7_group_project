@@ -1,25 +1,22 @@
-from app.models import db, ServiceImage, environment, SCHEMA
+from app.models import db, ServiceImage, Service, environment, SCHEMA
 from sqlalchemy.sql import text
+from faker import Faker
 
+fake = Faker()
 
-# Adds a demo user, you can add other users here if you want
 def seed_service_images():
-    service_image_1 = ServiceImage(
-        service_id = 1,
-        url = 'https://bookdirtbusters.com/wp-content/uploads/2019/04/cleaning-services-near-me-1.jpeg'
-        )
-    service_image_2 = ServiceImage(
-        service_id = 2,
-        url = 'https://bookdirtbusters.com/wp-content/uploads/2019/04/cleaning-services-near-me-1.jpeg'
-        )
-    service_image_3 = ServiceImage(
-        service_id = 3,
-        url = 'https://progressivecleaningcorp.com/wp-content/uploads/2023/06/Deep-Cleaners-In-Alexandria-VA-800x450.jpg'
-        )
+    services = Service.query.all()
 
-    db.session.add(service_image_1)
-    db.session.add(service_image_2)
-    db.session.add(service_image_3)
+    for service in services:
+        num_images = fake.random_int(min=1, max=5)
+
+        for _ in range(num_images):
+            service_image = ServiceImage(
+                service_id=service.id,
+                url=fake.image_url()
+            )
+            db.session.add(service_image)
+
     db.session.commit()
 
 
