@@ -1,34 +1,31 @@
-from app.models import db, Service, environment, SCHEMA
+from app.models import db, Service,User, environment, SCHEMA
 from sqlalchemy.sql import text
+from faker import Faker
+import random
+from app.models.categories import categories
+from datetime import datetime, timedelta
+
+fake = Faker()
 
 
-# Adds a demo user, you can add other users here if you want
 def seed_services():
-    service1 = Service(
-        provider_id = 1,
-        service_title = "Best Cleaning",
-        service_description = "Nice and cool cleaning",
-        service_price = 60,
-        service_length_est = 3,
-        service_category = 'Cleaning',)
-    service2 = Service(
-        provider_id = 2,
-        service_title = "Best Lawn Service",
-        service_description = "Nice and cool Lawn Service",
-        service_price = 70,
-        service_length_est = 3,
-        service_category = 'Lawn Service',)
-    service3 = Service(
-        provider_id = 3,
-        service_title = "Worst Cleaning",
-        service_description = "Really bad cleaning",
-        service_price = 30,
-        service_length_est = 3,
-        service_category = 'Cleaning',)
+    services_num = db.session.query(Service).count()
+    users_num = db.session.query(User).count()
 
-    db.session.add(service1)
-    db.session.add(service2)
-    db.session.add(service3)
+    for _ in range(users_num):
+        provider_id = random.randint(1, users_num)
+
+        service = Service(
+            provider_id=provider_id,
+            service_title=fake.sentence(nb_words=3),
+            service_description=fake.paragraph(nb_sentences=3),
+            service_price=random.randint(10, 200),
+            service_length_est=random.randint(1, 10),
+            service_category=random.choice(categories)
+        )
+
+        db.session.add(service)
+
     db.session.commit()
 
 
