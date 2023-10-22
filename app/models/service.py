@@ -43,3 +43,17 @@ class Service(db.Model):
         'Booking',
         back_populates='services'
     )
+
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'provider_id': self.provider_id,
+            'service_title': self.service_title,
+            'service_description': self.service_description,
+            'service_price': self.service_price,
+            'service_length_est': self.service_length_est,
+            'service_category': self.service_category,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+        }

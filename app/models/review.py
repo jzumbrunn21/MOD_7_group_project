@@ -26,3 +26,14 @@ class Review(db.Model):
         "Service",
         back_populates='reviews'
     )
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'service_id': self.service_id,
+            'review': self.review,
+            'star_rating': self.star_rating,
+            'review_image': self.review_image,
+            'created_at': self.created_at
+        }
