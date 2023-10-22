@@ -62,7 +62,7 @@ def upgrade():
     sa.Column('booking_id', sa.Integer(), nullable=False),
     sa.Column('card_full_name', sa.String(length=100), nullable=False),
     sa.Column('card_number', sa.String(), nullable=False),
-    sa.Column('card_cvv', sa.Integer(), nullable=False),
+    sa.Column('card_cvv', sa.String(), nullable=False),
     sa.Column('card_zipcode', sa.String(), nullable=False),
     sa.Column('card_exp_date', sa.Date(), nullable=False),
     sa.Column('purchase_date_and_time', sa.DateTime(), nullable=True),

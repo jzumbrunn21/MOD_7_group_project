@@ -18,7 +18,7 @@ class Billing(db.Model):
     booking_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('bookings.id')), nullable=False)
     card_full_name = db.Column(db.String(100), nullable=False)
     card_number = db.Column(db.String, CheckConstraint('cardNumber >= 1000000000000000 AND cardNumber <= 9999999999999999'), nullable=False)
-    card_cvv = db.Column(db.Integer, nullable=False)
+    card_cvv = db.Column(db.String, nullable=False)
     card_zipcode = db.Column(db.String, nullable=False)
     card_exp_date = db.Column(db.Date, nullable=False)
     purchase_date_and_time = db.Column(DateTime, default=func.now())
