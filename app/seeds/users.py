@@ -1,20 +1,62 @@
 from app.models import db, User, environment, SCHEMA
 from sqlalchemy.sql import text
+from faker import Faker
 
+fake = Faker()
 
-# Adds a demo user, you can add other users here if you want
 def seed_users():
-    demo = User(
-        username='Demo', email='demo@aa.io', password='password')
-    marnie = User(
-        username='marnie', email='marnie@aa.io', password='password')
-    bobbie = User(
-        username='bobbie', email='bobbie@aa.io', password='password')
+    for _ in range(20):
+        user = User(
+            username=fake.user_name(),
+            email=fake.email(),
+            password='password',  # Storing plain text passwords
+            first_name=fake.first_name(),
+            last_name=fake.last_name(),
+            address=fake.street_address(),
+            profile_picture=fake.image_url(),
+        )
+        db.session.add(user)
 
+    # Create a demo user with a known password
+    demo = User(
+        username="Demo",
+        email="demo@aa.io",
+        password='password',  # Storing plain text password
+        first_name="Demo",
+        last_name="User",
+        address="1234 Demo Ave",
+        profile_picture="https://i.pinimg.com/564x/a8/57/00/a85700f3c614f6313750b9d8196c08f5.jpg",
+    )
     db.session.add(demo)
-    db.session.add(marnie)
-    db.session.add(bobbie)
+
     db.session.commit()
+    # demo = User(
+    #     username='Demo', email='demo@aa.io', password='password',
+    #     first_name='Demo',
+    #     last_name='User',
+    #     address='1234 Demo Ave',
+    #     profile_picture='https://i.pinimg.com/564x/a8/57/00/a85700f3c614f6313750b9d8196c08f5.jpg')
+    # marnie = User(
+    #     username='marnie', 
+    #     email='marnie@aa.io', 
+    #     password='password',
+    #     first_name='Marnie',
+    #     last_name='White',
+    #     address='1234 West Ave',
+    #     profile_picture='https://i.pinimg.com/564x/a8/57/00/a85700f3c614f6313750b9d8196c08f5.jpg')
+    # bobbie = User(
+    #     username='bobbie', 
+    #     email='bobbie@aa.io', 
+    #     password='password',
+    #     first_name='Bob',
+    #     last_name='Green',
+    #     address='4321 North Ave',
+    #     profile_picture='https://i.pinimg.com/564x/a8/57/00/a85700f3c614f6313750b9d8196c08f5.jpg')
+
+    # db.session.add(demo)
+    # db.session.add(marnie)
+    # db.session.add(bobbie)
+   
 
 
 # Uses a raw SQL query to TRUNCATE or DELETE the users table. SQLAlchemy doesn't
