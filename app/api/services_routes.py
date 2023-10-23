@@ -44,6 +44,11 @@ def create_service():
             service_length_est=form.service_length_est.data,
             service_category=form.service_category.data
             # !!! Do we include created_at, updated_at?
+            # provider_id=form.data['provider_id'],
+            # service_title=form.data['service_title'],
+            # service_price=form.data['service_description'],
+            # service_length_est=form.data['service_length_est'],
+            # service_category=form.data['service_category'],
         )
         db.session.add(service)
         db.session.commit()
