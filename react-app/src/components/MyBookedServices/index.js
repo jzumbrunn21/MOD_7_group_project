@@ -19,7 +19,7 @@ const MyBookedServices = ({ upcomingServices, previousServices }) => {
           Previous
         </button>
       </div>
-      {activeTab === 'upcoming' ? (
+      {/* {activeTab === 'upcoming' ? (
         <div className="upcoming-services">
           {upcomingServices.map((service) => (
             <div key={service.id} className="service-container">
@@ -50,7 +50,7 @@ const MyBookedServices = ({ upcomingServices, previousServices }) => {
             </div>
           ))}
         </div>
-      )}
+      )} */}
     </div>
   );
 };

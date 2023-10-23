@@ -25,7 +25,7 @@ const MyOfferedServices = () => {
 
       {/* List of Offered Services */}
       <div className="offered-services-list">
-        {services.map((service) => (
+        {/* {services.map((service) => (
           <div key={service.id} className="service-container">
             <img src={service.imageUrl} alt={service.title} />
             <div className="service-info">
@@ -38,7 +38,7 @@ const MyOfferedServices = () => {
               <button onClick={() => onServiceDelete(service.id)}>Delete</button>
             </div>
           </div>
-        ))}
+        ))} */}
       </div>
     </div>
   );

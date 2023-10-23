@@ -8,6 +8,8 @@ import Navigation from "./components/Navigation";
 import ViewServicesList from "./components/ViewServicesList";
 import ServiceDetailPage from './components/ServiceDetailPage'
 import CreateNewService from "./components/CreateNewService";
+import MyBookedServices from './components/MyBookedServices'
+import MyOfferedServices from './components/MyOfferedServices'
 
 function App() {
   const dispatch = useDispatch();
@@ -23,8 +25,9 @@ function App() {
         <Switch>
           <Route exact path='/' component={ViewServicesList} />
           <Route path="/service/:serviceId" component={ServiceDetailPage} />
+          <Route path='/my-services' component={MyOfferedServices} />
+          <Route path='/my-booked-services' component={MyBookedServices} />
           <Route path='/create-service' component={CreateNewService} />
-
           <Route path="/login" >
             <LoginFormPage />
           </Route>
