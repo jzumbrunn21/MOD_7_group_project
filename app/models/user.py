@@ -28,17 +28,20 @@ class User(db.Model, UserMixin):
 
     billings = db.relationship(
         "Billing",
-        back_populates='user'
+        back_populates='user',
+        cascade="all, delete-orphan"
     )
 
     reviews = db.relationship(
         'Review',
-        back_populates='user'
+        back_populates='user',
+        cascade="all, delete-orphan"
     )
 
     services = db.relationship(
         'Service',
-        back_populates='user'
+        back_populates='user',
+        cascade="all, delete-orphan"
     )
 
 

@@ -22,7 +22,8 @@ class Booking(db.Model):
     billing = db.relationship(
         'Billing',
         uselist=False,
-        back_populates='booking'
+        back_populates='booking',
+        cascade="all, delete-orphan"
     )
 
     services = db.relationship(

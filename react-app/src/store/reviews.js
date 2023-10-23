@@ -63,10 +63,12 @@ export const deleteReviewThunk = (reviewId) => async (dispatch) => {
     }
 }
 
-const initalState = { bookings: [] }
+
+const initialState = { bookings: [] }
+
 
 // Reducer
-export default function reviewsReducer(state = initalState, action) {
+export default function reviewsReducer(state = initialState, action) {
     let newState = {...state}
     switch(action.type) {
         case SET_REVIEW:
