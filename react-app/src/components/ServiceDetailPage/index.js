@@ -59,14 +59,14 @@ const ServiceDetailPage = () => {
       {/* Booking Modal */}
       {showBookingModal && (
         <div className="booking-modal">
-          <h2>Book Now</h2>
+          <h2>Book a Service</h2>
           <input
-            type="text"
-            placeholder="Service Start Date"
+            type="datetime-local"
+            placeholder="MM/DD/YYYY HH:mm AM"
             value={bookingDate}
             onChange={handleBookingDateChange}
           />
-          <i className="calendar-icon">Here</i>
+
           <button onClick={handleContinueToBilling}>Continue to Billing</button>
         </div>
       )}

@@ -120,23 +120,23 @@ export const deleteServiceThunk = (serviceId) => async (dispatch) => {
 }
 
 // !!! What should our state be?
-initialState = { services: [], singleService: null }
+const initialState = { services: [], singleService: null }
 
 // Reducer
 export default function servicesReducer(state = initialState, action) {
     let newState = {...state}
     switch(action.type){
         case SET_SERVICE:
-            action.setService
+            newState = action.setService
             return newState
         case READ_SERVICE:
-            action.service
+            newState = action.service
             return newState
         case READ_SERVICES:
-            action.services
+            newState = action.services
             return newState
         case UPDATE_SERVICE:
-            action.serviceData
+            newState = action.serviceData
             return newState
         case DELETE_SERVICE:
 

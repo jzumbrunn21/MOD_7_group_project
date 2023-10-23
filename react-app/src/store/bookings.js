@@ -89,11 +89,11 @@ export const deleteBookingThunk = (bookingId) => async (dispatch) => {
     }
 }
 
-const initalState = { bookings: [] }
+const initialState = { bookings: [] }
 
 // Reducer
 
-export default function bookingsReducer(state = initalState, action) {
+export default function bookingsReducer(state = initialState, action) {
     let newState = {...state}
     switch(action.type) {
         case SET_BOOKING:

@@ -46,15 +46,15 @@ export const createBillingThunk = (billingData, userId, bookingId) => async (dis
     }
 }
 
-initialState = { billings: [] }
+const initialState = { billings: [] }
 
 // Reducer
-export default function billingsReducer(state = initalState, action) {
+export default function billingsReducer(state = initialState, action) {
     let newState = {...state}
     switch(action.type) {
-        case SET_REVIEW:
+        case SET_BILLING:
             return newState
-        case READ_REVIEW:
+        case READ_BILLINGS:
             return newState
         default:
             return state;

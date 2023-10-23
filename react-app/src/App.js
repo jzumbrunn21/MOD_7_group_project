@@ -7,6 +7,7 @@ import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
 import ViewServicesList from "./components/ViewServicesList";
 import ServiceDetailPage from './components/ServiceDetailPage'
+import CreateNewService from "./components/CreateNewService";
 
 function App() {
   const dispatch = useDispatch();
@@ -22,6 +23,8 @@ function App() {
         <Switch>
           <Route exact path='/' component={ViewServicesList} />
           <Route path="/service/:serviceId" component={ServiceDetailPage} />
+          <Route path='/create-service' component={CreateNewService} />
+
           <Route path="/login" >
             <LoginFormPage />
           </Route>
