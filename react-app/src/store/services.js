@@ -1,149 +1,173 @@
-
 // CRUD constants
-const SET_SERVICE = "services/SET_SERVICE"
-const READ_SERVICE = "services/READ_SERVICE"
-const READ_SERVICES = "services/READ_SERVICES"
-const UPDATE_SERVICE = "services/UPDATE_SERVICE"
-const DELETE_SERVICE = "services/DELETE_SERVICE"
+const SET_SERVICE = "services/SET_SERVICE";
+const READ_SERVICE = "services/READ_SERVICE";
+const READ_SERVICES = "services/READ_SERVICES";
+const UPDATE_SERVICE = "services/UPDATE_SERVICE";
+const DELETE_SERVICE = "services/DELETE_SERVICE";
+const GET_IMAGE = "services/GET_IMAGE";
 
 // Action creators
 
-const setService = (serviceData) => ({  //Should send service data from the form
-    type: SET_SERVICE,
-    serviceData
-})
+const setService = (serviceData) => ({
+  //Should send service data from the form
+  type: SET_SERVICE,
+  serviceData,
+});
 
 const readService = (service) => ({
-    type: READ_SERVICE,
-    service
-})
+  type: READ_SERVICE,
+  service,
+});
 
 const readServices = (services) => ({
-    type: READ_SERVICES,
-    services
-})
+  type: READ_SERVICES,
+  services,
+});
 
 const updateService = (serviceData) => ({
-    type: UPDATE_SERVICE,
-    serviceData
-})
+  type: UPDATE_SERVICE,
+  serviceData,
+});
 
 const removeService = () => ({
-    type: DELETE_SERVICE
-})
+  type: DELETE_SERVICE,
+});
+
+const getImage = (images) => ({
+  type: GET_IMAGE,
+  images,
+});
 
 // Thunks
 // !!! Data handling is different with flask, review with team
 // !!! Review all thunks with team, still work in progress
 // !!! Review how we are handling errors
 export const createServiceThunk = (serviceData) => async (dispatch) => {
-    const response = await fetch("/service/new", {
-        methods: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            serviceData
-        })
-    })
+  const response = await fetch("/service/new", {
+    methods: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      serviceData,
+    }),
+  });
 
-    if (response.ok) {
-        const data = await response.json();
-        // if (data.errors){
-        //     return
-        // }
-        dispatch(setService(data));
-        // return data;     *** return something?
-    }
-    else {
-        return "Error"
-    }
-}
+  if (response.ok) {
+    const data = await response.json();
+    // if (data.errors){
+    //     return
+    // }
+    dispatch(setService(data));
+    // return data;     *** return something?
+  } else {
+    return "Error";
+  }
+};
 
 export const getServiceThunk = (serviceId) => async (dispatch) => {
-    const response = await fetch(`/services/${serviceId}`, {
-        methods: "GET"
-    })
+  const response = await fetch(`/api/services/${serviceId}`, {
+    methods: "GET",
+  });
 
-    if (response.ok) {
-        // !!! What does the flask data look like?
-        const data = await response.json()
-        dispatch(readService(data))
-    } else {
-        return "Error"
-    }
-}
+  if (response.ok) {
+    // !!! What does the flask data look like?
+    const data = await response.json();
+    dispatch(readService(data));
+  } else {
+    return "Error";
+  }
+};
 
 export const getServicesThunk = () => async (dispatch) => {
-    const response = await fetch("/services", {
-        methods: "GET"
-    })
+  const response = await fetch("/api/services", {
+    methods: "GET",
+  });
 
-    if (response.ok) {
-        const data = await response.json()
-        dispatch(readServices(data))
-    } else {
-        return "Error"
-    }
-}
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(readServices(data));
+    return data;
+  } else {
+    return "Error";
+  }
+};
 
-export const updateServiceThunk = (serviceData, serviceId) => async (dispatch) => {
+export const updateServiceThunk =
+  (serviceData, serviceId) => async (dispatch) => {
     const response = await fetch(`/services/${serviceId}`, {
-        methods: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            serviceData
-        })
-    })
+      methods: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        serviceData,
+      }),
+    });
 
     if (response.ok) {
-        const data = await response.json()
-        dispatch(updateService(data))
+      const data = await response.json();
+      dispatch(updateService(data));
     } else {
-        return "Error"
+      return "Error";
     }
-}
+  };
 
 export const deleteServiceThunk = (serviceId) => async (dispatch) => {
-    // Send an id, should be deleted in backend
-    const response = await fetch(`/service/${serviceId}`, {
-        methods: "DELETE"
-    })
+  // Send an id, should be deleted in backend
+  const response = await fetch(`/service/${serviceId}`, {
+    methods: "DELETE",
+  });
 
-    // Update the store with dispatch action
-    if (response.ok) {
-        dispatch(removeService(serviceId))
-    } else {
-        return "Error"
-    }
-}
+  // Update the store with dispatch action
+  if (response.ok) {
+    dispatch(removeService(serviceId));
+  } else {
+    return "Error";
+  }
+};
+
+export const getImageThunk = () => async (dispatch) => {
+  const response = await fetch("/api/services/images");
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(getImage(data));
+    return data;
+  }
+};
 
 // !!! What should our state be?
-const initialState = { services: [], singleService: null }
+const initialState = { services: { serviceImages: {} }, singleService: {} };
 
 // Reducer
 export default function servicesReducer(state = initialState, action) {
-    let newState = {...state}
-    switch(action.type){
-        case SET_SERVICE:
-            newState = action.setService
-            return newState
-        case READ_SERVICE:
-            newState = action.service
-            return newState
-        case READ_SERVICES:
-            newState = action.services
-            return newState
-        case UPDATE_SERVICE:
-            newState = action.serviceData
-            return newState
-        case DELETE_SERVICE:
-
-            return newState
-        default:
-            return state;
-    }
+  let newState;
+  switch (action.type) {
+    case SET_SERVICE:
+      newState = action.setService;
+      return newState;
+    case READ_SERVICE:
+      newState = action.services;
+      return newState;
+    case READ_SERVICES:
+      newState = { ...state };
+      action.services.services.forEach((service) => {
+        newState.services[service.id] = service;
+      });
+      return newState;
+    case UPDATE_SERVICE:
+      newState = action.serviceData;
+      return newState;
+    case DELETE_SERVICE:
+      return newState;
+    case GET_IMAGE:
+      newState = { ...state };
+      console.log("IMAGE ACTION", action);
+      action.images.images.forEach((image) => {
+        newState.services.serviceImages[image.id] = image;
+      });
+    default:
+      return state;
+  }
 }
-
