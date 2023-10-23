@@ -148,7 +148,8 @@ export default function servicesReducer(state = initialState, action) {
       newState = action.setService;
       return newState;
     case READ_SERVICE:
-      newState = action.services;
+      newState = { ...state }
+      newState.singleService = action.service
       return newState;
     case READ_SERVICES:
       newState = { ...state };

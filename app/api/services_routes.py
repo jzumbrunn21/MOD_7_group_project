@@ -56,10 +56,10 @@ def create_service():
             # service_length_est=form.data['service_length_est'],
             # service_category=form.data['service_category'],
         )
-        image = ServiceImage(
-            service_id=form.service_id.data,
-            url=form.url.data
-        )
+        # image = ServiceImage(
+        #     service_id=form.service_id.data,
+        #     url=form.url.data
+        # )
         db.session.add(service)
         db.session.add(image)
         db.session.commit()
