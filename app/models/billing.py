@@ -32,7 +32,7 @@ class Billing(db.Model):
     booking = db.relationship(
         "Booking",
         back_populates='billing',
-        cascade="all, delete-orphan"
+        # cascade="all, delete-orphan"
     )
 
     def to_dict(self):

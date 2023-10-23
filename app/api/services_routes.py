@@ -27,6 +27,12 @@ def all_services():
     # response = Service.query.all()
     return {"services": response}
 
+# @services_routes.route('/images')
+# def get_image():
+#     response = [images.to_dict() for images in ServiceImage.query.all()]
+
+#     return {'images': response}
+
 
 # Creates one service
 @services_routes.route('/new', methods=["GET","POST"])
@@ -50,7 +56,12 @@ def create_service():
             # service_length_est=form.data['service_length_est'],
             # service_category=form.data['service_category'],
         )
+        image = ServiceImage(
+            service_id=form.service_id.data,
+            url=form.url.data
+        )
         db.session.add(service)
+        db.session.add(image)
         db.session.commit()
         print(service)
         # !!! Do we need to query it then return? Examples just returns the below

@@ -21,7 +21,8 @@ def seed_services():
             service_description=fake.paragraph(nb_sentences=3),
             service_price=random.randint(10, 200),
             service_length_est=random.randint(1, 10),
-            service_category=random.choice(categories)
+            service_category=random.choice(categories),
+            url=fake.image_url()
         )
 
         db.session.add(service)
@@ -40,5 +41,5 @@ def undo_services():
         db.session.execute(f"TRUNCATE table {SCHEMA}.services RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM services"))
-        
+
     db.session.commit()
