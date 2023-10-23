@@ -4,6 +4,7 @@ import { logout } from "../../store/session";
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
+import { Link } from "react-router-dom";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -47,6 +48,16 @@ function ProfileButton({ user }) {
           <>
             <li>{user.username}</li>
             <li>{user.email}</li>
+
+            <li>
+              <Link to='/my-services'>My services</Link>
+            </li>
+            <li>
+              <Link to='/my-booked-services'>My booked services</Link>
+            </li>
+            <li>
+              <Link to='/create-service'>Create your service</Link>
+            </li>
             <li>
               <button onClick={handleLogout}>Log Out</button>
             </li>

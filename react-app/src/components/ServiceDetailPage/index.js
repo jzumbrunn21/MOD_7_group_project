@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import PaymentInformationModal from '../PaymentInformationModal';
 
 const ServiceDetailPage = () => {
-  // To control the visibility of the booking modal
-  const [showBookingModal, setShowBookingModal] = useState(false);
+
+  const [showBookingModal, setShowBookingModal] = useState(false);  // To control the visibility of the booking modal
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [bookingDate, setBookingDate] = useState(new Date());
 
@@ -59,14 +59,14 @@ const ServiceDetailPage = () => {
       {/* Booking Modal */}
       {showBookingModal && (
         <div className="booking-modal">
-          <h2>Book Now</h2>
+          <h2>Book a Service</h2>
           <input
-            type="text"
-            placeholder="Service Start Date"
+            type="datetime-local"
+            placeholder="MM/DD/YYYY HH:mm AM"
             value={bookingDate}
             onChange={handleBookingDateChange}
           />
-          <i className="calendar-icon">Here</i>
+
           <button onClick={handleContinueToBilling}>Continue to Billing</button>
         </div>
       )}
