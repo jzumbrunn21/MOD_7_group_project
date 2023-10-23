@@ -43,14 +43,14 @@ const removeService = () => ({
 // !!! Review all thunks with team, still work in progress
 // !!! Review how we are handling errors
 export const createServiceThunk = (serviceData) => async (dispatch) => {
-  const response = await fetch("/service/new", {
-    methods: "POST",
+  const response = await fetch("/api/services/new", {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      serviceData,
-    }),
+    body: JSON.stringify(
+      serviceData
+    )
   });
 
   if (response.ok) {
@@ -59,7 +59,7 @@ export const createServiceThunk = (serviceData) => async (dispatch) => {
     //     return
     // }
     dispatch(setService(data));
-    // return data;     *** return something?
+    return data;     //*** return something?
   } else {
     return "Error";
   }
@@ -145,7 +145,8 @@ export default function servicesReducer(state = initialState, action) {
   let newState;
   switch (action.type) {
     case SET_SERVICE:
-      newState = action.setService;
+      newState = { ...state }
+      newState.singleService = action.serviceData
       return newState;
     case READ_SERVICE:
       newState = { ...state }

@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux'
+import { createServiceThunk } from '../../store/services';
 
 const CreateNewService = () => {
+  const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [providerName, setProviderName] = useState('');
   const [description, setDescription] = useState('');
+  const [url, setUrl] = useState('');
   const [price, setPrice] = useState('');
   const [lengthEstimate, setLengthEstimate] = useState('');
   const [category, setCategory] = useState('');
@@ -12,28 +16,31 @@ const CreateNewService = () => {
   const [errors, setErrors] = useState({});
   const history = useHistory();
 
-  const createService = async (serviceData) => {
-    try {
+  // const createService = async (serviceData) => {
+  //   try {
 
-      history.push('/services');
-    } catch (error) {
+  //     history.push('/services');
+  //   } catch (error) {
 
-      console.error('Error creating service:', error);
-    }
-  };
+  //     console.error('Error creating service:', error);
+  //   }
+  // };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
     if (!title) {
       newErrors.title = 'Title is required';
     }
-    if (!providerName) {
-      newErrors.providerName = 'Provider Name is required';
-    }
+    // if (!providerName) {
+    //   newErrors.providerName = 'Provider Name is required';
+    // }
     if (!description) {
       newErrors.description = 'Description is required';
+    }
+    if (!url){
+      newErrors.url = "Image url is required"
     }
     if (!price) {
       newErrors.price = 'Price is required';
@@ -55,12 +62,18 @@ const CreateNewService = () => {
       title,
       providerName,
       description,
+      url,
       price,
       lengthEstimate,
       category,
     };
 
-    createService(serviceData);
+    const createdService = await dispatch(createServiceThunk(serviceData))
+    if (createdService){
+      history.push(`/services/${createdService.id}`)
+    } else {
+      return "Error" //Placeholder
+    }
   };
 
   return (
@@ -72,15 +85,20 @@ const CreateNewService = () => {
           <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
           {errors.title && <span className="error">{errors.title}</span>}
         </label>
-        <label>
+        {/* <label>
           Provider Name
           <input type="text" value={providerName} onChange={(e) => setProviderName(e.target.value)} />
           {errors.providerName && <span className="error">{errors.providerName}</span>}
-        </label>
+        </label> */}
         <label>
           Service Description
           <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
           {errors.description && <span className="error">{errors.description}</span>}
+        </label>
+        <label>
+          ImageUrl
+          <textarea value={url} onChange={(e) => setUrl(e.target.value)} />
+          {errors.url && <span className="error">{errors.url}</span>}
         </label>
         <label>
           Price (per hour)

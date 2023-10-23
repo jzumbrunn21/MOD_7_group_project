@@ -35,41 +35,43 @@ def all_services():
 
 
 # Creates one service
-@services_routes.route('/new', methods=["GET","POST"])
+@services_routes.route('/new', methods=["POST"])
 def create_service():
     form = ServiceForm()
     # imageForm = ImageForm()
     # !!! Shoud we create the images here too? !!!
     form['csrf_token'].data = request.cookies['csrf_token']
-    if form.validate_on_submit() and request.method == "POST":
+    if form.validate_on_submit():
         service = Service(
-            provider_id=form.provider_id.data,
-            service_title=form.service_title.data,
-            service_description=form.service_description.data,
-            service_price=form.service_price.data,
-            service_length_est=form.service_length_est.data,
-            service_category=form.service_category.data
+            # provider_id=form.provider_id.data,
+            # service_title=form.service_title.data,
+            # service_description=form.service_description.data,
+            # service_price=form.service_price.data,
+            # service_length_est=form.service_length_est.data,
+            # service_category=form.service_category.data,
+            # url=form.url.data
             # !!! Do we include created_at, updated_at?
-            # provider_id=form.data['provider_id'],
-            # service_title=form.data['service_title'],
-            # service_price=form.data['service_description'],
-            # service_length_est=form.data['service_length_est'],
-            # service_category=form.data['service_category'],
+            provider_id=form.data['provider_id'],
+            service_title=form.data['service_title'],
+            service_price=form.data['service_description'],
+            service_length_est=form.data['service_length_est'],
+            service_category=form.data['service_category'],
+            url=form.data['url']
         )
         # image = ServiceImage(
         #     service_id=form.service_id.data,
         #     url=form.url.data
         # )
         db.session.add(service)
-        db.session.add(image)
         db.session.commit()
         print(service)
         # !!! Do we need to query it then return? Examples just returns the below
         # return redirect('/')
-    print('Hello world')
-    return render_template('services.html', form=form)
-    # else:
-        # return "Creation error!!!" #Placeholder
+        return service.to_dict(), 201
+    # print('Hello world')
+    # return render_template('services.html', form=form)
+    else:
+        return "Creation error!!!" #Placeholder
 
 # Returns one service by id
 @services_routes.route('/<int:id>')
