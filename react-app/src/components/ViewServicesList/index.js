@@ -1,15 +1,26 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import './ViewServicesList.css';
-
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import "./ViewServicesList.css";
+import { getServicesThunk, getImageThunk } from "../../store/services";
 
 const ViewServicesList = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const services = useSelector((state) =>
+    Object.values(state.services.services)
+  );
 
-    useEffect(() => {
+  // const image = useSelector((state) => {
+  //   Object.values(state.services.services.serviceImages);
+  // });
+  // console.log("IMAGE", image);
+  // useEffect(() => {
+  //   dispatch(getImageThunk());
+  // }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(getServicesThunk());
   }, [dispatch]);
-
 
   return (
     <div className="services-list-container">
@@ -32,22 +43,24 @@ const ViewServicesList = () => {
       </div>
       <div className="services-grid">
         {/* need to be replace with actual data from state management */}
-        {/* {services.map((service) => (
-          <Link to={`/service/${service.id}`} key={service.id} className="service-container">
-            <img src={service.imageUrl} alt={service.title} />
+        {services.map((service) => (
+          <Link
+            to={`/service/${service.id}`}
+            key={service.id}
+            className="service-container"
+          >
+            <img src={service.url} alt={service.title} />
             <div className="service-info">
-              <h3>{service.title}</h3>
-              <p>{service.description}</p>
-              <p>${service.price}</p>
+              <h3>{service.service_title}</h3>
+              <p>{service.service_description}</p>
+              <p>${service.service_price}</p>
               <p>Rating: {service.rating}/5</p>
             </div>
-          </div>
-        ))} */}
+          </Link>
+        ))}
       </div>
     </div>
   );
-}
+};
 
-
-
-export default ViewServicesList
+export default ViewServicesList;

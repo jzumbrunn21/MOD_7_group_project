@@ -23,7 +23,7 @@ class Booking(db.Model):
         'Billing',
         uselist=False,
         back_populates='booking',
-        cascade="all, delete-orphan"
+        # cascade="all, delete-orphan"
     )
 
     services = db.relationship(

@@ -19,6 +19,7 @@ class Service(db.Model):
     service_description = db.Column(db.String(2000), nullable=False)
     service_price = db.Column(db.Integer, nullable=False)
     service_length_est = db.Column(db.Integer, nullable=False)
+    url = db.Column(db.String(255), nullable=False)
     service_category = db.Column(db.Enum(*categories, name='category'), nullable=False)
     created_at = db.Column(DateTime, default=func.now())
     updated_at = db.Column(DateTime, default=func.now(), onupdate=func.now())
@@ -29,11 +30,11 @@ class Service(db.Model):
         back_populates='services'
     )
 
-    service_images = db.relationship(
-        'ServiceImage',
-        back_populates='services',
-        cascade="all, delete-orphan"
-    )
+    # service_images = db.relationship(
+    #     'ServiceImage',
+    #     back_populates='services',
+    #     cascade="all, delete-orphan"
+    # )
 
     reviews = db.relationship(
         'Review',
@@ -56,6 +57,7 @@ class Service(db.Model):
             'service_price': self.service_price,
             'service_length_est': self.service_length_est,
             'service_category': self.service_category,
+            "url": self.url,
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }

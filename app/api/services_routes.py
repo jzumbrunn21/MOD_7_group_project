@@ -3,6 +3,7 @@ from app.models import db, Service
 # Forms need importing
 from app.forms import ServiceForm
 services_routes = Blueprint("services", __name__)
+from flask_login import current_user
 
 
 # Could the below be used for error messages?
@@ -27,38 +28,52 @@ def all_services():
     # response = Service.query.all()
     return {"services": response}
 
+# @services_routes.route('/images')
+# def get_image():
+#     response = [images.to_dict() for images in ServiceImage.query.all()]
+
+#     return {'images': response}
+
 
 # Creates one service
-@services_routes.route('/new', methods=["GET","POST"])
+@services_routes.route('/new', methods=["POST"])
 def create_service():
     form = ServiceForm()
     # imageForm = ImageForm()
     # !!! Shoud we create the images here too? !!!
     form['csrf_token'].data = request.cookies['csrf_token']
-    if form.validate_on_submit() and request.method == "POST":
+    if form.validate_on_submit():
         service = Service(
-            provider_id=form.provider_id.data,
-            service_title=form.service_title.data,
-            service_description=form.service_description.data,
-            service_price=form.service_price.data,
-            service_length_est=form.service_length_est.data,
-            service_category=form.service_category.data
+            # provider_id=form.provider_id.data,
+            # service_title=form.service_title.data,
+            # service_description=form.service_description.data,
+            # service_price=form.service_price.data,
+            # service_length_est=form.service_length_est.data,
+            # service_category=form.service_category.data,
+            # url=form.url.data
             # !!! Do we include created_at, updated_at?
-            # provider_id=form.data['provider_id'],
-            # service_title=form.data['service_title'],
-            # service_price=form.data['service_description'],
-            # service_length_est=form.data['service_length_est'],
-            # service_category=form.data['service_category'],
+            provider_id=current_user.id,
+            service_title=form.data['service_title'],
+            service_description=form.data['service_description'],
+            service_price=form.data['service_price'],
+            service_length_est=form.data['service_length_est'],
+            service_category=form.data['service_category'],
+            url=form.data['url']
         )
+        # image = ServiceImage(
+        #     service_id=form.service_id.data,
+        #     url=form.url.data
+        # )
         db.session.add(service)
         db.session.commit()
         print(service)
         # !!! Do we need to query it then return? Examples just returns the below
         # return redirect('/')
-    print('Hello world')
-    return render_template('services.html', form=form)
-    # else:
-        # return "Creation error!!!" #Placeholder
+        return service.to_dict(), 201
+    # print('Hello world')
+    # return render_template('services.html', form=form)
+    else:
+        return {"Errors": form.errors} #Placeholder
 
 # Returns one service by id
 @services_routes.route('/<int:id>')
