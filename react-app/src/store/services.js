@@ -4,7 +4,7 @@ const READ_SERVICE = "services/READ_SERVICE";
 const READ_SERVICES = "services/READ_SERVICES";
 const UPDATE_SERVICE = "services/UPDATE_SERVICE";
 const DELETE_SERVICE = "services/DELETE_SERVICE";
-const GET_IMAGE = "services/GET_IMAGE";
+// const GET_IMAGE = "services/GET_IMAGE";
 
 // Action creators
 
@@ -33,10 +33,10 @@ const removeService = () => ({
   type: DELETE_SERVICE,
 });
 
-const getImage = (images) => ({
-  type: GET_IMAGE,
-  images,
-});
+// const getImage = (images) => ({
+//   type: GET_IMAGE,
+//   images,
+// });
 
 // Thunks
 // !!! Data handling is different with flask, review with team
@@ -127,18 +127,18 @@ export const deleteServiceThunk = (serviceId) => async (dispatch) => {
   }
 };
 
-export const getImageThunk = () => async (dispatch) => {
-  const response = await fetch("/api/services/images");
+// export const getImageThunk = () => async (dispatch) => {
+//   const response = await fetch("/api/services/images");
 
-  if (response.ok) {
-    const data = await response.json();
-    dispatch(getImage(data));
-    return data;
-  }
-};
+//   if (response.ok) {
+//     const data = await response.json();
+//     dispatch(getImage(data));
+//     return data;
+//   }
+// };
 
 // !!! What should our state be?
-const initialState = { services: { serviceImages: {} }, singleService: {} };
+const initialState = { services: {}, singleService: {} };
 
 // Reducer
 export default function servicesReducer(state = initialState, action) {
@@ -161,12 +161,12 @@ export default function servicesReducer(state = initialState, action) {
       return newState;
     case DELETE_SERVICE:
       return newState;
-    case GET_IMAGE:
-      newState = { ...state };
-      console.log("IMAGE ACTION", action);
-      action.images.images.forEach((image) => {
-        newState.services.serviceImages[image.id] = image;
-      });
+    // case GET_IMAGE:
+    //   newState = { ...state };
+    //   console.log("IMAGE ACTION", action);
+    //   action.images.images.forEach((image) => {
+    //     newState.services.serviceImages[image.id] = image;
+    //   });
     default:
       return state;
   }

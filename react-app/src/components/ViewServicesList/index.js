@@ -9,13 +9,14 @@ const ViewServicesList = () => {
   const services = useSelector((state) =>
     Object.values(state.services.services)
   );
-  const image = useSelector((state) => {
-    Object.values(state.services.services.serviceImages);
-  });
-  console.log("IMAGE", image);
-  useEffect(() => {
-    dispatch(getImageThunk());
-  }, [dispatch]);
+
+  // const image = useSelector((state) => {
+  //   Object.values(state.services.services.serviceImages);
+  // });
+  // console.log("IMAGE", image);
+  // useEffect(() => {
+  //   dispatch(getImageThunk());
+  // }, [dispatch]);
 
   useEffect(() => {
     dispatch(getServicesThunk());
@@ -48,7 +49,7 @@ const ViewServicesList = () => {
             key={service.id}
             className="service-container"
           >
-            <img src={image.url} alt={service.title} />
+            <img src={service.url} alt={service.title} />
             <div className="service-info">
               <h3>{service.service_title}</h3>
               <p>{service.service_description}</p>
