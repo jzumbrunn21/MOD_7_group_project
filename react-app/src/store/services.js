@@ -48,9 +48,7 @@ export const createServiceThunk = (serviceData) => async (dispatch) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(
-      serviceData
-    )
+    body: JSON.stringify(serviceData),
   });
 
   if (response.ok) {
@@ -59,7 +57,7 @@ export const createServiceThunk = (serviceData) => async (dispatch) => {
     //     return
     // }
     dispatch(setService(data));
-    return data;     //*** return something?
+    return data; //*** return something?
   } else {
     return "Error";
   }
@@ -145,12 +143,12 @@ export default function servicesReducer(state = initialState, action) {
   let newState;
   switch (action.type) {
     case SET_SERVICE:
-      newState = { ...state }
-      newState.singleService = action.serviceData
+      newState = { ...state };
+      newState.singleService = action.serviceData;
       return newState;
     case READ_SERVICE:
-      newState = { ...state }
-      newState.singleService = action.service
+      newState = { ...state };
+      newState.singleService = action.service;
       return newState;
     case READ_SERVICES:
       newState = { ...state };

@@ -3,6 +3,7 @@ from app.models import db, Service
 # Forms need importing
 from app.forms import ServiceForm
 services_routes = Blueprint("services", __name__)
+from flask_login import current_user
 
 
 # Could the below be used for error messages?
@@ -51,9 +52,10 @@ def create_service():
             # service_category=form.service_category.data,
             # url=form.url.data
             # !!! Do we include created_at, updated_at?
-            provider_id=form.data['provider_id'],
+            provider_id=current_user.id,
             service_title=form.data['service_title'],
-            service_price=form.data['service_description'],
+            service_description=form.data['service_description'],
+            service_price=form.data['service_price'],
             service_length_est=form.data['service_length_est'],
             service_category=form.data['service_category'],
             url=form.data['url']
@@ -71,7 +73,7 @@ def create_service():
     # print('Hello world')
     # return render_template('services.html', form=form)
     else:
-        return "Creation error!!!" #Placeholder
+        return {"Errors": form.errors} #Placeholder
 
 # Returns one service by id
 @services_routes.route('/<int:id>')
