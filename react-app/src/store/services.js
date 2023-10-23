@@ -93,19 +93,18 @@ export const getServicesThunk = () => async (dispatch) => {
 
 export const updateServiceThunk =
   (serviceData, serviceId) => async (dispatch) => {
-    const response = await fetch(`/services/${serviceId}`, {
+    const response = await fetch(`/api/services/${serviceId}`, {
       methods: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        serviceData,
-      }),
+      body: JSON.stringify(serviceData),
     });
 
     if (response.ok) {
       const data = await response.json();
       dispatch(updateService(data));
+      return data;
     } else {
       return "Error";
     }
@@ -157,7 +156,8 @@ export default function servicesReducer(state = initialState, action) {
       });
       return newState;
     case UPDATE_SERVICE:
-      newState = action.serviceData;
+      newState = { ...state };
+      newState.singleService = action.serviceData;
       return newState;
     case DELETE_SERVICE:
       return newState;

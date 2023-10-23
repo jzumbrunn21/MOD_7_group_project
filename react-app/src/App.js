@@ -10,6 +10,7 @@ import ServiceDetailPage from "./components/ServiceDetailPage";
 import CreateNewService from "./components/CreateNewService";
 import MyBookedServices from "./components/MyBookedServices";
 import MyOfferedServices from "./components/MyOfferedServices";
+import UpdateService from "./components/UpdateService";
 
 function App() {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ function App() {
           <Route exact path="/" component={ViewServicesList} />
 
           <Route path="/services/:serviceId" component={ServiceDetailPage} />
+          <Route path="/services/update/:serviceId" component={UpdateService} />
           <Route path="/my-services" component={MyOfferedServices} />
           <Route path="/my-booked-services" component={MyBookedServices} />
           <Route path="/create-service" component={CreateNewService} />
