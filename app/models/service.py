@@ -31,12 +31,14 @@ class Service(db.Model):
 
     service_images = db.relationship(
         'ServiceImage',
-        back_populates='services'
+        back_populates='services',
+        cascade="all, delete-orphan"
     )
 
     reviews = db.relationship(
         'Review',
-        back_populates='services'
+        back_populates='services',
+        cascade="all, delete-orphan"
     )
 
     bookings = db.relationship(
