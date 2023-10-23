@@ -63,7 +63,9 @@ export const deleteReviewThunk = (reviewId) => async (dispatch) => {
     }
 }
 
+
 const initialState = { bookings: [] }
+
 
 // Reducer
 export default function reviewsReducer(state = initialState, action) {

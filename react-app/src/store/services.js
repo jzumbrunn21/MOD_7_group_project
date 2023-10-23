@@ -1,3 +1,4 @@
+
 // CRUD constants
 const SET_SERVICE = "services/SET_SERVICE"
 const READ_SERVICE = "services/READ_SERVICE"
@@ -146,12 +147,3 @@ export default function servicesReducer(state = initialState, action) {
     }
 }
 
-// export const Thunk = () => async (dispatch) => {
-//     const response = await fetch("", {})
-
-//     if (response.ok) {
-        //const data = await response.json()
-//     } else {
-        //return "Error"
-//     }
-// }

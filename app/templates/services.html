@@ -1,0 +1,9 @@
+<!-- {%block content%} -->
+<form action="/api/services/new" method="POST" enctype="multipart/form-data">
+  <div>
+    {{ form.csrf_token }} {{form.provider_id}} {{form.service_title}}
+    {{form.service_price}} {{form.service_length_est}} {{form.service_category}}
+    {{form.submit}}
+  </div>
+</form>
+<!-- {% endblock %} -->
