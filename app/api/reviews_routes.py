@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, redirect
-from app.models import db, Review
+from app.models import db, Review, Service
 # Forms need importing
 from app.forms import ReviewForm
 reviews_routes = Blueprint("reviews", __name__)

@@ -44,7 +44,7 @@ const ViewServicesList = () => {
       <div className="services-grid">
         {services.map((service) => (
           <Link
-            to={`/service/${service.id}`}
+            to={`/services/${service.id}`}
             key={service.id}
             className="service-container"
           >
