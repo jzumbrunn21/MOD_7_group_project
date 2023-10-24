@@ -42,7 +42,6 @@ const ViewServicesList = () => {
         <h2>Popular Projects Recommended for You</h2>
       </div>
       <div className="services-grid">
-        {/* need to be replace with actual data from state management */}
         {services.map((service) => (
           <Link
             to={`/service/${service.id}`}

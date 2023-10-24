@@ -7,6 +7,12 @@ from datetime import datetime, timedelta
 
 fake = Faker()
 
+def generate_image_url():
+    width = 400 
+    height = 300 
+    image_id = fake.random_int(min=1, max=1000)
+    return f"https://picsum.photos/400/300?image={image_id}"
+
 
 def seed_services():
     services_num = db.session.query(Service).count()
@@ -22,7 +28,7 @@ def seed_services():
             service_price=random.randint(10, 200),
             service_length_est=random.randint(1, 10),
             service_category=random.choice(categories),
-            url=fake.image_url()
+           url = generate_image_url() 
         )
 
         db.session.add(service)
