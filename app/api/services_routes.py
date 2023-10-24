@@ -113,13 +113,15 @@ def update_service(id):
         return {"Errors": form.errors}
 
 # Delete one service
-@services_routes.route('/delete/<int:id>', methods=["DELETE"])
+@services_routes.route('/<int:id>', methods=["DELETE"])
 def delete_service(id):
     deleted_service = Service.query.get(id)
     # !!! Do we need to delete anything else?
-    db.session.delete(deleted_service)
-    db.session.commit()
-    return redirect('/services')
-
+    if delete_service :
+        db.session.delete(deleted_service)
+        db.session.commit()
+        return "successful delete"
+    else:
+        return "error"
 
 # service = Service.query.filter(Service.id == form.data["id"]).first()
