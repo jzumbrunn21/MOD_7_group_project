@@ -4,7 +4,7 @@ import { getUserServicesThunk } from "../../store/services";
 import { Link, useHistory } from "react-router-dom";
 import { deleteServiceThunk } from "../../store/services";
 import DeleteConfirmationModal from "../DeleteConfirmationModal";
-import {useModal} from '../../context/Modal'
+// import {useModal} from '../../context/Modal'
 
 const MyOfferedServices = () => {
   const dispatch = useDispatch();
@@ -25,12 +25,12 @@ const MyOfferedServices = () => {
 
   const onCreateNewService = () => {};
 
-  const { closeModal } = useModal();
+  // const { closeModal } = useModal();
 
 const handleDelete= async(serviceId) =>{
   const deleted = await dispatch(deleteServiceThunk(serviceId))
   if(deleted){
-    closeModal()
+    // closeModal()
   } else {
     return "Error"
   }

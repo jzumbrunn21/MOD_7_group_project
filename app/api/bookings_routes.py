@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request, redirect
 from app.models import db, Booking
 # Forms need importing
 from app.forms import BookingForm
+
 bookings_routes = Blueprint("bookings", __name__)
 
 # Could the below be used for error messages?
@@ -34,16 +35,15 @@ def create_booking():
     # !!! Shoud we create the images here too? !!!
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
-        service = Booking(
+        booking = Booking(
             user_id=form.data['user_id'],
             service_id=form.data['service_id'],
             start_date_and_time=form.data['start_data_and_time'],
             status=form.data['status']
         )
-        db.session.add(service)
+        db.session.add(booking)
         db.session.commit()
-        # !!! Do we need to query it then return? Examples just returns the below
-        return service.to_dict()
+        return booking.to_dict()
     else:
         return "Creation error!!!" #Placeholder
 
@@ -55,15 +55,15 @@ def update_booking(id):
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         booking_to_update = Booking.query.get(id)
-
         booking_to_update.user_id=form.data['user_id'],
         booking_to_update.service_id=form.data['service_id'],
-        booking_to_update.start_date_time=form.data['start_date_time'],
+        booking_to_update.start_date_and_time=form.data['start_date_and_time'],
         booking_to_update.status=form.data['status'],
         # !!! Do we include created_at, updated_at?
         # db.session.add(service)
         # db.session.update() ???
         db.session.commit()
+        return booking_to_update.to_dict()
     # !!! Should this go to all bookings?
     # Should redirection only happen in frontend?
     # return redirect('/bookings')
@@ -75,4 +75,4 @@ def delete_booking(id):
     # !!! Do we need to delete anything else?
     db.session.delete(deleted_booking)
     db.session.commit()
-    # return redirect('/services')
+    return {"message": "Booking deleted"}

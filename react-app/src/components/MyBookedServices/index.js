@@ -1,56 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getBookingsThunk } from '../../store/bookings';
 
-const MyBookedServices = ({ upcomingServices, previousServices }) => {
-  const [activeTab, setActiveTab] = useState('upcoming');
+const MyBookedServices = () => {
+  const bookings = useSelector((state) => Object.values(state.bookings.bookings));
+  console.log("***Bookings***",typeof bookings)
+  const dispatch = useDispatch();
+  const [activeTab, setActiveTab] = useState(true);
+
+  useEffect(() => {
+    dispatch(getBookingsThunk());
+  }, [dispatch]);
 
   return (
     <div className="my-booked-services-container">
       <div className="tabs">
         <button
-          className={activeTab === 'upcoming' ? 'active' : ''}
-          onClick={() => setActiveTab('upcoming')}
+          className={activeTab ? 'active' : ''}
+          onClick={() => setActiveTab(true)}
         >
           Upcoming
         </button>
         <button
-          className={activeTab === 'previous' ? 'active' : ''}
-          onClick={() => setActiveTab('previous')}
+          className={!activeTab ? 'active' : ''}
+          onClick={() => setActiveTab(false)}
         >
           Previous
         </button>
       </div>
-      {/* {activeTab === 'upcoming' ? (
+      {activeTab ? (
         <div className="upcoming-services">
-          {upcomingServices.map((service) => (
-            <div key={service.id} className="service-container">
-              <h3>Customer: {service.customerName}</h3>
-              <p>Date and Time: {service.dateAndTime}</p>
-              <p>Price: {service.pricePerHour}</p>
-              <p>Customer Address: {service.user.address}</p>
-            </div>
-          ))}
+          {bookings
+            .filter((booking) => booking.status === true)
+            .map((booking) => (
+              <div key={booking.id} className="service-container">
+                <h3>Booking ID: {booking.id}</h3>
+                <p>User ID: {booking.user_id}</p>
+                <p>Service ID: {booking.service_id}</p>
+                <p>Date and Time: {booking.start_date_and_time}</p>
+                <p>Status: Upcoming</p>
+              </div>
+            ))}
         </div>
       ) : (
         <div className="previous-services">
-          {previousServices.map((service) => (
-            <div key={service.id} className="service-container">
-              <h3>Task Name: {service.name}</h3>
-              <p>Customer: {service.customerName}</p>
-              <p>{service.dateAndTime}</p>
-              <p>Price: {service.pricePerHour}</p>
-              <div className="reviews">
-                <h3>Reviews</h3>
-                {service.reviews.map((review) => (
-                  <div key={review.id} className="review">
-                    <p>Rating: {review.rating}</p>
-                    <p>{review.text}</p>
-                  </div>
-                ))}
+          {bookings
+            .filter((booking) => booking.status === false)
+            .map((booking) => (
+              <div key={booking.id} className="service-container">
+                <h3>Booking ID: {booking.id}</h3>
+                <p>User ID: {booking.user_id}</p>
+                <p>Service ID: {booking.service_id}</p>
+                <p>Date and Time: {booking.start_date_and_time}</p>
+                <p>Status: Previous</p>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
-      )} */}
+      )}
     </div>
   );
 };
