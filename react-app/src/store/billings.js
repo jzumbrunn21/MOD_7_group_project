@@ -46,15 +46,21 @@ export const createBillingThunk = (billingData, userId, bookingId) => async (dis
     }
 }
 
-const initialState = { billings: [] }
+const initialState = { billings: {} }
 
 // Reducer
 export default function billingsReducer(state = initialState, action) {
-    let newState = {...state}
+    let newState;
     switch(action.type) {
         case SET_BILLING:
+            newState = { ...state }
+            newState.billings[action.billingData.id] = action.billingData
             return newState
         case READ_BILLINGS:
+            newState = { ...state }
+            action.billings.billings.forEach((billing) => {
+                newState.billing[billing.id] = billing;
+            });
             return newState
         default:
             return state;
