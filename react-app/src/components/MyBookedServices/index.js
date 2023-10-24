@@ -3,14 +3,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getBookingsThunk } from '../../store/bookings';
 
 const MyBookedServices = () => {
-  const bookings = useSelector((state) => Object.values(state.bookings.bookings));
-  console.log("***Bookings***",typeof bookings)
+  const sessionUser = useSelector((state) => state.session.user);
+  const bookings = useSelector((state) => state.bookings.bookings);
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); // loading state
 
   useEffect(() => {
-    dispatch(getBookingsThunk());
+    // Fetch bookings and set isLoading to false when done
+    dispatch(getBookingsThunk()).then(() => setIsLoading(false));
   }, [dispatch]);
+
+  const userBookings = Object.values(bookings).filter(
+    (booking) => booking.user_id === sessionUser.id
+  );
 
   return (
     <div className="my-booked-services-container">
@@ -28,34 +34,38 @@ const MyBookedServices = () => {
           Previous
         </button>
       </div>
-      {activeTab ? (
-        <div className="upcoming-services">
-          {bookings
-            .filter((booking) => booking.status === true)
-            .map((booking) => (
-              <div key={booking.id} className="service-container">
-                <h3>Booking ID: {booking.id}</h3>
-                <p>User ID: {booking.user_id}</p>
-                <p>Service ID: {booking.service_id}</p>
-                <p>Date and Time: {booking.start_date_and_time}</p>
-                <p>Status: Upcoming</p>
-              </div>
-            ))}
-        </div>
+      {isLoading ? (
+        <p>Loading...</p>
       ) : (
-        <div className="previous-services">
-          {bookings
-            .filter((booking) => booking.status === false)
-            .map((booking) => (
-              <div key={booking.id} className="service-container">
-                <h3>Booking ID: {booking.id}</h3>
-                <p>User ID: {booking.user_id}</p>
-                <p>Service ID: {booking.service_id}</p>
-                <p>Date and Time: {booking.start_date_and_time}</p>
-                <p>Status: Previous</p>
-              </div>
-            ))}
-        </div>
+        activeTab ? (
+          <div className="upcoming-services">
+            {userBookings
+              .filter((booking) => booking.status === true)
+              .map((booking) => (
+                <div key={booking.id} className="service-container">
+                  <h3>Booking ID: {booking.id}</h3>
+                  <p>User ID: {booking.user_id}</p>
+                  <p>Service ID: {booking.service_id}</p>
+                  <p>Date and Time: {booking.start_date_and_time}</p>
+                  <p>Status: Upcoming</p>
+                </div>
+              ))}
+          </div>
+        ) : (
+          <div className="previous-services">
+            {userBookings
+              .filter((booking) => booking.status === false)
+              .map((booking) => (
+                <div key={booking.id} className="service-container">
+                  <h3>Booking ID: {booking.id}</h3>
+                  <p>User ID: {booking.user_id}</p>
+                  <p>Service ID: {booking.service_id}</p>
+                  <p>Date and Time: {booking.start_date_and_time}</p>
+                  <p>Status: Previous</p>
+                </div>
+              ))}
+          </div>
+        )
       )}
     </div>
   );
