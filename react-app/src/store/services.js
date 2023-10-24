@@ -4,7 +4,6 @@ const READ_SERVICE = "services/READ_SERVICE";
 const READ_SERVICES = "services/READ_SERVICES";
 const UPDATE_SERVICE = "services/UPDATE_SERVICE";
 const DELETE_SERVICE = "services/DELETE_SERVICE";
-// const GET_IMAGE = "services/GET_IMAGE";
 
 // Action creators
 
@@ -93,19 +92,18 @@ export const getServicesThunk = () => async (dispatch) => {
 
 export const updateServiceThunk =
   (serviceData, serviceId) => async (dispatch) => {
-    const response = await fetch(`/services/${serviceId}`, {
-      methods: "PUT",
+    const response = await fetch(`/api/services/${serviceId}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        serviceData,
-      }),
+      body: JSON.stringify(serviceData),
     });
 
     if (response.ok) {
       const data = await response.json();
       dispatch(updateService(data));
+      return data;
     } else {
       return "Error";
     }
@@ -125,15 +123,15 @@ export const deleteServiceThunk = (serviceId) => async (dispatch) => {
   }
 };
 
-// export const getImageThunk = () => async (dispatch) => {
-//   const response = await fetch("/api/services/images");
+export const getUserServicesThunk = () => async (dispatch) => {
+  const response = await fetch("/api/services/my-services");
 
-//   if (response.ok) {
-//     const data = await response.json();
-//     dispatch(getImage(data));
-//     return data;
-//   }
-// };
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(readServices(data));
+    return data;
+  }
+};
 
 // !!! What should our state be?
 const initialState = { services: {}, singleService: {} };
@@ -157,9 +155,12 @@ export default function servicesReducer(state = initialState, action) {
       });
       return newState;
     case UPDATE_SERVICE:
-      newState = action.serviceData;
+      newState = { ...state };
+      newState.services[action.serviceData.id] = action.serviceData;
       return newState;
     case DELETE_SERVICE:
+      newState = {...state}
+      delete newState.services[action.serviceId]
       return newState;
     // case GET_IMAGE:
     //   newState = { ...state };
