@@ -1,24 +1,38 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { updateServiceThunk } from "../../store/services";
+import React, { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getServiceThunk, updateServiceThunk } from "../../store/services";
 
 const UpdateService = (serviceData) => {
   // const service = useSelector(state => state.service.services)
+  // const serviceId = serviceData.match.params.serviceId
+  const paramId = useParams()
+  const dispatch = useDispatch()
+  console.log(typeof paramId)
+  console.log(paramId)
+  // console.log(serviceId)
   console.log("The service data", serviceData)
-  const [title, setTitle] = useState(serviceData.title);
+  const serviceDetail = useSelector(state => Object.values(state.services.singleService)[0])
+  // console.log("*** Service Detail ***", serviceDetail)
+  // const [data, setData] = useState({
+  //   title: "",
+  //   url: "",
+  //   description: "",
+  //   price: "",
+  //   lengthEstimate: "",
+  //   category: ""
+  // });
+  const [title, setTitle] = useState("");
   // const [providerName, setProviderName] = useState(serviceData.providerName);
-  const [url, setUrl] = useState(serviceData.url);
-  const [description, setDescription] = useState(serviceData.description);
-  const [price, setPrice] = useState(serviceData.price);
-  const [lengthEstimate, setLengthEstimate] = useState(
-    serviceData.lengthEstimate
-  );
-  const [category, setCategory] = useState(serviceData.category);
+  const [url, setUrl] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [lengthEstimate, setLengthEstimate] = useState("");
+  const [category, setCategory] = useState("");
 
   const [errors, setErrors] = useState({});
   const history = useHistory();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   // const updateService = async (serviceData) => {
   //   try {
@@ -29,6 +43,42 @@ const UpdateService = (serviceData) => {
   //     console.error('Error updating service:', error);
   //   }
   // };
+
+  useEffect(() => {
+    getDetails();
+
+
+    // .then(res => {
+    //   console.log("THE RES", res)
+    //   setTitle(res.service_title)
+    //   setUrl()
+    //   setDescription()
+    //   setPrice()
+    //   setLengthEstimate()
+    //   setCategory()
+    // })
+    // .catch(err => {
+    //   console.log(err)
+    // })
+
+  }, [])
+
+  if (serviceData === undefined){
+    return null
+  }
+
+  const getDetails = async() => {
+    let res = await dispatch(getServiceThunk(paramId.serviceId))
+    let response = res.service
+    // console.log(response)
+    console.log ("*** DISPATCH RETURN", res)
+    setTitle(response.service_title)
+    setUrl(response.url)
+    setDescription(response.service_description)
+    setPrice(response.service_price)
+    setLengthEstimate(response.service_length_est)
+    setCategory(response.service_category)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -109,6 +159,7 @@ const UpdateService = (serviceData) => {
         <label>
           Service Description
           <textarea
+            defaultValue={serviceData.service_description}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />

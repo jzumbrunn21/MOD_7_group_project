@@ -71,6 +71,7 @@ export const getServiceThunk = (serviceId) => async (dispatch) => {
     // !!! What does the flask data look like?
     const data = await response.json();
     dispatch(readService(data));
+    return data
   } else {
     return "Error";
   }
@@ -84,7 +85,7 @@ export const getServicesThunk = () => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(readServices(data));
-    return data;
+    // return data;
   } else {
     return "Error";
   }
