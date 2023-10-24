@@ -28,11 +28,12 @@ def all_services():
     # response = Service.query.all()
     return {"services": response}
 
-# @services_routes.route('/images')
-# def get_image():
-#     response = [images.to_dict() for images in ServiceImage.query.all()]
-
-#     return {'images': response}
+@services_routes.route('/my-services')
+def users_services():
+    print('currentUser', current_user.id)
+    response = [service.to_dict() for service in Service.query.filter(Service.provider_id == current_user.id)]
+    print("response", response)
+    return {"services": response}
 
 
 # Creates one service

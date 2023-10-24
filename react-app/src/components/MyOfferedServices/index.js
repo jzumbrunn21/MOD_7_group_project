@@ -1,19 +1,24 @@
-import React from 'react';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getUserServicesThunk } from "../../store/services";
 
 const MyOfferedServices = () => {
+  const dispatch = useDispatch();
+  const userServices = useSelector((state) =>
+    Object.values(state.services.services)
+  );
 
+  useEffect(() => {
+    dispatch(getUserServicesThunk());
+  }, [dispatch]);
 
-  const onServiceUpdate = (serviceId) => {
+  if (userServices === undefined) return null;
 
-  };
+  const onServiceUpdate = (serviceId) => {};
 
-  const onServiceDelete = (serviceId) => {
+  const onServiceDelete = (serviceId) => {};
 
-  };
-
-  const onCreateNewService = () => {
-
-  };
+  const onCreateNewService = () => {};
 
   return (
     <div className="my-offered-services-container">
@@ -25,20 +30,24 @@ const MyOfferedServices = () => {
 
       {/* List of Offered Services */}
       <div className="offered-services-list">
-        {/* {services.map((service) => (
-          <div key={service.id} className="service-container">
-            <img src={service.imageUrl} alt={service.title} />
+        {userServices.map((service) => (
+          <div key={service.provider_id} className="service-container">
+            <img src={service.url} alt={service.service_title} />
             <div className="service-info">
-              <h3>{service.title}</h3>
-              <p>{service.description}</p>
+              <h3>{service.service_title}</h3>
+              <p>{service.service_description}</p>
               <p>Reviews: {service.reviews}</p>
             </div>
             <div className="service-actions">
-              <button onClick={() => onServiceUpdate(service.id)}>Update</button>
-              <button onClick={() => onServiceDelete(service.id)}>Delete</button>
+              <button onClick={() => onServiceUpdate(service.provider_id)}>
+                Update
+              </button>
+              <button onClick={() => onServiceDelete(service.provider_id)}>
+                Delete
+              </button>
             </div>
           </div>
-        ))} */}
+        ))}
       </div>
     </div>
   );
