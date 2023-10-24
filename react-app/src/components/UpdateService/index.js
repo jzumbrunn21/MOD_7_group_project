@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateServiceThunk } from "../../store/services";
 
-const UpdateService = ({ serviceData, onUpdateService }) => {
+const UpdateService = (serviceData) => {
   const [title, setTitle] = useState(serviceData.title);
   // const [providerName, setProviderName] = useState(serviceData.providerName);
   const [url, setUrl] = useState(serviceData.url);
@@ -75,11 +75,15 @@ const UpdateService = ({ serviceData, onUpdateService }) => {
     const updatedService = await dispatch(
       updateServiceThunk(updatedServiceData, serviceData.id)
     );
+    console.log("THUNK", updatedService);
+    console.log("***updatedService****", updatedService);
+    console.log("SERVICE DATA", serviceData);
     if (updatedService) {
       history.push(`/services/${updatedService.id}`);
-    } else {
-      return "Error"; //Placeholder
     }
+    // else {
+    //   return "Error"; //Placeholder
+    // }
   };
 
   return (
@@ -113,7 +117,7 @@ const UpdateService = ({ serviceData, onUpdateService }) => {
         <label>
           Price (per hour)
           <input
-            type="text"
+            type="number"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
           />

@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserServicesThunk } from "../../store/services";
+import { Link, useHistory } from "react-router-dom";
+
 
 const MyOfferedServices = () => {
   const dispatch = useDispatch();
@@ -39,9 +41,13 @@ const MyOfferedServices = () => {
               <p>Reviews: {service.reviews}</p>
             </div>
             <div className="service-actions">
-              <button onClick={() => onServiceUpdate(service.provider_id)}>
+              <Link
+                className="update-service-button"
+                to={`/services/update/${service.id}`}
+              >
                 Update
-              </button>
+              </Link>
+
               <button onClick={() => onServiceDelete(service.provider_id)}>
                 Delete
               </button>

@@ -26,16 +26,28 @@ function App() {
         <Switch>
           <Route exact path="/" component={ViewServicesList} />
 
-          <Route path="/services/:serviceId" component={ServiceDetailPage} />
-          <Route path="/services/update/:serviceId" component={UpdateService} />
-          <Route path="/my-services" component={MyOfferedServices} />
-          <Route path="/my-booked-services" component={MyBookedServices} />
-          <Route path="/create-service" component={CreateNewService} />
+          <Route
+            exact
+            path="/services/:serviceId"
+            component={ServiceDetailPage}
+          />
+          <Route
+            exact
+            path="/services/update/:serviceId"
+            component={UpdateService}
+          />
+          <Route exact path="/my-services" component={MyOfferedServices} />
+          <Route
+            exact
+            path="/my-booked-services"
+            component={MyBookedServices}
+          />
+          <Route exact path="/create-service" component={CreateNewService} />
 
-          <Route path="/login">
+          <Route exact path="/login">
             <LoginFormPage />
           </Route>
-          <Route path="/signup">
+          <Route exact path="/signup">
             <SignupFormPage />
           </Route>
         </Switch>

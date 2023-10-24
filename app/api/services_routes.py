@@ -87,7 +87,7 @@ def one_service(id):
     return {"service": response} # Or json.dumps()?
 
 # Updates one service
-@services_routes.route('/update/<int:id>', methods=["PUT"])
+@services_routes.route('/update/<int:id>', methods=["GET", "PUT"])
 def update_service(id):
     form = ServiceForm()
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -107,7 +107,8 @@ def update_service(id):
         # db.session.add(service)
         db.session.commit()
     # !!! Should this go to all services or the updated one?
-        return redirect(f'/services/{id}')
+        # return redirect(f'/services/{id}')
+        return service_to_update.to_dict(), 201
     else:
         return {"Errors": form.errors}
 
