@@ -9,6 +9,7 @@ import {Modal, useModal} from '../../context/Modal'
 const MyOfferedServices = () => {
   const dispatch = useDispatch();
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [serviceIdToDelete, setServiceIdToDelete] = useState(null);
   const userServices = useSelector((state) =>
     Object.values(state.services.services)
   );
@@ -32,15 +33,7 @@ const MyOfferedServices = () => {
   const onCreateNewService = () => {};
 
 
-  // const {closeModal} = Modal
 
-
-// const handleDelete= async(e) =>{
-//   e.preventDefault()
-//   await dispatch(deleteServiceThunk())
-
-//     closeModal()
-// }
 
 
 
@@ -72,17 +65,21 @@ const MyOfferedServices = () => {
               {/* <button onClick={() => onServiceDelete(service.id)}>
                 Delete
               </button> */}
-              <button className="delete-button" onClick={() => setShowDeleteConfirmation(true)}>
+              <button className="delete-button" onClick={() =>  {
+                setServiceIdToDelete(service.id);
+                setShowDeleteConfirmation(true);}}>
                 Delete
               </button>
 
+            <DeleteConfirmationModal
+              show={showDeleteConfirmation}
+              onCancel={() => {
+                setShowDeleteConfirmation(false);
+                setServiceIdToDelete(null);
+              }}
+              serviceId= {service.id}
+            />
             </div>
-              <DeleteConfirmationModal
-                show={showDeleteConfirmation}
-                onCancel={() => setShowDeleteConfirmation(false)}
-
-                serviceId={service.id}
-              />
           </div>
         ))}
       </div>
