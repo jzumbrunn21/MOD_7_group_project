@@ -1,11 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserServicesThunk } from "../../store/services";
 import { Link, useHistory } from "react-router-dom";
-
+import { deleteServiceThunk } from "../../store/services";
+import DeleteConfirmationModal from "../DeleteConfirmationModal";
+import {useModal} from '../../context/Modal'
 
 const MyOfferedServices = () => {
   const dispatch = useDispatch();
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const userServices = useSelector((state) =>
     Object.values(state.services.services)
   );
@@ -22,6 +25,18 @@ const MyOfferedServices = () => {
 
   const onCreateNewService = () => {};
 
+  const { closeModal } = useModal();
+
+const handleDelete= async(serviceId) =>{
+  const deleted = await dispatch(deleteServiceThunk(serviceId))
+  if(deleted){
+    closeModal()
+  } else {
+    return "Error"
+  }
+
+
+}
   return (
     <div className="my-offered-services-container">
       {/* Background Image Container */}
@@ -47,10 +62,17 @@ const MyOfferedServices = () => {
               >
                 Update
               </Link>
-
-              <button onClick={() => onServiceDelete(service.provider_id)}>
+              <button className="delete-button" onClick={() => setShowDeleteConfirmation(true)}>
                 Delete
               </button>
+              <DeleteConfirmationModal
+                show={showDeleteConfirmation}
+                onCancel={() => setShowDeleteConfirmation(false)}
+                onConfirm={handleDelete}
+              />
+              {/* <button onClick={() => onServiceDelete(service.provider_id)}>
+                Delete
+              </button> */}
             </div>
           </div>
         ))}

@@ -159,6 +159,8 @@ export default function servicesReducer(state = initialState, action) {
       newState.services[action.serviceData.id] = action.serviceData;
       return newState;
     case DELETE_SERVICE:
+      newState = {...state}
+      delete newState.services[action.serviceId]
       return newState;
     // case GET_IMAGE:
     //   newState = { ...state };
