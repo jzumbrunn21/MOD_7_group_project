@@ -26,12 +26,7 @@ function LoginFormModal() {
   const handleDemoUser = async (e) => {
     e.preventDefault();
 
-    return dispatch(
-      login({
-        email: "demo@aa.io",
-        password: "password",
-      })
-    ).then(() => {
+    return dispatch(login("demo@aa.io", "password")).then(() => {
       closeModal();
       history.push("/");
     });
