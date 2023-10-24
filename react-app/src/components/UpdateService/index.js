@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 import { updateServiceThunk } from "../../store/services";
 
 const UpdateService = (serviceData) => {
+  // const service = useSelector(state => state.service.services)
+  console.log("The service data", serviceData)
   const [title, setTitle] = useState(serviceData.title);
   // const [providerName, setProviderName] = useState(serviceData.providerName);
   const [url, setUrl] = useState(serviceData.url);

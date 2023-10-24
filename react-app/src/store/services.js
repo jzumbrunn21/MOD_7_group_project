@@ -64,7 +64,7 @@ export const createServiceThunk = (serviceData) => async (dispatch) => {
 
 export const getServiceThunk = (serviceId) => async (dispatch) => {
   const response = await fetch(`/api/services/${serviceId}`, {
-    methods: "GET",
+    method: "GET",
   });
 
   if (response.ok) {
@@ -78,7 +78,7 @@ export const getServiceThunk = (serviceId) => async (dispatch) => {
 
 export const getServicesThunk = () => async (dispatch) => {
   const response = await fetch("/api/services", {
-    methods: "GET",
+    method: "GET",
   });
 
   if (response.ok) {
@@ -112,7 +112,7 @@ export const updateServiceThunk =
 export const deleteServiceThunk = (serviceId) => async (dispatch) => {
   // Send an id, should be deleted in backend
   const response = await fetch(`/service/${serviceId}`, {
-    methods: "DELETE",
+    method: "DELETE",
   });
 
   // Update the store with dispatch action

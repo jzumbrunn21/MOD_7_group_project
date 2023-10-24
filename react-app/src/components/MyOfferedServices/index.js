@@ -13,6 +13,8 @@ const MyOfferedServices = () => {
     Object.values(state.services.services)
   );
 
+  const { closeModal } = useModal();
+  
   useEffect(() => {
     dispatch(getUserServicesThunk());
   }, [dispatch]);
@@ -25,7 +27,8 @@ const MyOfferedServices = () => {
 
   const onCreateNewService = () => {};
 
-  const { closeModal } = useModal();
+
+
 
 const handleDelete= async(serviceId) =>{
   const deleted = await dispatch(deleteServiceThunk(serviceId))
