@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const MyBookedServices = ({ upcomingServices, previousServices }) => {
+const MyBookedServices = () => {
   const [activeTab, setActiveTab] = useState('upcoming');
 
   return (
