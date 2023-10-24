@@ -1,129 +1,139 @@
-// Full CRUD
-const SET_BOOKING = "bookings/SET_BOOKING"
-const READ_BOOKINGS = "bookings/READ_BOOKINGS"
-const UPDATE_BOOKING = "bookings/UPDATE_BOOKING"
-const DELETE_BOOKING = "bookings/DELETE_BOOKING"
+// Constants
+const SET_BOOKING = "bookings/SET_BOOKING";
+const READ_BOOKINGS = "bookings/READ_BOOKINGS";
+const UPDATE_BOOKING = "bookings/UPDATE_BOOKING";
+const DELETE_BOOKING = "bookings/DELETE_BOOKING";
 
-// Action creator
-const setBooking = (booking, userId, serviceId) => ({
-    type: SET_BOOKING,
-    booking,
-    userId,
-    serviceId
-})
+// Action creators
+const setBooking = (booking) => ({
+  type: SET_BOOKING,
+  booking,
+});
 
 const readBookings = (bookings) => ({
-    type: READ_BOOKINGS,
-    bookings
-})
+  type: READ_BOOKINGS,
+  bookings,
+});
 
 const updateBooking = (bookingData, bookingId) => ({
-    type: UPDATE_BOOKING,
-    bookingData,
-    bookingId
-})
+  type: UPDATE_BOOKING,
+  bookingData,
+  bookingId,
+});
 
 const removeBooking = (bookingId) => ({
-    type: DELETE_BOOKING,
-    bookingId
-})
+  type: DELETE_BOOKING,
+  bookingId,
+});
 
 // Thunks
-
 export const createBookingThunk = (bookingData, userId, serviceId) => async (dispatch) => {
-    const response = await fetch("/bookings/new", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            bookingData
-        }),
-    })
+  try {
+    const response = await fetch("/api/bookings/new", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        bookingData,
+        userId,
+        serviceId,
+      }),
+    });
 
     if (response.ok) {
-        const data = await response.json()
-        dispatch(setBooking(data, userId, serviceId))
+      const data = await response.json();
+      dispatch(setBooking(data));
     } else {
-        return "Error"
+      throw new Error("Error creating booking");
     }
-}
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export const getBookingsThunk = () => async (dispatch) => {
-    const response = await fetch("/bookings")
+  try {
+    const response = await fetch("/api/bookings");
 
     if (response.ok) {
-        const data = await response.json()
-        dispatch(readBookings(data))
+      const data = await response.json();
+      if (Array.isArray(data.bookings)) {
+        dispatch(readBookings(data.bookings));
+      } else {
+        console.error("Invalid data format for bookings");
+      }
     } else {
-        return "Error"
+      throw new Error("Error fetching bookings");
     }
-}
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export const updateBookingThunk = (bookingData, bookingId) => async (dispatch) => {
+  try {
     const response = await fetch(`/bookings/${bookingId}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            bookingData
-        })
-    })
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bookingData),
+    });
 
     if (response.ok) {
-        const data = await response.json()
-        dispatch(updateBooking(data, bookingId))
+      const data = await response.json();
+      dispatch(updateBooking(data, bookingId));
     } else {
-        return "Error"
+      throw new Error("Error updating booking");
     }
-}
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export const deleteBookingThunk = (bookingId) => async (dispatch) => {
-    const response = await fetch(`/bookings/${bookingId}`, {})
+  try {
+    const response = await fetch(`/bookings/${bookingId}`, {
+      method: "DELETE",
+    });
 
     if (response.ok) {
-        dispatch(removeBooking(bookingId))
+      dispatch(removeBooking(bookingId));
     } else {
-        return "Error"
+      throw new Error("Error deleting booking");
     }
-}
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-const initialState = { bookings: {} }
+// Initial State
+const initialState = { bookings: {} };
 
 // Reducer
-
 export default function bookingsReducer(state = initialState, action) {
-    let newState;
-    switch(action.type) {
-        case SET_BOOKING:
-            newState = { ...state }
-            newState.bookings[action.booking.id] = action.booking
-            return newState
-        case READ_BOOKINGS:
-            action.bookings.bookings.forEach((booking) => {
-                newState.bookings[booking.id] = booking;
-            });
-            return newState
-        case UPDATE_BOOKING:
-            newState = { ...state }
-            newState.bookings[action.bookingId] = action.bookingData
-            return newState
-        case DELETE_BOOKING:
-            newState = { ...state }
-            delete newState.bookings[action.bookingId]
-            return newState
-        default:
-            return state;
-    }
+  let newState;
+  switch (action.type) {
+    case SET_BOOKING:
+      newState = { ...state };
+      newState.bookings[action.booking.id] = action.booking;
+      return newState;
+    case READ_BOOKINGS:
+      newState = { ...state };
+      action.bookings.forEach((booking) => {
+        newState.bookings[booking.id] = booking;
+      });
+      return newState;
+    case UPDATE_BOOKING:
+      newState = { ...state };
+      newState.bookings[action.bookingId] = action.bookingData;
+      return newState;
+    case DELETE_BOOKING:
+      newState = { ...state };
+      delete newState.bookings[action.bookingId];
+      return newState;
+    default:
+      return state;
+  }
 }
-
-// export const Thunk = () => async (dispatch) => {
-//     const response = await fetch("", {})
-
-//     if (response.ok) {
-        //const data = await response.json()
-//     } else {
-        //return "Error"
-//     }
-// }

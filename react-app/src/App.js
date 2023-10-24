@@ -25,7 +25,6 @@ function App() {
       {isLoaded && (
         <Switch>
           <Route exact path="/" component={ViewServicesList} />
-
           <Route
             exact
             path="/services/:serviceId"
@@ -37,13 +36,8 @@ function App() {
             component={UpdateService}
           />
           <Route exact path="/my-services" component={MyOfferedServices} />
-          <Route
-            exact
-            path="/my-booked-services"
-            component={MyBookedServices}
-          />
+          <Route exact path="/my-booked-services" component={MyBookedServices} />
           <Route exact path="/create-service" component={CreateNewService} />
-
           <Route exact path="/login">
             <LoginFormPage />
           </Route>
