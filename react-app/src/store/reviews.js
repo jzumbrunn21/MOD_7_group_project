@@ -28,9 +28,7 @@ export const createReviewThunk = (reviewData, serviceId) => async (dispatch) => 
         headers: {
 			"Content-Type": "application/json",
 		},
-        body: JSON.stringify({
-            reviewData
-        })
+        body: JSON.stringify(reviewData)
     })
 
     if (response.ok) {
@@ -41,8 +39,10 @@ export const createReviewThunk = (reviewData, serviceId) => async (dispatch) => 
     }
 }
 
-export const readReviewsThunk = () => async (dispatch) => {
-    const response = await fetch("/reviews", {})
+export const getReviewsThunk = () => async (dispatch) => {
+    const response = await fetch("/reviews", {
+        method: "GET"
+    })
 
     if (response.ok) {
         const data = await response.json()
@@ -53,10 +53,11 @@ export const readReviewsThunk = () => async (dispatch) => {
 }
 
 export const deleteReviewThunk = (reviewId) => async (dispatch) => {
-    const response = await fetch(`reviews/${reviewId}`, {})
+    const response = await fetch(`reviews/${reviewId}`, {
+        method: "DELETE"
+    })
 
     if (response.ok) {
-
         dispatch(removeReview(reviewId))
     } else {
         return "Error"
@@ -64,18 +65,26 @@ export const deleteReviewThunk = (reviewId) => async (dispatch) => {
 }
 
 
-const initialState = { bookings: [] }
+const initialState = { reviews: {} }
 
 
 // Reducer
 export default function reviewsReducer(state = initialState, action) {
-    let newState = {...state}
+    let newState;
     switch(action.type) {
         case SET_REVIEW:
+            newState = { ...state }
+            newState.reviews[action.review.id] = action.review
             return newState
         case READ_REVIEWS:
+            newState = { ...state }
+            action.reviews.reviews.forEach((review) => {
+                newState.reviews[review.id] = review;
+            });
             return newState
         case DELETE_REVIEW:
+            newState = { ...state }
+            delete newState[action.reviewId]
             return newState
         default:
             return state;

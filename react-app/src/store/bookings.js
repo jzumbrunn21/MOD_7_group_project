@@ -73,7 +73,7 @@ export const updateBookingThunk = (bookingData, bookingId) => async (dispatch) =
 
     if (response.ok) {
         const data = await response.json()
-        dispatch(updateBooking(data, data.id))
+        dispatch(updateBooking(data, bookingId))
     } else {
         return "Error"
     }
@@ -89,20 +89,29 @@ export const deleteBookingThunk = (bookingId) => async (dispatch) => {
     }
 }
 
-const initialState = { bookings: [] }
+const initialState = { bookings: {} }
 
 // Reducer
 
 export default function bookingsReducer(state = initialState, action) {
-    let newState = {...state}
+    let newState;
     switch(action.type) {
         case SET_BOOKING:
+            newState = { ...state }
+            newState.bookings[action.booking.id] = action.booking
             return newState
         case READ_BOOKINGS:
+            action.bookings.bookings.forEach((booking) => {
+                newState.bookings[booking.id] = booking;
+            });
             return newState
         case UPDATE_BOOKING:
+            newState = { ...state }
+            newState.bookings[action.bookingId] = action.bookingData
             return newState
         case DELETE_BOOKING:
+            newState = { ...state }
+            delete newState.bookings[action.bookingId]
             return newState
         default:
             return state;
