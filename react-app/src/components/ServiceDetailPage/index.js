@@ -59,7 +59,7 @@ const ServiceDetailPage = () => {
       // Do not open the payment modal
       return;
     }
-  
+
     // Open the payment modal
     setShowPaymentModal(true);
   };
@@ -116,7 +116,7 @@ const ServiceDetailPage = () => {
             <p> {review.username}</p>
             <p>Rating: {review.star_rating}</p>
 
-            <img src={review.profilePhoto} alt="Profile" />
+            <img src={review.review_image} alt="Profile" />
             <p>{review.review}</p>
           </div>
         ))}
