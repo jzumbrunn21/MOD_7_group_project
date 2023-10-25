@@ -11,8 +11,8 @@ class Booking(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
-    service_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('services.id')), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')))
+    service_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('services.id')))
     start_date_and_time = db.Column(DateTime, nullable=False)
     status = db.Column(db.Boolean)
     created_at = db.Column(DateTime, default=func.now())

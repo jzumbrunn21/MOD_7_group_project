@@ -29,8 +29,9 @@ const updateService = (serviceData, serviceId) => ({
   serviceId,
 });
 
-const removeService = () => ({
+const removeService = (serviceId) => ({
   type: DELETE_SERVICE,
+  serviceId,
 });
 
 // const getImage = (images) => ({
@@ -113,7 +114,9 @@ export const updateServiceThunk =
 
 export const deleteServiceThunk = (serviceId) => async (dispatch) => {
   // Send an id, should be deleted in backend
-  const response = await fetch(`/service/${serviceId}`, {
+
+  console.log(serviceId);
+  const response = await fetch(`/api/services/${serviceId}`, {
     method: "DELETE",
   });
 
@@ -161,8 +164,10 @@ export default function servicesReducer(state = initialState, action) {
       newState.services[action.serviceId] = action.serviceData;
       return newState;
     case DELETE_SERVICE:
-      newState = {...state}
-      delete newState.services[action.serviceId]
+      newState = { ...state };
+      console.log("NEWSTATE", newState);
+      console.log("serviceId", action.serviceId);
+      delete newState.services[action.serviceId];
       return newState;
     // case GET_IMAGE:
     //   newState = { ...state };
