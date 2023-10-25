@@ -18,6 +18,7 @@ const MyOfferedServices = () => {
     Object.values(state.services.services)
   );
 
+
   const history = useHistory();
   const { closeModal } = useModal();
   const sessionUser = useSelector((state) => state.session.user);
@@ -27,6 +28,7 @@ const MyOfferedServices = () => {
   }, [dispatch]);
 
   if (userServices === undefined) return null;
+
 
   const onCreateNewService = () => {
     history.push("/create-service");
