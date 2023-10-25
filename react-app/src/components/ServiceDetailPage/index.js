@@ -1,3 +1,5 @@
+
+import { getReviewsThunk } from "../../store/reviews";
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
@@ -6,25 +8,39 @@ import { getServiceThunk } from '../../store/services';
 import { createBookingThunk } from '../../store/bookings';
 import './ServiceDetailPage.css';
 
+
 const ServiceDetailPage = () => {
   const { serviceId } = useParams();
   const sessionUser = useSelector((state) => state.session.user);
 
   const dispatch = useDispatch();
+
   const history = useHistory();
 
   const [showBookingModal, setShowBookingModal] = useState(false);
+
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [bookingDate, setBookingDate] = useState(new Date());
 
-  const serviceDetail = useSelector(state => Object.values(state.services.singleService)[0])
+  const serviceDetail = useSelector(
+    (state) => Object.values(state.services.singleService)[0]
+  );
+  const reviews = useSelector((state) => Object.values(state.reviews.reviews));
+  const serviceReviews = reviews.filter(
+    (review) => review.service_id === parseInt(serviceId)
+  );
+  console.log("service reviews", serviceReviews);
 
   useEffect(() => {
-    dispatch(getServiceThunk(serviceId))
-  }, [dispatch])
+    dispatch(getServiceThunk(serviceId));
+  }, [dispatch]);
 
-  if (serviceDetail === undefined){
-    return null
+  useEffect(() => {
+    dispatch(getReviewsThunk());
+  }, [dispatch]);
+
+  if (serviceDetail === undefined) {
+    return null;
   }
 
   const handleBookNow = () => {
@@ -67,7 +83,9 @@ const ServiceDetailPage = () => {
     console.log("Newly created booking data:", bookingData);
   };
 
+
   console.log("The service: ", serviceDetail)
+
   return (
     <div className="service-detail-container">
       {/* Background Image Container */}
@@ -77,7 +95,9 @@ const ServiceDetailPage = () => {
       </div>
 
       {/* Navigation Info */}
-      <div className="navigation-info">Home &gt; {serviceDetail.service_title}</div>
+      <div className="navigation-info">
+        Home &gt; {serviceDetail.service_title}
+      </div>
 
       {/* Service Details */}
       <div className="service-details">
@@ -91,14 +111,15 @@ const ServiceDetailPage = () => {
       {/* Reviews Section */}
       <div className="reviews-section">
         <h2>Reviews</h2>
-        {/* {reviews.map((review) => (
+        {serviceReviews.map((review) => (
           <div key={review.id} className="review">
-            <p>- {review.username}</p>
-            <p>Rating: {review.rating}</p>
+            <p> {review.username}</p>
+            <p>Rating: {review.star_rating}</p>
+
             <img src={review.profilePhoto} alt="Profile" />
-            <p>{review.text}</p>
+            <p>{review.review}</p>
           </div>
-        )} */}
+        ))}
       </div>
 
       {/* Booking Modal */}
