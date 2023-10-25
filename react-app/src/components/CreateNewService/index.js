@@ -16,15 +16,6 @@ const CreateNewService = () => {
   const [errors, setErrors] = useState({});
   const history = useHistory();
 
-  // const createService = async (serviceData) => {
-  //   try {
-
-  //     history.push('/services');
-  //   } catch (error) {
-
-  //     console.error('Error creating service:', error);
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,9 +24,7 @@ const CreateNewService = () => {
     if (!title) {
       newErrors.title = "Title is required";
     }
-    // if (!providerName) {
-    //   newErrors.providerName = 'Provider Name is required';
-    // }
+    
     if (!description) {
       newErrors.description = "Description is required";
     }
@@ -119,7 +108,7 @@ const CreateNewService = () => {
         <label>
           Service Length Estimate
           <input
-            type="text"
+            type="number"
             value={lengthEstimate}
             onChange={(e) => setLengthEstimate(e.target.value)}
           />
