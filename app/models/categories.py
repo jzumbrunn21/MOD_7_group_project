@@ -1,3 +1,6 @@
-from .db import db
+# from .db import db
+# import enum
 
-categories = ['cleaning', 'lawnservice']
+# class CategoryEnum(enum.Enum):
+#     cleaning='cleaning'
+#     lawnservice ='lawnservice'

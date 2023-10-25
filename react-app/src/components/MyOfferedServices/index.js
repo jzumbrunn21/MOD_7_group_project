@@ -11,18 +11,19 @@ import UpdateService from "../UpdateService";
 const MyOfferedServices = () => {
   const dispatch = useDispatch();
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-
-  const { serviceId } = useParams();
-
   const userServices = useSelector((state) =>
     Object.values(state.services.services)
   );
+  const [currentServices, setCurrentServices] = useState(userServices);
+
+  const { serviceId } = useParams();
 
   const history = useHistory();
   const { closeModal } = useModal();
   const sessionUser = useSelector((state) => state.session.user);
 
   useEffect(() => {
+    setCurrentServices(userServices);
     dispatch(getUserServicesThunk());
   }, [dispatch]);
 
@@ -43,7 +44,7 @@ const MyOfferedServices = () => {
       {/* List of Offered Services */}
       <div className="offered-services-list">
         {userServices.map((service) => (
-          <div key={service.provider_id} className="service-container">
+          <div key={service.id} className="service-container">
             <img src={service.url} alt={service.service_title} />
             <div className="service-info">
               <h3>{service.service_title}</h3>

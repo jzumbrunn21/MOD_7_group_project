@@ -118,13 +118,18 @@ const CreateNewService = () => {
         </label>
         <label>
           Service Category
-          <select
+          {/* <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value="lawnservice">Lawn Service</option>
             <option value="cleaning">Cleaning</option>
-          </select>
+          </select> */}
+          <input
+            type="text"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          />
           {errors.category && <span className="error">{errors.category}</span>}
         </label>
         <button type="submit">Post Your Service</button>
