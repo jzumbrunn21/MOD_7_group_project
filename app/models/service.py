@@ -14,7 +14,7 @@ class Service(db.Model):
 
 
     id = db.Column(db.Integer, primary_key=True)
-    provider_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
+    provider_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')))
     service_title = db.Column(db.String(50), nullable=False)
     service_description = db.Column(db.String(2000), nullable=False)
     service_price = db.Column(db.Integer, nullable=False)
@@ -30,21 +30,18 @@ class Service(db.Model):
         back_populates='services'
     )
 
-    # service_images = db.relationship(
-    #     'ServiceImage',
-    #     back_populates='services',
-    #     cascade="all, delete-orphan"
-    # )
+
 
     reviews = db.relationship(
         'Review',
         back_populates='services',
-        cascade="all, delete-orphan"
+        cascade="all, delete, delete-orphan"
     )
 
     bookings = db.relationship(
         'Booking',
-        back_populates='services'
+        back_populates='services',
+        cascade="all, delete, delete-orphan"
     )
 
 
