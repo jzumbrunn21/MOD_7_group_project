@@ -28,8 +28,9 @@ const updateService = (serviceData) => ({
   serviceData,
 });
 
-const removeService = () => ({
+const removeService = (serviceId) => ({
   type: DELETE_SERVICE,
+  serviceId,
 });
 
 // const getImage = (images) => ({
@@ -64,7 +65,7 @@ export const createServiceThunk = (serviceData) => async (dispatch) => {
 
 export const getServiceThunk = (serviceId) => async (dispatch) => {
   const response = await fetch(`/api/services/${serviceId}`, {
-    methods: "GET",
+    method: "GET",
   });
 
   if (response.ok) {
@@ -78,7 +79,7 @@ export const getServiceThunk = (serviceId) => async (dispatch) => {
 
 export const getServicesThunk = () => async (dispatch) => {
   const response = await fetch("/api/services", {
-    methods: "GET",
+    method: "GET",
   });
 
   if (response.ok) {
@@ -111,8 +112,9 @@ export const updateServiceThunk =
 
 export const deleteServiceThunk = (serviceId) => async (dispatch) => {
   // Send an id, should be deleted in backend
-  const response = await fetch(`/service/${serviceId}`, {
-    methods: "DELETE",
+  console.log(serviceId);
+  const response = await fetch(`/api/services/${serviceId}`, {
+    method: "DELETE",
   });
 
   // Update the store with dispatch action
@@ -159,8 +161,10 @@ export default function servicesReducer(state = initialState, action) {
       newState.services[action.serviceData.id] = action.serviceData;
       return newState;
     case DELETE_SERVICE:
-      newState = {...state}
-      delete newState.services[action.serviceId]
+      newState = { ...state };
+      console.log("NEWSTATE", newState);
+      console.log("serviceId", action.serviceId);
+      delete newState.services[action.serviceId];
       return newState;
     // case GET_IMAGE:
     //   newState = { ...state };
