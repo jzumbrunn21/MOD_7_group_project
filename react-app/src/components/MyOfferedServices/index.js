@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserServicesThunk } from "../../store/services";
-import { Link, useHistory } from "react-router-dom";
+import OpenModalButton from "../OpenModalButton";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { deleteServiceThunk } from "../../store/services";
 import DeleteConfirmationModal from "../DeleteConfirmationModal";
 import { Modal, useModal } from "../../context/Modal";
+import UpdateService from "../UpdateService";
 
 const MyOfferedServices = () => {
   const dispatch = useDispatch();
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [deleteRerender, setDeleteRerender] = useState({});
+  const { serviceId } = useParams();
 
   const userServices = useSelector((state) =>
     Object.values(state.services.services)
@@ -28,6 +31,10 @@ const MyOfferedServices = () => {
 
   const onCreateNewService = () => {
     history.push("/create-service");
+  };
+
+  const updateRedirect = () => {
+    history.push(`/services/update/${serviceId}`);
   };
 
   return (
@@ -49,26 +56,23 @@ const MyOfferedServices = () => {
               <p>Reviews: {service.reviews}</p>
             </div>
             <div className="service-actions">
-              <Link
-                className="update-service-button"
-                to={`/services/update/${service.id}`}
-              >
-                Update
-              </Link>
-              {/* <button onClick={() => onServiceDelete(service.id)}>
-                Delete
-              </button> */}
-              <button
+              {/* <UpdateService buttonText="Update" /> */}
+              <button onClick={updateRedirect}>Update</button>
+              {/* <button
                 className="delete-button"
                 onClick={() => setShowDeleteConfirmation(true)}
               >
                 Delete
-              </button>
+              </button> */}
             </div>
-            <DeleteConfirmationModal
+            {/* <DeleteConfirmationModal
               show={showDeleteConfirmation}
               onCancel={() => setShowDeleteConfirmation(false)}
               serviceId={service.id}
+            /> */}
+            <OpenModalButton
+              buttonText="Delete"
+              modalComponent={<DeleteConfirmationModal />}
             />
           </div>
         ))}
