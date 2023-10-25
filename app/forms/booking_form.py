@@ -4,11 +4,11 @@ from wtforms.validators import DataRequired, ValidationError
 from app.models import Booking
 from datetime import datetime
 
-def time_date_check(field, form):
-    today_and_now = datetime()
+# def time_date_check(field, form):
+#     today_and_now = datetime()
 
-    if field.data > today_and_now:
-        raise ValidationError('You must book for a date in the future')
+#     if field.data > today_and_now:
+#         raise ValidationError('You must book for a date in the future')
 
 
 class BookingForm(FlaskForm):
