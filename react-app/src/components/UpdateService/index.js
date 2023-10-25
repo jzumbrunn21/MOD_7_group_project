@@ -1,22 +1,40 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { updateServiceThunk } from "../../store/services";
-
+import React, { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getServiceThunk, updateServiceThunk } from "../../store/services";
+import "./UpdateService.css";
 const UpdateService = (serviceData) => {
-  const [title, setTitle] = useState(serviceData.title);
-  // const [providerName, setProviderName] = useState(serviceData.providerName);
-  const [url, setUrl] = useState(serviceData.url);
-  const [description, setDescription] = useState(serviceData.description);
-  const [price, setPrice] = useState(serviceData.price);
-  const [lengthEstimate, setLengthEstimate] = useState(
-    serviceData.lengthEstimate
+  // const service = useSelector(state => state.service.services)
+  // const serviceId = serviceData.match.params.serviceId
+  const paramId = useParams();
+  const dispatch = useDispatch();
+  console.log(typeof paramId);
+  console.log(paramId);
+  // console.log(serviceId)
+  console.log("The service data", serviceData);
+  const serviceDetail = useSelector(
+    (state) => Object.values(state.services.singleService)[0]
   );
-  const [category, setCategory] = useState(serviceData.category);
+  // console.log("*** Service Detail ***", serviceDetail)
+  // const [data, setData] = useState({
+  //   title: "",
+  //   url: "",
+  //   description: "",
+  //   price: "",
+  //   lengthEstimate: "",
+  //   category: ""
+  // });
+  const [title, setTitle] = useState("");
+  // const [providerName, setProviderName] = useState(serviceData.providerName);
+  const [url, setUrl] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [lengthEstimate, setLengthEstimate] = useState("");
+  const [category, setCategory] = useState("");
 
   const [errors, setErrors] = useState({});
   const history = useHistory();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   // const updateService = async (serviceData) => {
   //   try {
@@ -28,23 +46,66 @@ const UpdateService = (serviceData) => {
   //   }
   // };
 
+  useEffect(() => {
+    getDetails();
+
+    // .then(res => {
+    //   console.log("THE RES", res)
+    //   setTitle(res.service_title)
+    //   setUrl()
+    //   setDescription()
+    //   setPrice()
+    //   setLengthEstimate()
+    //   setCategory()
+    // })
+    // .catch(err => {
+    //   console.log(err)
+    // })
+  }, []);
+
+  if (serviceData === undefined) {
+    return null;
+  }
+
+  const getDetails = async () => {
+    let res = await dispatch(getServiceThunk(paramId.serviceId));
+    let response = res.service;
+    // console.log(response)
+    console.log("*** DISPATCH RETURN", res);
+    setTitle(response.service_title);
+    setUrl(response.url);
+    setDescription(response.service_description);
+    setPrice(response.service_price);
+    setLengthEstimate(response.service_length_est);
+    setCategory(response.service_category);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
-    if (!title) {
-      newErrors.title = "Title is required";
+    if (!title || title.length < 6 || title.length > 50) {
+      newErrors.title =
+        "Title is required and must be between 6 and 50 characters ";
     }
-    if (!url) {
-      newErrors.url = "Image URL is required";
+
+    if (!description || description.length < 1 || description.length > 2000) {
+      newErrors.description =
+        "Description is required and must be between 1 and 2000 characters ";
     }
-    if (!description) {
-      newErrors.description = "Description is required";
+
+    const validUrlEndings = [".jpg", ".jpeg", ".png"];
+    if (
+      !url ||
+      !validUrlEndings.some((ending) => url.toLowerCase().endsWith(ending))
+    ) {
+      newErrors.url =
+        "Image url is required and must end in .jpg, .jpeg, or .png";
     }
-    if (!price) {
+    if (!price || price < 1) {
       newErrors.price = "Price is required";
     }
-    if (!lengthEstimate) {
+    if (!lengthEstimate || lengthEstimate < 1) {
       newErrors.lengthEstimate = "Length Estimate is required";
     }
     if (!category) {
@@ -73,13 +134,12 @@ const UpdateService = (serviceData) => {
     };
 
     const updatedService = await dispatch(
-      updateServiceThunk(updatedServiceData, serviceData.id)
+      updateServiceThunk(updatedServiceData, paramId.serviceId)
     );
-    console.log("THUNK", updatedService);
-    console.log("***updatedService****", updatedService);
-    console.log("SERVICE DATA", serviceData);
+    // console.log("THUNK", updatedService);
+    // console.log("***updatedService****", updatedService);
     if (updatedService) {
-      history.push(`/services/${updatedService.id}`);
+      history.push(`/services/${paramId.serviceId}`);
     }
     // else {
     //   return "Error"; //Placeholder
@@ -90,61 +150,81 @@ const UpdateService = (serviceData) => {
     <div className="update-service-container">
       <h1>Update Your Service</h1>
       <form onSubmit={handleSubmit}>
-        <label>
-          What's your service called?
-          <input
+        <div className="update-service-title">
+          <label>
+            What's your service called?
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            {errors.title && <span className="error">{errors.title}</span>}
+          </label>
+        </div>
+        <div className="update-service-description">
+          <label>
+            Service Description
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+            {errors.description && (
+              <span className="error">{errors.description}</span>
+            )}
+          </label>
+        </div>
+        <div className="update-service-url">
+          <label>
+            ImageUrl
+            <textarea value={url} onChange={(e) => setUrl(e.target.value)} />
+            {errors.url && <span className="error">{errors.url}</span>}
+          </label>
+        </div>
+        <div className="update-service-price">
+          <label>
+            Price (per hour)
+            <input
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+            {errors.price && <span className="error">{errors.price}</span>}
+          </label>
+        </div>
+        <div className="update-service-length">
+          <label>
+            Service Length Estimate
+            <input
+              type="number"
+              value={lengthEstimate}
+              onChange={(e) => setLengthEstimate(e.target.value)}
+            />
+            {errors.lengthEstimate && (
+              <span className="error">{errors.lengthEstimate}</span>
+            )}
+          </label>
+        </div>
+        <div className="update-service-category">
+          <label>
+            Service Category
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option value="Lawn Service">Lawn Service</option>
+              <option value="Cleaning">Cleaning</option>
+              <option value="Moving">Moving</option>
+            </select>
+            {/* <input
             type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          {errors.title && <span className="error">{errors.title}</span>}
-        </label>
-        <label>
-          ImageUrl
-          <textarea value={url} onChange={(e) => setUrl(e.target.value)} />
-          {errors.url && <span className="error">{errors.url}</span>}
-        </label>
-        <label>
-          Service Description
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          {errors.description && (
-            <span className="error">{errors.description}</span>
-          )}
-        </label>
-        <label>
-          Price (per hour)
-          <input
-            type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
-          {errors.price && <span className="error">{errors.price}</span>}
-        </label>
-        <label>
-          Service Length Estimate
-          <input
-            type="text"
-            value={lengthEstimate}
-            onChange={(e) => setLengthEstimate(e.target.value)}
-          />
-          {errors.lengthEstimate && (
-            <span className="error">{errors.lengthEstimate}</span>
-          )}
-        </label>
-        <label>
-          Service Category
-          <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-          >
-            <option value="lawnservice">Lawn Service</option>
-            <option value="cleaning">Cleaning</option>
-          </select>
-          {errors.category && <span className="error">{errors.category}</span>}
-        </label>
+          /> */}
+            {errors.category && (
+              <span className="error">{errors.category}</span>
+            )}
+          </label>
+        </div>
         <button type="submit">Update Your Service</button>
       </form>
     </div>

@@ -96,9 +96,10 @@ export const updateBookingThunk = (bookingData, bookingId) => async (dispatch) =
 
 export const deleteBookingThunk = (bookingId) => async (dispatch) => {
   try {
-    const response = await fetch(`/bookings/${bookingId}`, {
+    const response = await fetch(`/api/bookings/${bookingId}`, {
       method: "DELETE",
     });
+    console.log("bookings id", bookingId);
 
     if (response.ok) {
       dispatch(removeBooking(bookingId));
