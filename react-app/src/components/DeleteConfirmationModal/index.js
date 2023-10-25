@@ -13,7 +13,7 @@ const DeleteConfirmationModal = ({ serviceId, show, onCancel }) => {
     await dispatch(deleteServiceThunk(serviceId));
     closeModal();
   };
-  // if (!show) return null;
+  if (!show) return null;
 
   return (
     <div className="delete-confirmation-modal">

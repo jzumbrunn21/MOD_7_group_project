@@ -11,7 +11,7 @@ import UpdateService from "../UpdateService";
 const MyOfferedServices = () => {
   const dispatch = useDispatch();
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [deleteRerender, setDeleteRerender] = useState({});
+
   const { serviceId } = useParams();
 
   const userServices = useSelector((state) =>
@@ -23,7 +23,6 @@ const MyOfferedServices = () => {
   const sessionUser = useSelector((state) => state.session.user);
 
   useEffect(() => {
-    setDeleteRerender(userServices);
     dispatch(getUserServicesThunk());
   }, [dispatch]);
 
@@ -31,10 +30,6 @@ const MyOfferedServices = () => {
 
   const onCreateNewService = () => {
     history.push("/create-service");
-  };
-
-  const updateRedirect = () => {
-    history.push(`/services/update/${serviceId}`);
   };
 
   return (
@@ -56,20 +51,24 @@ const MyOfferedServices = () => {
               <p>Reviews: {service.reviews}</p>
             </div>
             <div className="service-actions">
-              {/* <UpdateService buttonText="Update" /> */}
-              <button onClick={updateRedirect}>Update</button>
-              {/* <button
+              <Link
+                className="update-service-button"
+                to={`/services/update/${service.id}`}
+              >
+                Update
+              </Link>
+              <button
                 className="delete-button"
                 onClick={() => setShowDeleteConfirmation(true)}
               >
                 Delete
-              </button> */}
+              </button>
+              <DeleteConfirmationModal
+                show={showDeleteConfirmation}
+                onCancel={() => setShowDeleteConfirmation(false)}
+                serviceId={service.id}
+              />
             </div>
-            <DeleteConfirmationModal
-              show={showDeleteConfirmation}
-              onCancel={() => setShowDeleteConfirmation(false)}
-              serviceId={service.id}
-            />
             {/* <OpenModalButton
               buttonText="Delete"
               modalComponent={<DeleteConfirmationModal />}
