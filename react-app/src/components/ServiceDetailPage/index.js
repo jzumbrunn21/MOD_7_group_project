@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import PaymentInformationModal from '../PaymentInformationModal';
-import servicesReducer, { getServiceThunk } from '../../store/services';
+import { getServiceThunk } from '../../store/services';
+import { createBookingThunk } from '../../store/bookings';
+import './ServiceDetailPage.css';
 
 const ServiceDetailPage = () => {
   const { serviceId } = useParams();
+  const sessionUser = useSelector((state) => state.session.user);
+
   const dispatch = useDispatch();
-  const [showBookingModal, setShowBookingModal] = useState(false);  // To control the visibility of the booking modal
+  const history = useHistory();
+
+  const [showBookingModal, setShowBookingModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [bookingDate, setBookingDate] = useState(new Date());
 
@@ -27,17 +33,41 @@ const ServiceDetailPage = () => {
 
   const handleBookingDateChange = (event) => {
     setBookingDate(event.target.value);
+    console.log("Selected booking date:", event.target.value);
   };
 
   const handleContinueToBilling = () => {
+    // Check if the booking date is empty or in the past
+    const currentDate = new Date();
+    if (!bookingDate || bookingDate < currentDate) {
+      // Do not open the payment modal
+      return;
+    }
+  
+    // Open the payment modal
     setShowPaymentModal(true);
   };
 
-  const handleConfirmBooking = () => {
-    setShowPaymentModal(true);
+  const handleConfirmBooking = (paymentInfo) => {
+    // Set the payment info and close the payment modal
+    setShowPaymentModal(false);
+    console.log("Payment Information:", paymentInfo);
+
+    // Proceed with creating the booking
+    const bookingData = {
+      user_id: sessionUser.id,
+      service_id: serviceId,
+      start_date_and_time: bookingDate,
+      status: true,
+      paymentInfo,
+    };
+
+    dispatch(createBookingThunk(bookingData));
+
+    console.log("Newly created booking data:", bookingData);
   };
+
   console.log("The service: ", serviceDetail)
-  // console.log("category", serviceDetail.service_category)
   return (
     <div className="service-detail-container">
       {/* Background Image Container */}

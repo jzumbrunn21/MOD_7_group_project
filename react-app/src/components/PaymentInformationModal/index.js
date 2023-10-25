@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './PaymentInformation.css';
 
 const PaymentInformationModal = ({ onClose, onConfirmBooking }) => {
   const [cardholderName, setCardholderName] = useState('');
@@ -6,88 +7,116 @@ const PaymentInformationModal = ({ onClose, onConfirmBooking }) => {
   const [cvc, setCVC] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
   const [zipCode, setZipCode] = useState('');
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState({});
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    const newErrors = {};
 
-    const errors = {};
-
-    if (!cardholderName) {
-      errors.cardholderName = 'Cardholder Name is required';
+    if (!/^[A-Za-z\s]+$/.test(cardholderName)) {
+      newErrors.cardholderName = 'Valid cardholder name is required (letters and spaces only)';
     }
 
-    if (!cardNumber) {
-      errors.cardNumber = 'Card Number is required';
+    if (!/^\d{16}$/.test(cardNumber)) {
+      newErrors.cardNumber = 'Valid 16-digit card number is required';
     }
 
-    if (!cvc) {
-      errors.cvc = 'CVC is required';
+    if (!/^\d{3}$/.test(cvc)) {
+      newErrors.cvc = 'Valid 3-digit CVC is required';
     }
 
-    if (!expirationDate) {
-      errors.expirationDate = 'Expiration Date is required';
+    if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expirationDate)) {
+      newErrors.expirationDate = 'Valid expiration date (MM/YY) is required';
     }
 
-    if (!zipCode) {
-      errors.zipCode = 'Zip Code is required';
+    if (!/^\d{5}$/.test(zipCode)) {
+      newErrors.zipCode = 'Valid 5-digit zip code is required';
     }
 
-    if (Object.keys(errors).length > 0) {
-      setErrors(errors);
-      return;
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      // No errors, proceed to confirmation
+      const paymentInfo = {
+        cardholderName,
+        cardNumber,
+        cvc,
+        expirationDate,
+        zipCode,
+      };
+      onConfirmBooking(paymentInfo);
+      onClose();
     }
-
-    const paymentInfo = {
-      cardholderName,
-      cardNumber,
-      cvc,
-      expirationDate,
-      zipCode,
-    };
-    onConfirmBooking(paymentInfo);
-    onClose();
   };
 
   return (
-    <div className="payment-modal">
-      <h2>Payment Information</h2>
-      <label>Cardholder's Name:</label>
-      <input
-        type="text"
-        value={cardholderName}
-        onChange={(e) => setCardholderName(e.target.value)}
-      />
+    // Modal Overlay (click to close the modal)
+    <div className="payment-modal-overlay" onClick={onClose}>
+      {/* Modal Container (prevent overlay click from closing) */}
+      <div className="payment-modal" onClick={(e) => e.stopPropagation()}>
+        {/* Modal Title */}
+        <h2 className="modal-title">Payment Information</h2>
 
-      <label>Card Number:</label>
-      <input
-        type="text"
-        value={cardNumber}
-        onChange={(e) => setCardNumber(e.target.value)}
-      />
+        {/* Cardholder's Name Input */}
+        <div className="input-field">
+          <label>Cardholder's Name:</label>
+          <input
+            type="text"
+            value={cardholderName}
+            onChange={(e) => setCardholderName(e.target.value)}
+          />
+          {errors.cardholderName && <p className="error-message">{errors.cardholderName}</p>}
+        </div>
 
-      <label>CVC:</label>
-      <input
-        type="text"
-        value={cvc}
-        onChange={(e) => setCVC(e.target.value)}
-      />
+        {/* Card Number Input */}
+        <div className="input-field">
+          <label>Card Number:</label>
+          <input
+            type="tel"
+            value={cardNumber}
+            onChange={(e) => setCardNumber(e.target.value)}
+          />
+          {errors.cardNumber && <p className="error-message">{errors.cardNumber}</p>}
+        </div>
 
-      <label>Expiration Date:</label>
-      <input
-        type="text"
-        value={expirationDate}
-        onChange={(e) => setExpirationDate(e.target.value)}
-      />
+        {/* CVC Input */}
+        <div className="input-field">
+          <label>CVC:</label>
+          <input
+            type="tel"
+            value={cvc}
+            onChange={(e) => setCVC(e.target.value)}
+          />
+          {errors.cvc && <p className="error-message">{errors.cvc}</p>}
+        </div>
 
-      <label>Zip Code:</label>
-      <input
-        type="text"
-        value={zipCode}
-        onChange={(e) => setZipCode(e.target.value)}
-      />
+        {/* Expiration Date Input */}
+        <div className="input-field">
+          <label>Expiration Date (MM/YY):</label>
+          <input
+            type="tel"
+            value={expirationDate}
+            onChange={(e) => setExpirationDate(e.target.value)}
+          />
+          {errors.expirationDate && <p className="error-message">{errors.expirationDate}</p>}
+        </div>
 
-      <button onClick={handleSubmit}>Submit & Confirm Booking</button>
+        {/* Zip Code Input */}
+        <div className="input-field">
+          <label>Zip Code:</label>
+          <input
+            type="tel"
+            value={zipCode}
+            onChange={(e) => setZipCode(e.target.value)}
+          />
+          {errors.zipCode && <p className="error-message">{errors.zipCode}</p>}
+        </div>
+
+        {/* Submit Button */}
+        <button className="submit-button" onClick={handleSubmit}>
+          Submit & Confirm Booking
+        </button>
+      </div>
     </div>
   );
 };
