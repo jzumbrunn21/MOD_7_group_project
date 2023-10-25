@@ -27,17 +27,19 @@ const removeBooking = (bookingId) => ({
 });
 
 // Thunks
-export const createBookingThunk = (bookingData, userId, serviceId) => async (dispatch) => {
+export const createBookingThunk = (bookingData) => async (dispatch) => {
   try {
+    const { user_id, service_id, start_date_and_time, status } = bookingData; // Extract the required fields
     const response = await fetch("/api/bookings/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        bookingData,
-        userId,
-        serviceId,
+        user_id,
+        service_id,
+        start_date_and_time,
+        status,
       }),
     });
 

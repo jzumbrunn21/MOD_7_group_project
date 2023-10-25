@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request, redirect
 from app.models import db, Booking
 # Forms need importing
 from app.forms import BookingForm
+from datetime import datetime
 
 bookings_routes = Blueprint("bookings", __name__)
 
@@ -30,22 +31,32 @@ def all_bookings():
 # Creates one booking
 @bookings_routes.route('/new', methods=["POST"])
 def create_booking():
-    form = BookingForm()
-    # imageForm = ImageForm()
-    # !!! Shoud we create the images here too? !!!
-    form['csrf_token'].data = request.cookies['csrf_token']
-    if form.validate_on_submit():
-        booking = Booking(
-            user_id=form.data['user_id'],
-            service_id=form.data['service_id'],
-            start_date_and_time=form.data['start_data_and_time'],
-            status=form.data['status']
-        )
-        db.session.add(booking)
-        db.session.commit()
-        return booking.to_dict()
-    else:
-        return "Creation error!!!" #Placeholder
+    data = request.get_json()
+    user_id = data.get('user_id')
+    service_id = data.get('service_id')
+    start_date_and_time = data.get('start_date_and_time')
+    status = data.get('status')
+
+    # Make sure start_date_and_time is in datetime format
+    start_date_and_time = datetime.strptime(start_date_and_time, '%Y-%m-%dT%H:%M')
+
+    # Check if the booking date is in the future
+    if start_date_and_time <= datetime.now():
+        return "Booking date must be in the future"
+
+    booking = Booking(
+        user_id=user_id,
+        service_id=service_id,
+        start_date_and_time=start_date_and_time,
+        status=status
+    )
+
+    db.session.add(booking)
+    db.session.commit()
+
+    print("Newly created booking:", booking.to_dict())
+
+    return booking.to_dict()
 
 
 # Updates one booking
