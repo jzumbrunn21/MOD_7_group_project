@@ -16,7 +16,7 @@ const MyBookedServices = () => {
   const [isLoading, setIsLoading] = useState(true); // loading state
   const [showReviewModal, setShowReviewModal] = useState(false);
 
- 
+
   const [userBookings, setUserBookings] = useState([]);
   const [userBookingsLength, setUserBookingsLength] = useState(0);
 
@@ -101,17 +101,20 @@ const MyBookedServices = () => {
 
                   <button onClick={() => handleDelete(booking.id)}>Delete</button>
 
-                </div>
+
+                 {showReviewModal && (
+                  <PostReviewModal
+                    serviceTitle="Service Title"
+                    onSubmit={() => setShowReviewModal(false)}
+                    serviceId={booking.service_id}
+                  />
+                )}
+                 </div>
               ))}
           </div>
         )
       )}
-      {showReviewModal && (
-        <PostReviewModal
-          serviceTitle="Service Title"
-          onSubmit={() => setShowReviewModal(false)}
-        />
-      )}
+
     </div>
   );
 };

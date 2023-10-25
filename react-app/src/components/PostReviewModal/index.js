@@ -3,12 +3,12 @@ import { useDispatch } from 'react-redux';
 import { createReviewThunk } from '../../store/reviews';
 import "./PostReviewModal.css"
 
-const PostReviewModal = ({ serviceTitle }) => {
+const PostReviewModal = ({ serviceTitle ,serviceId}) => {
   const dispatch = useDispatch();
   const [reviewText, setReviewText] = useState('');
   const [rating, setRating] = useState(0);
   const [errors, setErrors] = useState({});
-
+    console.log(serviceId)
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {}
@@ -21,10 +21,15 @@ const PostReviewModal = ({ serviceTitle }) => {
         setErrors(newErrors)
         return;
     }
-
+    const review = reviewText
+    const star_rating = rating
+    const review_image = 'https://upload.wikimedia.org/wikipedia/commons/6/64/The_Puppy.jpg'
+    const service_id = serviceId
     const reviewData = {
-      reviewText,
-      rating,
+      service_id,
+      review,
+      review_image,
+      star_rating,
     };
 
 

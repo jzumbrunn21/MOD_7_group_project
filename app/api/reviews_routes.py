@@ -3,6 +3,7 @@ from app.models import db, Review, Service
 # Forms need importing
 from app.forms import ReviewForm
 reviews_routes = Blueprint("reviews", __name__)
+from flask_login import current_user
 
 # Could the below be used for error messages?
 
@@ -36,24 +37,25 @@ def all_reviews():
 
 # Creates one review
 @reviews_routes.route('/new', methods=["POST"])
-def create_review(userId):
+def create_review():
     form = ReviewForm()
-
+    print('***form***',form)
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
-        service = Review(
-            user_id=form.data['user_id'],
+
+        review = Review(
+            user_id=current_user.id,
             service_id=form.data['service_id'],
             review=form.data['review'],
-            star_rating=form.data['star_rating'],
-            review_image=form.data['review_image']
+            star_rating=form.data['star_rating']
+            # review_image=form.data['review_image']
         )
-        db.session.add(service)
+        db.session.add(review)
         db.session.commit()
         # !!! Do we need to query it then return? Examples just returns the below
-        return service.to_dict()
+        return review.to_dict()
     else:
-        return "Creation error!!!" #Placeholder
+        return {"Errors": form.errors} #Placeholder
 
 # Delete one review
 @reviews_routes.route('/delete/<int:id>', methods=["DELETE"])

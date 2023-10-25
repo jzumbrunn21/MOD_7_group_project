@@ -24,7 +24,7 @@ const removeReview = (reviewId) => ({
 // Thunks
 export const createReviewThunk =
   (reviewData, serviceId) => async (dispatch) => {
-    const response = await fetch("/reviews/new", {
+    const response = await fetch("/api/reviews/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export const getReviewsThunk = () => async (dispatch) => {
 };
 
 export const deleteReviewThunk = (reviewId) => async (dispatch) => {
-  const response = await fetch(`reviews/${reviewId}`, {
+  const response = await fetch(`/api/reviews/${reviewId}`, {
     method: "DELETE",
   });
 
