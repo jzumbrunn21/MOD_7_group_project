@@ -17,7 +17,7 @@ def generate_image_url():
 def seed_services():
     services_num = db.session.query(Service).count()
     users_num = db.session.query(User).count()
-    # categories = ('cleaning', 'lawnservice')
+    categories = ['Lawn Service', 'Cleaning', 'Moving']
 
     for _ in range(users_num):
         provider_id = random.randint(1, users_num)
@@ -28,8 +28,8 @@ def seed_services():
             service_description=fake.paragraph(nb_sentences=3),
             service_price=random.randint(10, 200),
             service_length_est=random.randint(1, 10),
-            service_category=fake.sentence(nb_words=2),
-           url = generate_image_url()
+            service_category=random.choice(categories),
+            url = generate_image_url()
         )
 
         db.session.add(service)
