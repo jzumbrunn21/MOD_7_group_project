@@ -94,15 +94,15 @@ def update_service(id):
     if form.validate_on_submit():
         service_to_update = Service.query.get(id)
 
-        service_to_update.provider_id=current_user.id,
+        # service_to_update.provider_id=current_user.id,
         # Or is it
         # provider_id = User.query.get(id) could be useful?
-        service_to_update.service_title=form.data['service_title'],
-        service_to_update.service_description=form.data['service_description'],
-        service_to_update.service_price=form.data['service_price'],
-        service_to_update.url=form.data['url'],
-        service_to_update.service_length_est=form.data['service_length_est'],
-        service_to_update.service_category=form.data['service_category'],
+        service_to_update.service_title=form.data['service_title']
+        service_to_update.service_description=form.data['service_description']
+        service_to_update.service_price=form.data['service_price']
+        service_to_update.url=form.data['url']
+        service_to_update.service_length_est=form.data['service_length_est']
+        service_to_update.service_category=form.data['service_category']
         # !!! Do we include created_at, updated_at?
         # db.session.add(service)
         db.session.commit()
