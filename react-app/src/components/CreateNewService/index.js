@@ -11,11 +11,10 @@ const CreateNewService = () => {
   const [url, setUrl] = useState("");
   const [price, setPrice] = useState(0);
   const [lengthEstimate, setLengthEstimate] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Lawn Service");
 
   const [errors, setErrors] = useState({});
   const history = useHistory();
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +23,7 @@ const CreateNewService = () => {
     if (!title) {
       newErrors.title = "Title is required";
     }
-    
+
     if (!description) {
       newErrors.description = "Description is required";
     }
@@ -122,9 +121,15 @@ const CreateNewService = () => {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
-            <option value="lawnservice">Lawn Service</option>
-            <option value="cleaning">Cleaning</option>
+            <option value="Lawn Service">Lawn Service</option>
+            <option value="Cleaning">Cleaning</option>
+            <option value="Moving">Moving</option>
           </select>
+          {/* <input
+            type="text"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          /> */}
           {errors.category && <span className="error">{errors.category}</span>}
         </label>
         <button type="submit">Post Your Service</button>

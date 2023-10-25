@@ -23,9 +23,10 @@ const readServices = (services) => ({
   services,
 });
 
-const updateService = (serviceData) => ({
+const updateService = (serviceData, serviceId) => ({
   type: UPDATE_SERVICE,
   serviceData,
+  serviceId,
 });
 
 const removeService = (serviceId) => ({
@@ -72,6 +73,7 @@ export const getServiceThunk = (serviceId) => async (dispatch) => {
     // !!! What does the flask data look like?
     const data = await response.json();
     dispatch(readService(data));
+    return data
   } else {
     return "Error";
   }
@@ -85,7 +87,7 @@ export const getServicesThunk = () => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(readServices(data));
-    return data;
+    // return data;
   } else {
     return "Error";
   }
@@ -93,7 +95,7 @@ export const getServicesThunk = () => async (dispatch) => {
 
 export const updateServiceThunk =
   (serviceData, serviceId) => async (dispatch) => {
-    const response = await fetch(`/api/services/${serviceId}`, {
+    const response = await fetch(`/api/services/update/${serviceId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -103,7 +105,7 @@ export const updateServiceThunk =
 
     if (response.ok) {
       const data = await response.json();
-      dispatch(updateService(data));
+      dispatch(updateService(data, serviceId));
       return data;
     } else {
       return "Error";
@@ -112,6 +114,7 @@ export const updateServiceThunk =
 
 export const deleteServiceThunk = (serviceId) => async (dispatch) => {
   // Send an id, should be deleted in backend
+
   console.log(serviceId);
   const response = await fetch(`/api/services/${serviceId}`, {
     method: "DELETE",
@@ -151,14 +154,14 @@ export default function servicesReducer(state = initialState, action) {
       newState.singleService = action.service;
       return newState;
     case READ_SERVICES:
-      newState = { ...state };
+      newState = { ...state, services: {} };
       action.services.services.forEach((service) => {
         newState.services[service.id] = service;
       });
       return newState;
     case UPDATE_SERVICE:
       newState = { ...state };
-      newState.services[action.serviceData.id] = action.serviceData;
+      newState.services[action.serviceId] = action.serviceData;
       return newState;
     case DELETE_SERVICE:
       newState = { ...state };
