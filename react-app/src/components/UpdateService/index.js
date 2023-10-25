@@ -1,22 +1,40 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { updateServiceThunk } from "../../store/services";
+import React, { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getServiceThunk, updateServiceThunk } from "../../store/services";
 
 const UpdateService = (serviceData) => {
-  const [title, setTitle] = useState(serviceData.title);
-  // const [providerName, setProviderName] = useState(serviceData.providerName);
-  const [url, setUrl] = useState(serviceData.url);
-  const [description, setDescription] = useState(serviceData.description);
-  const [price, setPrice] = useState(serviceData.price);
-  const [lengthEstimate, setLengthEstimate] = useState(
-    serviceData.lengthEstimate
+  // const service = useSelector(state => state.service.services)
+  // const serviceId = serviceData.match.params.serviceId
+  const paramId = useParams();
+  const dispatch = useDispatch();
+  console.log(typeof paramId);
+  console.log(paramId);
+  // console.log(serviceId)
+  console.log("The service data", serviceData);
+  const serviceDetail = useSelector(
+    (state) => Object.values(state.services.singleService)[0]
   );
-  const [category, setCategory] = useState(serviceData.category);
+  // console.log("*** Service Detail ***", serviceDetail)
+  // const [data, setData] = useState({
+  //   title: "",
+  //   url: "",
+  //   description: "",
+  //   price: "",
+  //   lengthEstimate: "",
+  //   category: ""
+  // });
+  const [title, setTitle] = useState("");
+  // const [providerName, setProviderName] = useState(serviceData.providerName);
+  const [url, setUrl] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [lengthEstimate, setLengthEstimate] = useState("");
+  const [category, setCategory] = useState("");
 
   const [errors, setErrors] = useState({});
   const history = useHistory();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   // const updateService = async (serviceData) => {
   //   try {
@@ -27,6 +45,40 @@ const UpdateService = (serviceData) => {
   //     console.error('Error updating service:', error);
   //   }
   // };
+
+  useEffect(() => {
+    getDetails();
+
+    // .then(res => {
+    //   console.log("THE RES", res)
+    //   setTitle(res.service_title)
+    //   setUrl()
+    //   setDescription()
+    //   setPrice()
+    //   setLengthEstimate()
+    //   setCategory()
+    // })
+    // .catch(err => {
+    //   console.log(err)
+    // })
+  }, []);
+
+  if (serviceData === undefined) {
+    return null;
+  }
+
+  const getDetails = async () => {
+    let res = await dispatch(getServiceThunk(paramId.serviceId));
+    let response = res.service;
+    // console.log(response)
+    console.log("*** DISPATCH RETURN", res);
+    setTitle(response.service_title);
+    setUrl(response.url);
+    setDescription(response.service_description);
+    setPrice(response.service_price);
+    setLengthEstimate(response.service_length_est);
+    setCategory(response.service_category);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,13 +125,12 @@ const UpdateService = (serviceData) => {
     };
 
     const updatedService = await dispatch(
-      updateServiceThunk(updatedServiceData, serviceData.id)
+      updateServiceThunk(updatedServiceData, paramId.serviceId)
     );
     console.log("THUNK", updatedService);
     console.log("***updatedService****", updatedService);
-    console.log("SERVICE DATA", serviceData);
     if (updatedService) {
-      history.push(`/services/${updatedService.id}`);
+      history.push(`/services/${paramId.serviceId}`);
     }
     // else {
     //   return "Error"; //Placeholder
@@ -107,6 +158,7 @@ const UpdateService = (serviceData) => {
         <label>
           Service Description
           <textarea
+            defaultValue={serviceData.service_description}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
@@ -136,13 +188,18 @@ const UpdateService = (serviceData) => {
         </label>
         <label>
           Service Category
-          <select
+          {/* <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value="lawnservice">Lawn Service</option>
             <option value="cleaning">Cleaning</option>
-          </select>
+          </select> */}
+          <input
+            type="text"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          />
           {errors.category && <span className="error">{errors.category}</span>}
         </label>
         <button type="submit">Update Your Service</button>
