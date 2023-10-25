@@ -154,7 +154,7 @@ export default function servicesReducer(state = initialState, action) {
       newState.singleService = action.service;
       return newState;
     case READ_SERVICES:
-      newState = { ...state };
+      newState = { ...state, services: {} };
       action.services.services.forEach((service) => {
         newState.services[service.id] = service;
       });
