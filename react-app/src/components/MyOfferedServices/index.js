@@ -57,22 +57,31 @@ const MyOfferedServices = () => {
               >
                 Update
               </Link>
-              <button
+              {/* <button
                 className="delete-button"
                 onClick={() => setShowDeleteConfirmation(true)}
               >
                 Delete
-              </button>
-              <DeleteConfirmationModal
+              </button> */}
+              {/* <DeleteConfirmationModal
                 show={showDeleteConfirmation}
                 onCancel={() => setShowDeleteConfirmation(false)}
                 serviceId={service.id}
+              /> */}
+              <OpenModalButton
+                buttonText="Delete"
+                modalComponent={
+                  <DeleteConfirmationModal
+                    show={showDeleteConfirmation}
+                    onCancel={() => setShowDeleteConfirmation(false)}
+                    serviceId={service.id}
+                  />
+                }
+                // show={showDeleteConfirmation}
+                // onCancel={() => setShowDeleteConfirmation(false)}
+                // serviceId={service.id}
               />
             </div>
-            {/* <OpenModalButton
-              buttonText="Delete"
-              modalComponent={<DeleteConfirmationModal />}
-            /> */}
           </div>
         ))}
       </div>

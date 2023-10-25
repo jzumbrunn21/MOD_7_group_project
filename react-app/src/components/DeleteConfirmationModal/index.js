@@ -13,7 +13,11 @@ const DeleteConfirmationModal = ({ serviceId, show, onCancel }) => {
     await dispatch(deleteServiceThunk(serviceId));
     closeModal();
   };
-  if (!show) return null;
+  // if (!show) return null;
+  const handleCancel = (e) => {
+    e.preventDefault();
+    closeModal();
+  };
 
   return (
     <div className="delete-confirmation-modal">
@@ -23,7 +27,8 @@ const DeleteConfirmationModal = ({ serviceId, show, onCancel }) => {
         <button className="confirm-delete-button" onClick={handleDelete}>
           Yes (Delete service)
         </button>
-        <button className="cancel-delete-button" onClick={onCancel}>
+        {/* <button className="cancel-delete-button" onClick={onCancel}> */}
+        <button className="cancel-delete-button" onClick={handleCancel}>
           No (Keep service)
         </button>
       </div>
