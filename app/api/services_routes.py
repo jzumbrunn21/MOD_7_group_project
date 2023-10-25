@@ -87,7 +87,7 @@ def one_service(id):
     return {"service": response} # Or json.dumps()?
 
 # Updates one service
-@services_routes.route('/update/<int:id>', methods=["GET", "PUT"])
+@services_routes.route('/update/<int:id>', methods=["PUT"])
 def update_service(id):
     form = ServiceForm()
     form['csrf_token'].data = request.cookies['csrf_token']

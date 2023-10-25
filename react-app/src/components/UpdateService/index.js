@@ -125,13 +125,12 @@ const UpdateService = (serviceData) => {
     };
 
     const updatedService = await dispatch(
-      updateServiceThunk(updatedServiceData, serviceData.id)
+      updateServiceThunk(updatedServiceData, paramId.serviceId)
     );
     console.log("THUNK", updatedService);
     console.log("***updatedService****", updatedService);
-    console.log("SERVICE DATA", serviceData);
     if (updatedService) {
-      history.push(`/services/${updatedService.id}`);
+      history.push(`/services/${paramId.serviceId}`);
     }
     // else {
     //   return "Error"; //Placeholder
