@@ -11,6 +11,7 @@ import CreateNewService from "./components/CreateNewService";
 import MyBookedServices from "./components/MyBookedServices";
 import MyOfferedServices from "./components/MyOfferedServices";
 import UpdateService from "./components/UpdateService";
+import PostReviewModal from "./components/PostReviewModal";
 
 function App() {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ function App() {
           <Route exact path="/my-services" component={MyOfferedServices} />
           <Route exact path="/my-booked-services" component={MyBookedServices} />
           <Route exact path="/create-service" component={CreateNewService} />
+          <Route exact path='/create-review' component={PostReviewModal}/>
           <Route exact path="/login">
             <LoginFormPage />
           </Route>
