@@ -40,6 +40,19 @@ export const createReviewThunk =
     }
   };
 
+  export const getUserReviewsThunk = () => async (dispatch) => {
+    const response = await fetch("/api/reviews/user", {
+      method: "GET",
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(readReviews(data));
+    } else {
+      return "Error";
+    }
+  };
+
 export const getReviewsThunk = () => async (dispatch) => {
   const response = await fetch("/api/reviews", {
     method: "GET",
@@ -76,7 +89,7 @@ export default function reviewsReducer(state = initialState, action) {
       newState.reviews[action.review.id] = action.review;
       return newState;
     case READ_REVIEWS:
-      newState = { ...state };
+      newState = { ...state ,reviews:{}};
       action.reviews.reviews.forEach((review) => {
         newState.reviews[review.id] = review;
       });

@@ -6,11 +6,13 @@ import OpenModalButton from '../OpenModalButton';
 import PostReviewModal from '../PostReviewModal';
 
 import { getBookingsThunk, deleteBookingThunk } from '../../store/bookings';
+import { getUserReviewsThunk } from '../../store/reviews';
 
 
 const MyBookedServices = () => {
   const sessionUser = useSelector((state) => state.session.user);
-  const reviews = useSelector((state)=>state.reviews.reviews)
+  const reviews = useSelector((state)=>Object.values(state.reviews.reviews))
+  console.log(reviews)
   const bookings = useSelector((state) => state.bookings.bookings);
   const dispatch = useDispatch();
 
@@ -26,6 +28,10 @@ const MyBookedServices = () => {
 
   useEffect(() => {
     dispatch(getBookingsThunk()).then(() => setIsLoading(false));
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getUserReviewsThunk());
   }, [dispatch]);
 
   // This useEffect listens for changes in the bookings and sessionUser
@@ -53,7 +59,10 @@ const MyBookedServices = () => {
    const openReviewModal = () => {
     setShowReviewModal(true);
   };
-
+//   const test = reviews.filter((review)=>
+//     9 === review.service_id
+//     )
+// console.log(test)
   return (
     <div className="my-booked-services-container">
       <div className="tabs">
@@ -99,7 +108,10 @@ const MyBookedServices = () => {
                   <p>Service ID: {booking.service_id}</p>
                   <p>Date and Time: {booking.start_date_and_time}</p>
                   <p>Status: Previous</p>
-                  <p>Review: </p>
+                  <p>Review: {reviews.filter((review)=>
+                  booking.service_id === review.service_id
+                  )[0].review}</p>
+                  <button >Delete review</button>
                 {/* <button onClick={openReviewModal}>Add Your Review</button> */}
 
                   <button onClick={() => handleDelete(booking.id)}>Delete</button>

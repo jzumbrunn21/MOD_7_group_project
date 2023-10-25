@@ -57,6 +57,12 @@ def create_review():
     else:
         return {"Errors": form.errors} #Placeholder
 
+@reviews_routes.route('/user', methods=['GET'])
+def user_reviews():
+    response = [review.to_dict() for review in Review.query.filter(Review.user_id == current_user.id)]
+    print("response", response)
+    return {"reviews": response}
+
 # Delete one review
 @reviews_routes.route('/delete/<int:id>', methods=["DELETE"])
 def delete_review(id):
