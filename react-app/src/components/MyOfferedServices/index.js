@@ -65,15 +65,15 @@ const MyOfferedServices = () => {
                 Delete
               </button> */}
             </div>
-            {/* <DeleteConfirmationModal
+            <DeleteConfirmationModal
               show={showDeleteConfirmation}
               onCancel={() => setShowDeleteConfirmation(false)}
               serviceId={service.id}
-            /> */}
-            <OpenModalButton
+            />
+            {/* <OpenModalButton
               buttonText="Delete"
               modalComponent={<DeleteConfirmationModal />}
-            />
+            /> */}
           </div>
         ))}
       </div>
