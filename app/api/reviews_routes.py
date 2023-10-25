@@ -39,7 +39,7 @@ def all_reviews():
 @reviews_routes.route('/new', methods=["POST"])
 def create_review():
     form = ReviewForm()
-    print('***form***',form)
+    print('***form***',form.data)
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
 
@@ -47,8 +47,8 @@ def create_review():
             user_id=current_user.id,
             service_id=form.data['service_id'],
             review=form.data['review'],
+            review_image=form.data['review_image'],
             star_rating=form.data['star_rating']
-            # review_image=form.data['review_image']
         )
         db.session.add(review)
         db.session.commit()

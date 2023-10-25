@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import OpenModalButton from '../OpenModalButton';
 
 
 import PostReviewModal from '../PostReviewModal';
@@ -9,8 +10,10 @@ import { getBookingsThunk, deleteBookingThunk } from '../../store/bookings';
 
 const MyBookedServices = () => {
   const sessionUser = useSelector((state) => state.session.user);
+  const reviews = useSelector((state)=>state.reviews.reviews)
   const bookings = useSelector((state) => state.bookings.bookings);
   const dispatch = useDispatch();
+
   const [activeTab, setActiveTab] = useState(true);
 
   const [isLoading, setIsLoading] = useState(true); // loading state
@@ -96,19 +99,24 @@ const MyBookedServices = () => {
                   <p>Service ID: {booking.service_id}</p>
                   <p>Date and Time: {booking.start_date_and_time}</p>
                   <p>Status: Previous</p>
-
-                  <button onClick={openReviewModal}>Add Your Review</button>
+                  <p>Review: </p>
+                {/* <button onClick={openReviewModal}>Add Your Review</button> */}
 
                   <button onClick={() => handleDelete(booking.id)}>Delete</button>
 
+                {showReviewModal && (
+                  <OpenModalButton
+                    buttonText="Add your Review"
+                    modalComponent={
 
-                 {showReviewModal && (
-                  <PostReviewModal
-                    serviceTitle="Service Title"
-                    onSubmit={() => setShowReviewModal(false)}
-                    serviceId={booking.service_id}
-                  />
-                )}
+                    <PostReviewModal
+                      serviceTitle="Service Title"
+                      onSubmit={() => setShowReviewModal(false)}
+                      serviceId={booking.service_id}
+                    />
+                } />
+               )}
+
                  </div>
               ))}
           </div>

@@ -5,10 +5,9 @@ const DELETE_REVIEW = "reviews/DELETE_REVIEW";
 
 // Action Creators
 // We will need the service id as well to set a review to a specific service
-const setReview = (review, serviceId) => ({
+const setReview = (review) => ({
   type: SET_REVIEW,
   review,
-  serviceId,
 });
 
 const readReviews = (reviews) => ({
@@ -23,7 +22,7 @@ const removeReview = (reviewId) => ({
 
 // Thunks
 export const createReviewThunk =
-  (reviewData, serviceId) => async (dispatch) => {
+  (reviewData) => async (dispatch) => {
     const response = await fetch("/api/reviews/new", {
       method: "POST",
       headers: {
@@ -31,10 +30,11 @@ export const createReviewThunk =
       },
       body: JSON.stringify(reviewData),
     });
-
+    console.log(response)
     if (response.ok) {
       const data = await response.json();
-      dispatch(setReview(data, serviceId));
+      dispatch(setReview(data));
+      return data
     } else {
       return "Error";
     }

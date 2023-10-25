@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createReviewThunk } from '../../store/reviews';
 import "./PostReviewModal.css"
+import { Modal, useModal } from "../../context/Modal";
 
 const PostReviewModal = ({ serviceTitle ,serviceId}) => {
   const dispatch = useDispatch();
+  const { closeModal } = useModal();
   const [reviewText, setReviewText] = useState('');
   const [rating, setRating] = useState(0);
   const [errors, setErrors] = useState({});
@@ -33,7 +35,12 @@ const PostReviewModal = ({ serviceTitle ,serviceId}) => {
     };
 
 
-    await dispatch(createReviewThunk(reviewData));
+    const createdReview = await dispatch(createReviewThunk(reviewData));
+    console.log(createdReview)
+    // if(createdReview){
+    //     closeModal()
+    // }
+    closeModal()
   };
 
   return (
