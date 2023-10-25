@@ -10,7 +10,9 @@ function Navigation({ isLoaded }){
 	return (
 		<ul>
 			<li>
-				<NavLink exact to="/">Home</NavLink>
+				<NavLink exact to="/">
+					<img src='../images/Screen Shot 2023-10-24 at 16.52.15.png' alt='Logo' />
+				</NavLink>
 			</li>
 			{isLoaded && (
 				<li>

@@ -14,8 +14,8 @@ class Billing(db.Model):
 
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
-    booking_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('bookings.id')), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')))
+    booking_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('bookings.id')))
     card_full_name = db.Column(db.String(100), nullable=False)
     card_number = db.Column(db.String, CheckConstraint('cardNumber >= 1000000000000000 AND cardNumber <= 9999999999999999'), nullable=False)
     card_cvv = db.Column(db.String, nullable=False)

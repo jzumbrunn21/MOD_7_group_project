@@ -6,6 +6,7 @@ import { getServicesThunk, getImageThunk } from "../../store/services";
 
 const ViewServicesList = () => {
   const dispatch = useDispatch();
+  const sessionUser = useSelector((state) => state.session.user);
   const services = useSelector((state) =>
     Object.values(state.services.services)
   );
@@ -25,12 +26,21 @@ const ViewServicesList = () => {
   return (
     <div className="services-list-container">
       <div className="services-header">
-        <h1>Get help, Gain happiness</h1>
-        <p>Just tasks.</p>
+        <h1>{sessionUser? "Book Your Next Task" : "Get help, Gain happiness"}</h1>
+        {!sessionUser && (
+          <p>Just tasks.</p>
+        )}
+        {!sessionUser&& (
         <div className="search-bar">
           <input type="text" placeholder="Search for services" />
           <button>Get Help Today</button>
         </div>
+        )}
+      {sessionUser&& (
+        <div className="seach-bar-with-login">
+        <input type="text" placeholder="Search for services" />
+        </div>
+        )}
         <div className="service-labels">
           <span>Cleaning</span>
           <span>Helping Moving</span>
@@ -44,7 +54,7 @@ const ViewServicesList = () => {
       <div className="services-grid">
         {services.map((service) => (
           <Link
-            to={`/service/${service.id}`}
+            to={`/services/${service.id}`}
             key={service.id}
             className="service-container"
           >
