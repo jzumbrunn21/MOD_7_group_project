@@ -25,6 +25,19 @@ const PaymentInformationModal = ({ onClose, onConfirmBooking }) => {
       newErrors.cvc = 'Valid 3-digit CVC is required';
     }
 
+    const [inputMonth, inputYear] = expirationDate.split('/');
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentYear = currentDate.getFullYear() % 100;
+
+    const inputMonthNumber = parseInt(inputMonth, 10);
+    const inputYearNumber = parseInt(inputYear, 10);
+
+    if(inputYearNumber < currentYear || (inputYearNumber === currentYear && inputMonthNumber < currentMonth)){
+      newErrors.expirationDate = 'Card expired';
+    }
+
+
     if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expirationDate)) {
       newErrors.expirationDate = 'Valid expiration date (MM/YY) is required';
     }
@@ -72,7 +85,7 @@ const PaymentInformationModal = ({ onClose, onConfirmBooking }) => {
         <div className="input-field">
           <label>Card Number:</label>
           <input
-            type="tel"
+            type="number"
             value={cardNumber}
             onChange={(e) => setCardNumber(e.target.value)}
           />
@@ -83,7 +96,7 @@ const PaymentInformationModal = ({ onClose, onConfirmBooking }) => {
         <div className="input-field">
           <label>CVC:</label>
           <input
-            type="tel"
+            type="number"
             value={cvc}
             onChange={(e) => setCVC(e.target.value)}
           />
@@ -105,7 +118,7 @@ const PaymentInformationModal = ({ onClose, onConfirmBooking }) => {
         <div className="input-field">
           <label>Zip Code:</label>
           <input
-            type="tel"
+            type="number"
             value={zipCode}
             onChange={(e) => setZipCode(e.target.value)}
           />
