@@ -118,9 +118,7 @@ const ServiceDetailPage = () => {
 
   console.log("The service: ", serviceDetail)
 
-  const openLoginModal = () => {
-    openModal(<LoginFormModal />);
-  };
+
 
   return (
     <div className="service-detail-container">
