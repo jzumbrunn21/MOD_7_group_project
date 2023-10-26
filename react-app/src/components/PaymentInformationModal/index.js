@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './PaymentInformation.css';
+import { useModal } from '../../context/Modal';
 
 const PaymentInformationModal = ({ onClose, onConfirmBooking }) => {
   const [cardholderName, setCardholderName] = useState('');
@@ -8,8 +9,9 @@ const PaymentInformationModal = ({ onClose, onConfirmBooking }) => {
   const [expirationDate, setExpirationDate] = useState('');
   const [zipCode, setZipCode] = useState('');
   const [errors, setErrors] = useState({});
-
+  const { closeModal } = useModal
   const handleSubmit = (e) => {
+
     e.preventDefault();
     const newErrors = {};
 
@@ -38,7 +40,7 @@ const PaymentInformationModal = ({ onClose, onConfirmBooking }) => {
     }
 
 
-    if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expirationDate)) {
+    if (!expirationDate) {
       newErrors.expirationDate = 'Valid expiration date (MM/YY) is required';
     }
 
@@ -58,6 +60,7 @@ const PaymentInformationModal = ({ onClose, onConfirmBooking }) => {
         zipCode,
       };
       onConfirmBooking(paymentInfo);
+      //closeModal();
       onClose();
     }
   };
@@ -107,7 +110,7 @@ const PaymentInformationModal = ({ onClose, onConfirmBooking }) => {
         <div className="input-field">
           <label>Expiration Date (MM/YY):</label>
           <input
-            type="tel"
+            type="month"
             value={expirationDate}
             onChange={(e) => setExpirationDate(e.target.value)}
           />
