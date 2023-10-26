@@ -7,9 +7,12 @@ import PaymentInformationModal from '../PaymentInformationModal';
 import { getServiceThunk } from '../../store/services';
 import { createBookingThunk } from '../../store/bookings';
 import './ServiceDetailPage.css';
-
+import OpenModalButton from '../OpenModalButton';
+import { useModal } from "../../context/Modal";
+import LoginFormModal from "../LoginFormModal";
 
 const ServiceDetailPage = () => {
+  const { openModal } = useModal();
   const { serviceId } = useParams();
   const sessionUser = useSelector((state) => state.session.user);
 
@@ -49,11 +52,11 @@ const ServiceDetailPage = () => {
   const handleBookingDateChange = (event) => {
     const newErrors = {};
     setBookingDate(event.target.value);
-  
+
     const selected_booking_date = event.target.value;
     const inputDate = new Date(selected_booking_date);
     const currentDate = new Date();
-  
+
     if (inputDate < currentDate) {
       console.log("Date has already passed");
       newErrors.selected_booking_date = "Date has already passed";
@@ -62,7 +65,7 @@ const ServiceDetailPage = () => {
       // Clear the error if the date is valid
       newErrors.selected_booking_date = ""; // Clear the error
     }
-  
+
     setErrors(newErrors); // Update the errors state
   };
 
@@ -102,13 +105,45 @@ const ServiceDetailPage = () => {
 
   console.log("The service: ", serviceDetail)
 
+  const openLoginModal = () => {
+    openModal(<LoginFormModal />);
+  };
+
   return (
     <div className="service-detail-container">
       {/* Background Image Container */}
+
       <div className="background-image-container">
-        <h1>{serviceDetail.service_title}</h1>
-        <button onClick={handleBookNow}>Book Now</button>
-      </div>
+        {sessionUser ? (
+              <div>
+              <h1>{serviceDetail.service_title}</h1>
+              <button onClick={handleBookNow}>Book Now</button>
+              </div>
+          ) : (
+            <div className="background-image-container">
+              <h1>{serviceDetail.service_title}</h1>
+              <OpenModalButton buttonText="Book Now" onItemClick={openLoginModal} modalComponent={<LoginFormModal />} />
+            </div>
+          )}
+        {/* Booking Modal */}
+        {showBookingModal && (
+              <div className="booking-modal">
+                <h2>Book a Service</h2>
+                <input
+                  type="datetime-local"
+                  placeholder="MM/DD/YYYY HH:mm AM"
+                  value={bookingDate}
+                  onChange={handleBookingDateChange}
+                />
+
+                {errors.selected_booking_date && (
+                  <p className="error-message">{errors.selected_booking_date}</p>
+                )}
+
+                <button onClick={handleContinueToBilling}>Continue to Billing</button>
+              </div>
+            )}
+</div>
 
       {/* Navigation Info */}
       <div className="navigation-info">
@@ -117,11 +152,15 @@ const ServiceDetailPage = () => {
 
       {/* Service Details */}
       <div className="service-details">
-        <h2>Service Description</h2>
-        <p>{serviceDetail.service_description}</p>
-        <p>Provider Name</p>
-        <p>${serviceDetail.service_price}</p>
-        <img src={serviceDetail.url} alt="Service" />
+      <div>
+          <h2>Service Description</h2>
+          <p className="review-description">{serviceDetail.service_description}</p>
+          <p>Provider Name</p>
+          <p>${serviceDetail.service_price}</p>
+        </div>
+        <div>
+          <img src={serviceDetail.url} alt="Service" />
+        </div>
       </div>
 
       {/* Reviews Section */}
@@ -129,33 +168,18 @@ const ServiceDetailPage = () => {
         <h2>Reviews</h2>
         {serviceReviews.map((review) => (
           <div key={review.id} className="review">
-            <p> {review.username}</p>
-            <p>Rating: {review.star_rating}</p>
 
             <img src={review.review_image} alt="Profile" />
-            <p>{review.review}</p>
+            <div className="review-info">
+              <p> {review.username}</p>
+              <p >{review.review}</p>
+              <p>Rating: {review.star_rating}</p>
+            </div>
           </div>
         ))}
       </div>
 
-      {/* Booking Modal */}
-      {showBookingModal && (
-        <div className="booking-modal">
-          <h2>Book a Service</h2>
-          <input
-            type="datetime-local"
-            placeholder="MM/DD/YYYY HH:mm AM"
-            value={bookingDate}
-            onChange={handleBookingDateChange}
-          />
 
-      {errors.selected_booking_date && (
-      <p className="error-message">{errors.selected_booking_date}</p>
-       )}
-
-          <button onClick={handleContinueToBilling}>Continue to Billing</button>
-        </div>
-      )}
 
       {showPaymentModal && (
         <PaymentInformationModal
@@ -163,8 +187,9 @@ const ServiceDetailPage = () => {
           onConfirmBooking={handleConfirmBooking}
         />
       )}
-    </div>
-  );
+
+  </div>
+  )
 };
 
 export default ServiceDetailPage;

@@ -30,53 +30,57 @@ function SignupFormModal() {
 	};
 
 	return (
-		<>
-			<h1>Sign Up</h1>
+		<div className="signup-container">
+			<h1 className="signup-header">Sign Up</h1>
 			<form onSubmit={handleSubmit}>
-				<ul>
-					{errors.map((error, idx) => (
-						<li key={idx}>{error}</li>
-					))}
+				<ul className="error-list">
+				{errors.map((error, idx) => (
+					<li key={idx} className="error-item">{error}</li>
+				))}
 				</ul>
-				<label>
-					Email
-					<input
-						type="text"
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-						required
-					/>
+				<label className="input-label">
+				Email
+				<input
+					type="text"
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
+					required
+					className="input-field"
+				/>
 				</label>
-				<label>
-					Username
-					<input
-						type="text"
-						value={username}
-						onChange={(e) => setUsername(e.target.value)}
-						required
-					/>
+				<label className="input-label">
+				Username
+				<input
+					type="text"
+					value={username}
+					onChange={(e) => setUsername(e.target.value)}
+					required
+					className="input-field"
+				/>
 				</label>
-				<label>
-					Password
-					<input
-						type="password"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-						required
-					/>
+				<label className="input-label">
+				Password
+				<input
+					type="password"
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
+					required
+					className="input-field"
+				/>
 				</label>
-				<label>
-					Confirm Password
-					<input
-						type="password"
-						value={confirmPassword}
-						onChange={(e) => setConfirmPassword(e.target.value)}
-						required
-					/>
+				<label className="input-label">
+				Confirm Password
+				<input
+					type="password"
+					value={confirmPassword}
+					onChange={(e) => setConfirmPassword(e.target.value)}
+					required
+					className="input-field"
+				/>
 				</label>
-				<button type="submit">Sign Up</button>
+				<button type="submit" className="signup-button">Sign Up</button>
 			</form>
-		</>
+         </div>
 	);
 }
 
