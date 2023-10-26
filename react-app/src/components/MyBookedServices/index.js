@@ -1,28 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
+import OpenModalButton from '../OpenModalButton';
+import DeleteReviewConfirmModal from '../DeleteReviewConfirmModal'
 
 import PostReviewModal from '../PostReviewModal';
 
 import { getBookingsThunk, deleteBookingThunk } from '../../store/bookings';
+import { getUserReviewsThunk } from '../../store/reviews';
 
 
 const MyBookedServices = () => {
   const sessionUser = useSelector((state) => state.session.user);
+  const reviews = useSelector((state)=>Object.values(state.reviews.reviews))
+  console.log(reviews)
   const bookings = useSelector((state) => state.bookings.bookings);
   const dispatch = useDispatch();
+
   const [activeTab, setActiveTab] = useState(true);
 
   const [isLoading, setIsLoading] = useState(true); // loading state
   const [showReviewModal, setShowReviewModal] = useState(false);
 
- 
+
   const [userBookings, setUserBookings] = useState([]);
   const [userBookingsLength, setUserBookingsLength] = useState(0);
 
 
   useEffect(() => {
     dispatch(getBookingsThunk()).then(() => setIsLoading(false));
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getUserReviewsThunk());
   }, [dispatch]);
 
   // This useEffect listens for changes in the bookings and sessionUser
@@ -50,6 +59,17 @@ const MyBookedServices = () => {
    const openReviewModal = () => {
     setShowReviewModal(true);
   };
+//   const test = reviews.filter((review)=>
+//     9 === review.service_id
+//     )
+// console.log(test)
+
+  const checkUndefined = (value) => {
+    if(value === undefined)
+      return value
+    else
+      return ""
+  }
 
   return (
     <div className="my-booked-services-container">
@@ -96,22 +116,43 @@ const MyBookedServices = () => {
                   <p>Service ID: {booking.service_id}</p>
                   <p>Date and Time: {booking.start_date_and_time}</p>
                   <p>Status: Previous</p>
+                  <p>Review: {()=>checkUndefined(reviews.filter((review)=>
+                  booking.service_id === review.service_id
+                  )[0].review)} </p>
+                  {/* <button >Delete review</button> */}
+                  <OpenModalButton
+                    buttonText="Delete your Review"
+                    modalComponent={
 
-                  <button onClick={openReviewModal}>Add Your Review</button>
+                    <DeleteReviewConfirmModal
+                      reviewId={()=>checkUndefined(reviews.filter((review)=>
+                        booking.service_id === review.service_id
+                        )[0].id)}
+                    />
+                } />
+                {/* <button onClick={openReviewModal}>Add Your Review</button> */}
 
                   <button onClick={() => handleDelete(booking.id)}>Delete</button>
 
-                </div>
+                {showReviewModal && (
+                  <OpenModalButton
+                    buttonText="Add your Review"
+                    modalComponent={
+
+                    <PostReviewModal
+                      serviceTitle="Service Title"
+                      onSubmit={() => setShowReviewModal(false)}
+                      serviceId={booking.service_id}
+                    />
+                } />
+               )}
+
+                 </div>
               ))}
           </div>
         )
       )}
-      {showReviewModal && (
-        <PostReviewModal
-          serviceTitle="Service Title"
-          onSubmit={() => setShowReviewModal(false)}
-        />
-      )}
+
     </div>
   );
 };

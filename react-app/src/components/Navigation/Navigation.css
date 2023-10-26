@@ -5,3 +5,13 @@
 .hidden {
   display: none;
 }
+
+.navigation{
+  display: flex;
+
+
+}
+.navigation-logo {
+  width: 40%;
+  margin: 10px
+}
