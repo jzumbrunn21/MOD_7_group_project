@@ -3,9 +3,15 @@ import { getReviewsThunk } from "../../store/reviews";
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
+
 import PaymentInformationModal from '../PaymentInformationModal';
 import { getServiceThunk } from '../../store/services';
 import { createBookingThunk } from '../../store/bookings';
+
+import { useModal } from "../../context/Modal";
+import OpenModalButton from "../OpenModalButton";
+import LoginFormModal from "../LoginFormModal";
+
 import './ServiceDetailPage.css';
 import OpenModalButton from '../OpenModalButton';
 import { useModal } from "../../context/Modal";
@@ -41,9 +47,11 @@ const ServiceDetailPage = () => {
     dispatch(getReviewsThunk());
   }, [dispatch]);
 
+
   if (serviceDetail === undefined) {
     return null;
   }
+
 
   const handleBookNow = () => {
     setShowBookingModal(true);
@@ -103,6 +111,11 @@ const ServiceDetailPage = () => {
   };
 
 
+    // Use useModal to access the openModal function
+    const openLoginModal = () => {
+      openModal(<LoginFormModal />);
+    };
+
   console.log("The service: ", serviceDetail)
 
   const openLoginModal = () => {
@@ -112,6 +125,7 @@ const ServiceDetailPage = () => {
   return (
     <div className="service-detail-container">
       {/* Background Image Container */}
+
 
       <div className="background-image-container">
         {sessionUser ? (
@@ -144,6 +158,7 @@ const ServiceDetailPage = () => {
               </div>
             )}
 </div>
+
 
       {/* Navigation Info */}
       <div className="navigation-info">
@@ -178,7 +193,6 @@ const ServiceDetailPage = () => {
           </div>
         ))}
       </div>
-
 
 
       {showPaymentModal && (
