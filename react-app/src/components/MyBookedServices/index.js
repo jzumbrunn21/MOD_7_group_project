@@ -63,6 +63,14 @@ const MyBookedServices = () => {
 //     9 === review.service_id
 //     )
 // console.log(test)
+
+  const checkUndefined = (value) => {
+    if(value === undefined)
+      return value
+    else
+      return ""
+  }
+
   return (
     <div className="my-booked-services-container">
       <div className="tabs">
@@ -108,18 +116,18 @@ const MyBookedServices = () => {
                   <p>Service ID: {booking.service_id}</p>
                   <p>Date and Time: {booking.start_date_and_time}</p>
                   <p>Status: Previous</p>
-                  <p>Review: {reviews.filter((review)=>
+                  <p>Review: {()=>checkUndefined(reviews.filter((review)=>
                   booking.service_id === review.service_id
-                  )[0].review} </p>
+                  )[0].review)} </p>
                   {/* <button >Delete review</button> */}
                   <OpenModalButton
                     buttonText="Delete your Review"
                     modalComponent={
 
                     <DeleteReviewConfirmModal
-                      reviewId={reviews.filter((review)=>
+                      reviewId={()=>checkUndefined(reviews.filter((review)=>
                         booking.service_id === review.service_id
-                        )[0].id}
+                        )[0].id)}
                     />
                 } />
                 {/* <button onClick={openReviewModal}>Add Your Review</button> */}
