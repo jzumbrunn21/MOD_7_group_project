@@ -3,7 +3,7 @@
   margin: 0 auto;
   padding: 20px;
   background-color: #f0f0f0;
- 
+
 }
 
 .services-header {
@@ -85,7 +85,7 @@ button {
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
-} 
+}
 
 .service-container:hover {
   cursor: pointer;
@@ -139,9 +139,9 @@ button {
   .service-container {
     width: 100%;
   }
-} 
+}
 
-/* 
+/*
 .services-list-container {
     max-width: 1440px;
     margin: 0 auto;
@@ -255,7 +255,4 @@ button {
       width: 100%;
     }
   }
-<<<<<<< HEAD
    */
-=======
->>>>>>> 9bf6dfa6841354d6fa788a91772e2f1836cee4e5
