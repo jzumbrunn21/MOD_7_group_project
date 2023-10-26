@@ -44,9 +44,9 @@ const ViewServicesList = () => {
   // Filter services based on the selected category
   const filteredServices = categoryFilter
     ? services.filter(
-        (service) =>
-          service.service_category.toLowerCase().startsWith(categoryFilter)
-      )
+      (service) =>
+        service.service_category.toLowerCase().startsWith(categoryFilter)
+    )
     : services;
 
   // Define the test label based on the selected category
@@ -107,8 +107,10 @@ const ViewServicesList = () => {
             <div className="service-info">
               <h3>{service.service_title}</h3>
               <p>{service.service_description}</p>
-              <p>${service.service_price}</p>
-              <p>Rating:★ {service.rating}/5</p>
+              <div className="price-rating-wrapper">
+                <p>Price ${service.service_price}/h</p>
+                <p>Rating:★ {service.rating}/5</p>
+              </div>
             </div>
           </Link>
         ))}
