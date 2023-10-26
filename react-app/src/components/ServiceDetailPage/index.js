@@ -8,9 +8,6 @@ import PaymentInformationModal from '../PaymentInformationModal';
 import { getServiceThunk } from '../../store/services';
 import { createBookingThunk } from '../../store/bookings';
 
-import { useModal } from "../../context/Modal";
-import OpenModalButton from "../OpenModalButton";
-import LoginFormModal from "../LoginFormModal";
 
 import './ServiceDetailPage.css';
 import OpenModalButton from '../OpenModalButton';
@@ -112,9 +109,7 @@ const ServiceDetailPage = () => {
 
 
     // Use useModal to access the openModal function
-    const openLoginModal = () => {
-      openModal(<LoginFormModal />);
-    };
+    
 
   console.log("The service: ", serviceDetail)
 
