@@ -1,0 +1,106 @@
+/* MyOfferedServices.css */
+
+.my-offered-services-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .background-image-container {
+    background-color: #f0f0f0;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .background-image-container h1 {
+    font-size: 24px;
+  }
+  
+  .background-image-container button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .offered-services-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .service-container {
+    width: 30%;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+  
+  .service-container:hover {
+    transform: translateY(-5px);
+  }
+  
+  .service-container img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+  }
+  
+  .service-info {
+    padding: 20px;
+  }
+  
+  .service-info h3 {
+    font-size: 18px;
+    margin: 0;
+  }
+  
+  .service-info p {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .service-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  .update-service-button, .delete-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .update-service-button {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .delete-button {
+    background-color: #FF5722;
+    color: white;
+  }
+  
+  .update-service-button:hover {
+    background-color: #45A049;
+  }
+  
+  .delete-button:hover {
+    background-color: #FF4500 !important;
+  }
+  
+  @media (max-width: 768px) {
+    .service-container {
+      width: 100%;
+    }
+  }
+  
