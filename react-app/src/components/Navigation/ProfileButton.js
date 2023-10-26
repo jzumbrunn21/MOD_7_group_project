@@ -5,6 +5,8 @@ import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import { Link } from "react-router-dom";
+import './ProfileButton.css'
+import ProfileImage from "./ProfileImage.png";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -40,27 +42,27 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button onClick={openMenu}>
-        <i className="fas fa-user-circle" />
+      <div className="profile-button-container">
+      <button className='profile-button' onClick={openMenu}>
+        {/* <i className="fas fa-user-circle" /> */}
+        <img className="profile-image" src={ProfileImage} alt="Logo" />
       </button>
+      </div>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <li>{user.username}</li>
-            <li>{user.email}</li>
+            {user.username}
+            {user.email}
 
-            <li>
+
               <Link to='/my-services'>My services</Link>
-            </li>
-            <li>
+
               <Link to='/my-booked-services'>My booked services</Link>
-            </li>
-            <li>
+
               <Link to='/create-service'>Create your service</Link>
-            </li>
-            <li>
+
               <button onClick={handleLogout}>Log Out</button>
-            </li>
+
           </>
         ) : (
           <>

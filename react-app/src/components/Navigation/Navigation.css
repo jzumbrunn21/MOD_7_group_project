@@ -1,5 +1,7 @@
 .profile-dropdown {
   position: absolute;
+  top: 110px;
+  right:20px;
 }
 
 .hidden {
@@ -8,10 +10,11 @@
 
 .navigation{
   display: flex;
-
-
+  flex-direction: row;
+  justify-content: space-between;
 }
+
 .navigation-logo {
   width: 40%;
-  margin: 10px
+  margin: 20px
 }
