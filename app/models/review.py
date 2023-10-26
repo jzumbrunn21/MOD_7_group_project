@@ -14,7 +14,7 @@ class Review(db.Model):
     service_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('services.id')))
     review = db.Column(db.String(2000), nullable=False)
     star_rating = db.Column(db.Float(2, 1), nullable=False)
-    review_image = db.Column(db.String(255), nullable=False)
+    review_image = db.Column(db.String(255))
     created_at = db.Column(DateTime, default=func.now())
 
     user = db.relationship(
