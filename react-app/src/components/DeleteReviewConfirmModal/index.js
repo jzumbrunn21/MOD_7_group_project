@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import "./DeleteConfirmationModal.css";
-import { deleteReviewsThunk } from "../../store/reviews";
+
+import { deleteReviewThunk } from "../../store/reviews";
 import { Modal, useModal } from "../../context/Modal";
 
 const DeleteConfirmationModal = ({ reviewId, show, onCancel }) => {
@@ -10,7 +10,7 @@ const DeleteConfirmationModal = ({ reviewId, show, onCancel }) => {
 
   const handleDelete = async (e) => {
     e.preventDefault();
-    await dispatch(deleteReviewsThunk(reviewId));
+    await dispatch(deleteReviewThunk(reviewId));
     closeModal();
   };
   // if (!show) return null;

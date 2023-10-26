@@ -68,7 +68,11 @@ def user_reviews():
 def delete_review(id):
     deleted_review = Review.query.get(id)
     # !!! Do we need to delete anything else?
-    db.session.delete(deleted_review)
-    db.session.commit()
+    if deleted_review:
+        db.session.delete(deleted_review)
+        db.session.commit()
+        return "successful delete"
+    else:
+        return "error"
     # return redirect('/services')
     # Redirection is done on frontend, this route just deletes from database
