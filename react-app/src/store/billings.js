@@ -8,28 +8,27 @@ const readBillings = (billings) => ({
     billings
 })
 
-const setBilling = (billingData, userId, bookingId) => ({
+const setBilling = (billingData, bookingId) => ({
     type: SET_BILLING,
     billingData
 })
 
 // Thunks
-export const getBillingsThunk = () => async (dispatch) => {
-    const response = await fetch("/billings", {
-        method: "GET"
-    })
+export const getUserBillingsThunk = () => async (dispatch) => {
+    const response = await fetch("/api/billings")
 
     if (response.ok) {
         const data = await response.json()
         dispatch(readBillings(data))
+        return data
     } else {
         return "Error"
     }
 }
 
-export const createBillingThunk = (billingData, userId, bookingId) => async (dispatch) => {
-    const response = await fetch("/billings/new", {
-        methods: "POST",
+export const createBillingThunk = (billingData, bookingId) => async (dispatch) => {
+    const response = await fetch("/api/billings/new", {
+        method: "POST",
         headers: {
 			"Content-Type": "application/json",
 		},
@@ -40,7 +39,7 @@ export const createBillingThunk = (billingData, userId, bookingId) => async (dis
 
     if (response.ok) {
         const data = await response.json()
-        dispatch(setBilling(data, userId, bookingId))
+        dispatch(setBilling(data, bookingId))
     } else {
         return "Error"
     }
@@ -57,9 +56,9 @@ export default function billingsReducer(state = initialState, action) {
             newState.billings[action.billingData.id] = action.billingData
             return newState
         case READ_BILLINGS:
-            newState = { ...state }
+            newState = { ...state, billings: {} }
             action.billings.billings.forEach((billing) => {
-                newState.billing[billing.id] = billing;
+                newState.billings[billing.id] = billing;
             });
             return newState
         default:

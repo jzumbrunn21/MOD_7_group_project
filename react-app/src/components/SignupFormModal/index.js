@@ -43,6 +43,61 @@ function SignupFormModal() {
     }
   };
 
+<<<<<<< HEAD
+	return (
+		<div className="signup-container">
+			<h1 className="signup-header">Sign Up</h1>
+			<form onSubmit={handleSubmit}>
+				<ul className="error-list">
+				{errors.map((error, idx) => (
+					<li key={idx} className="error-item">{error}</li>
+				))}
+				</ul>
+				<label className="input-label">
+				Email
+				<input
+					type="text"
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
+					required
+					className="input-field"
+				/>
+				</label>
+				<label className="input-label">
+				Username
+				<input
+					type="text"
+					value={username}
+					onChange={(e) => setUsername(e.target.value)}
+					required
+					className="input-field"
+				/>
+				</label>
+				<label className="input-label">
+				Password
+				<input
+					type="password"
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
+					required
+					className="input-field"
+				/>
+				</label>
+				<label className="input-label">
+				Confirm Password
+				<input
+					type="password"
+					value={confirmPassword}
+					onChange={(e) => setConfirmPassword(e.target.value)}
+					required
+					className="input-field"
+				/>
+				</label>
+				<button type="submit" className="signup-button">Sign Up</button>
+			</form>
+         </div>
+	);
+=======
   return (
     <>
       <h1>Sign Up</h1>
@@ -142,6 +197,7 @@ function SignupFormModal() {
       </form>
     </>
   );
+>>>>>>> d476e8f6c66142995a4a2af5193000fdd5b6af38
 }
 
 export default SignupFormModal;
