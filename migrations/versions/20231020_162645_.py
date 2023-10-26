@@ -27,7 +27,8 @@ def upgrade():
     sa.Column('service_description', sa.String(length=2000), nullable=False),
     sa.Column('service_price', sa.Integer(), nullable=False),
     sa.Column('service_length_est', sa.Integer(), nullable=False),
-    sa.Column('service_category', sa.Enum('Cleaning', 'Lawn Service', name='category'), nullable=False),
+    sa.Column('service_category', sa.String(length=25), nullable=False),
+    sa.Column('url', sa.String(length=255), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id')

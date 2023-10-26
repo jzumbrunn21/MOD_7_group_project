@@ -5,6 +5,13 @@ import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
+import ViewServicesList from "./components/ViewServicesList";
+import ServiceDetailPage from "./components/ServiceDetailPage";
+import CreateNewService from "./components/CreateNewService";
+import MyBookedServices from "./components/MyBookedServices";
+import MyOfferedServices from "./components/MyOfferedServices";
+import UpdateService from "./components/UpdateService";
+import PostReviewModal from "./components/PostReviewModal";
 
 function App() {
   const dispatch = useDispatch();
@@ -18,10 +25,25 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-          <Route path="/login" >
+          <Route exact path="/" component={ViewServicesList} />
+          <Route
+            exact
+            path="/services/:serviceId"
+            component={ServiceDetailPage}
+          />
+          <Route
+            exact
+            path="/services/update/:serviceId"
+            component={UpdateService}
+          />
+          <Route exact path="/my-services" component={MyOfferedServices} />
+          <Route exact path="/my-booked-services" component={MyBookedServices} />
+          <Route exact path="/create-service" component={CreateNewService} />
+          <Route exact path='/create-review' component={PostReviewModal}/>
+          <Route exact path="/login">
             <LoginFormPage />
           </Route>
-          <Route path="/signup">
+          <Route exact path="/signup">
             <SignupFormPage />
           </Route>
         </Switch>
