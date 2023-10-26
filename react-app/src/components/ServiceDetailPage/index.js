@@ -1,19 +1,18 @@
-
 import { getReviewsThunk } from "../../store/reviews";
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams, useHistory } from "react-router-dom";
 
-import PaymentInformationModal from '../PaymentInformationModal';
-import { getServiceThunk } from '../../store/services';
-import { createBookingThunk } from '../../store/bookings';
+import PaymentInformationModal from "../PaymentInformationModal";
+import { getServiceThunk } from "../../store/services";
+import { createBookingThunk } from "../../store/bookings";
+
 
 import { useModal } from "../../context/Modal";
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 
-import './ServiceDetailPage.css';
-
+import "./ServiceDetailPage.css";
 
 const ServiceDetailPage = () => {
   const { openModal } = useModal();
@@ -45,11 +44,9 @@ const ServiceDetailPage = () => {
     dispatch(getReviewsThunk());
   }, [dispatch]);
 
-
   if (serviceDetail === undefined) {
     return null;
   }
-
 
   const handleBookNow = () => {
     setShowBookingModal(true);
@@ -88,7 +85,7 @@ const ServiceDetailPage = () => {
     setShowPaymentModal(true);
   };
 
-  const handleConfirmBooking = (paymentInfo) => {
+  const handleConfirmBooking = async (paymentInfo) => {
     // Set the payment info and close the payment modal
     setShowPaymentModal(false);
     console.log("Payment Information:", paymentInfo);
@@ -102,19 +99,19 @@ const ServiceDetailPage = () => {
       paymentInfo,
     };
 
-    dispatch(createBookingThunk(bookingData));
+    const newBooking = await dispatch(createBookingThunk(bookingData));
+    const bookingId = newBooking.id;
 
     console.log("Newly created booking data:", bookingData);
-    history.push('/my-booked-services')
+    history.push("/my-booked-services");
   };
 
+  // Use useModal to access the openModal function
+  const openLoginModal = () => {
+    openModal(<LoginFormModal />);
+  };
 
-    // Use useModal to access the openModal function
-    const openLoginModal = () => {
-      openModal(<LoginFormModal />);
-    };
-
-  console.log("The service: ", serviceDetail)
+  console.log("The service: ", serviceDetail);
 
   return (
     <div className="service-detail-container">
@@ -127,7 +124,11 @@ const ServiceDetailPage = () => {
       ) : (
         <div className="background-image-container">
           <h1>{serviceDetail.service_title}</h1>
-          <OpenModalButton buttonText="Book Now" onItemClick={openLoginModal} modalComponent={<LoginFormModal />} />
+          <OpenModalButton
+            buttonText="Book Now"
+            onItemClick={openLoginModal}
+            modalComponent={<LoginFormModal />}
+          />
         </div>
       )}
 
