@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import OpenModalButton from '../OpenModalButton';
-import DeleteReviewConfirmModal from '../DeleteReviewConfirmModal'
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import OpenModalButton from "../OpenModalButton";
+import DeleteReviewConfirmModal from "../DeleteReviewConfirmModal";
+import UpdateBookingModal from "../UpdateBookingModal";
 
-import PostReviewModal from '../PostReviewModal';
+import PostReviewModal from "../PostReviewModal";
 
-import { getBookingsThunk, deleteBookingThunk } from '../../store/bookings';
-import { getUserReviewsThunk } from '../../store/reviews';
-
+import { getBookingsThunk, deleteBookingThunk } from "../../store/bookings";
+import { getUserReviewsThunk } from "../../store/reviews";
 
 const MyBookedServices = () => {
   const sessionUser = useSelector((state) => state.session.user);
-  const reviews = useSelector((state)=>Object.values(state.reviews.reviews))
-  console.log(reviews)
+  const reviews = useSelector((state) => Object.values(state.reviews.reviews));
+  console.log(reviews);
   const bookings = useSelector((state) => state.bookings.bookings);
   const dispatch = useDispatch();
 
@@ -20,15 +20,16 @@ const MyBookedServices = () => {
 
   const [isLoading, setIsLoading] = useState(true); // loading state
   const [showReviewModal, setShowReviewModal] = useState(false);
-
+  const [modalActive, setModalActive] = useState(false);
+  // const Toggle = () => setModalActive(!modalActive);
 
   const [userBookings, setUserBookings] = useState([]);
   const [userBookingsLength, setUserBookingsLength] = useState(0);
 
-
   useEffect(() => {
+    // setCurrentBookings(bookings);
     dispatch(getBookingsThunk()).then(() => setIsLoading(false));
-  }, [dispatch]);
+  }, [dispatch, modalActive]);
 
   useEffect(() => {
     dispatch(getUserReviewsThunk());
@@ -56,32 +57,30 @@ const MyBookedServices = () => {
     });
   };
 
-   const openReviewModal = () => {
+  const openReviewModal = () => {
     setShowReviewModal(true);
   };
-//   const test = reviews.filter((review)=>
-//     9 === review.service_id
-//     )
-// console.log(test)
+  //   const test = reviews.filter((review)=>
+  //     9 === review.service_id
+  //     )
+  // console.log(test)
 
   const checkUndefined = (value) => {
-    if(value === undefined)
-      return value
-    else
-      return ""
-  }
+    if (value === undefined) return value;
+    else return "";
+  };
 
   return (
     <div className="my-booked-services-container">
       <div className="tabs">
         <button
-          className={activeTab ? 'active' : ''}
+          className={activeTab ? "active" : ""}
           onClick={() => setActiveTab(true)}
         >
           Upcoming
         </button>
         <button
-          className={!activeTab ? 'active' : ''}
+          className={!activeTab ? "active" : ""}
           onClick={() => setActiveTab(false)}
         >
           Previous
@@ -89,70 +88,87 @@ const MyBookedServices = () => {
       </div>
       {isLoading ? (
         <p>Loading...</p>
-      ) : (
-        activeTab ? (
-          <div className="upcoming-services">
-            {userBookings
-              .filter((booking) => booking.status === true)
-              .map((booking) => (
-                <div key={booking.id} className="service-container">
-                  <h3>Booking ID: {booking.id}</h3>
-                  <p>User ID: {booking.user_id}</p>
-                  <p>Service ID: {booking.service_id}</p>
-                  <p>Date and Time: {booking.start_date_and_time}</p>
-                  <p>Status: Upcoming</p>
-                  <button onClick={() => handleDelete(booking.id)}>Delete</button>
-                </div>
-              ))}
-          </div>
-        ) : (
-          <div className="previous-services">
-            {userBookings
-              .filter((booking) => booking.status === false)
-              .map((booking) => (
-                <div key={booking.id} className="service-container">
-                  <h3>Booking ID: {booking.id}</h3>
-                  <p>User ID: {booking.user_id}</p>
-                  <p>Service ID: {booking.service_id}</p>
-                  <p>Date and Time: {booking.start_date_and_time}</p>
-                  <p>Status: Previous</p>
-                  <p>Review: {()=>checkUndefined(reviews.filter((review)=>
-                  booking.service_id === review.service_id
-                  )[0].review)} </p>
-                  {/* <button >Delete review</button> */}
+      ) : activeTab ? (
+        <div className="upcoming-services">
+          {userBookings
+            .filter((booking) => booking.status === true)
+            .map((booking) => (
+              <div key={booking.id} className="service-container">
+                <h3>Booking ID: {booking.id}</h3>
+                <p>User ID: {booking.user_id}</p>
+                <p>Service ID: {booking.service_id}</p>
+                <p>Date and Time: {booking.start_date_and_time}</p>
+                <p>Status: Upcoming</p>
+                <div>
                   <OpenModalButton
-                    buttonText="Delete your Review"
+                    buttonText="Update"
+                    onButtonClick={(e) => setModalActive(!modalActive)}
+                    onModalClose={(e) => setModalActive(!modalActive)}
                     modalComponent={
-
+                      <UpdateBookingModal bookingId={booking.id} />
+                    }
+                  />
+                </div>
+                <button onClick={() => handleDelete(booking.id)}>Delete</button>
+              </div>
+            ))}
+        </div>
+      ) : (
+        <div className="previous-services">
+          {userBookings
+            .filter((booking) => booking.status === false)
+            .map((booking) => (
+              <div key={booking.id} className="service-container">
+                <h3>Booking ID: {booking.id}</h3>
+                <p>User ID: {booking.user_id}</p>
+                <p>Service ID: {booking.service_id}</p>
+                <p>Date and Time: {booking.start_date_and_time}</p>
+                <p>Status: Previous</p>
+                <p>
+                  Review:{" "}
+                  {() =>
+                    checkUndefined(
+                      reviews.filter(
+                        (review) => booking.service_id === review.service_id
+                      )[0].review
+                    )
+                  }{" "}
+                </p>
+                {/* <button >Delete review</button> */}
+                <OpenModalButton
+                  buttonText="Delete your Review"
+                  modalComponent={
                     <DeleteReviewConfirmModal
-                      reviewId={()=>checkUndefined(reviews.filter((review)=>
-                        booking.service_id === review.service_id
-                        )[0].id)}
+                      reviewId={() =>
+                        checkUndefined(
+                          reviews.filter(
+                            (review) => booking.service_id === review.service_id
+                          )[0].id
+                        )
+                      }
                     />
-                } />
+                  }
+                />
                 {/* <button onClick={openReviewModal}>Add Your Review</button> */}
 
-                  <button onClick={() => handleDelete(booking.id)}>Delete</button>
+                <button onClick={() => handleDelete(booking.id)}>Delete</button>
 
                 {showReviewModal && (
                   <OpenModalButton
                     buttonText="Add your Review"
                     modalComponent={
-
-                    <PostReviewModal
-                      serviceTitle="Service Title"
-                      onSubmit={() => setShowReviewModal(false)}
-                      serviceId={booking.service_id}
-                    />
-                } />
-               )}
-
-                 </div>
-              ))}
-          </div>
-        )
+                      <PostReviewModal
+                        serviceTitle="Service Title"
+                        onSubmit={() => setShowReviewModal(false)}
+                        serviceId={booking.service_id}
+                      />
+                    }
+                  />
+                )}
+              </div>
+            ))}
+        </div>
       )}
-
     </div>
   );
 };
