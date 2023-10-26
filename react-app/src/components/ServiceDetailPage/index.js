@@ -3,13 +3,20 @@ import { getReviewsThunk } from "../../store/reviews";
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
+
 import PaymentInformationModal from '../PaymentInformationModal';
 import { getServiceThunk } from '../../store/services';
 import { createBookingThunk } from '../../store/bookings';
+
+import { useModal } from "../../context/Modal";
+import OpenModalButton from "../OpenModalButton";
+import LoginFormModal from "../LoginFormModal";
+
 import './ServiceDetailPage.css';
 
 
 const ServiceDetailPage = () => {
+  const { openModal } = useModal();
   const { serviceId } = useParams();
   const sessionUser = useSelector((state) => state.session.user);
 
@@ -38,9 +45,11 @@ const ServiceDetailPage = () => {
     dispatch(getReviewsThunk());
   }, [dispatch]);
 
+
   if (serviceDetail === undefined) {
     return null;
   }
+
 
   const handleBookNow = () => {
     setShowBookingModal(true);
@@ -49,11 +58,11 @@ const ServiceDetailPage = () => {
   const handleBookingDateChange = (event) => {
     const newErrors = {};
     setBookingDate(event.target.value);
-  
+
     const selected_booking_date = event.target.value;
     const inputDate = new Date(selected_booking_date);
     const currentDate = new Date();
-  
+
     if (inputDate < currentDate) {
       console.log("Date has already passed");
       newErrors.selected_booking_date = "Date has already passed";
@@ -62,7 +71,7 @@ const ServiceDetailPage = () => {
       // Clear the error if the date is valid
       newErrors.selected_booking_date = ""; // Clear the error
     }
-  
+
     setErrors(newErrors); // Update the errors state
   };
 
@@ -100,15 +109,27 @@ const ServiceDetailPage = () => {
   };
 
 
+    // Use useModal to access the openModal function
+    const openLoginModal = () => {
+      openModal(<LoginFormModal />);
+    };
+
   console.log("The service: ", serviceDetail)
 
   return (
     <div className="service-detail-container">
       {/* Background Image Container */}
-      <div className="background-image-container">
-        <h1>{serviceDetail.service_title}</h1>
-        <button onClick={handleBookNow}>Book Now</button>
-      </div>
+      {sessionUser ? (
+        <div className="background-image-container">
+          <h1>{serviceDetail.service_title}</h1>
+          <button onClick={handleBookNow}>Book Now</button>
+        </div>
+      ) : (
+        <div className="background-image-container">
+          <h1>{serviceDetail.service_title}</h1>
+          <OpenModalButton buttonText="Book Now" onItemClick={openLoginModal} modalComponent={<LoginFormModal />} />
+        </div>
+      )}
 
       {/* Navigation Info */}
       <div className="navigation-info">
@@ -149,9 +170,9 @@ const ServiceDetailPage = () => {
             onChange={handleBookingDateChange}
           />
 
-      {errors.selected_booking_date && (
-      <p className="error-message">{errors.selected_booking_date}</p>
-       )}
+          {errors.selected_booking_date && (
+            <p className="error-message">{errors.selected_booking_date}</p>
+          )}
 
           <button onClick={handleContinueToBilling}>Continue to Billing</button>
         </div>
