@@ -43,7 +43,6 @@ function SignupFormModal() {
     }
   };
 
-<<<<<<< HEAD
 	return (
 		<div className="signup-container">
 			<h1 className="signup-header">Sign Up</h1>
@@ -97,107 +96,6 @@ function SignupFormModal() {
 			</form>
          </div>
 	);
-=======
-  return (
-    <>
-      <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
-        <ul>
-          {errors.map((error, idx) => (
-            <li key={idx}>{error}</li>
-          ))}
-        </ul>
-        <div>
-          <label>
-            Email
-            <input
-              type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Username
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Password
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </label>
-          <label>
-            Confirm Password
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            First Name
-            <input
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Last Name
-            <input
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Address
-            <input
-              type="text"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Profile Picture
-            <input
-              type="text"
-              value={profilePicture}
-              onChange={(e) => setProfilePicture(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <button type="submit">Sign Up</button>
-      </form>
-    </>
-  );
->>>>>>> d476e8f6c66142995a4a2af5193000fdd5b6af38
 }
 
 export default SignupFormModal;
