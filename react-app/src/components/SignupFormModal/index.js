@@ -5,30 +5,45 @@ import { signUp } from "../../store/session";
 import "./SignupForm.css";
 
 function SignupFormModal() {
-	const dispatch = useDispatch();
-	const [email, setEmail] = useState("");
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
-	const [errors, setErrors] = useState([]);
-	const { closeModal } = useModal();
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [address, setAddress] = useState("");
+  const [profilePicture, setProfilePicture] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errors, setErrors] = useState([]);
+  const { closeModal } = useModal();
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		if (password === confirmPassword) {
-			const data = await dispatch(signUp(username, email, password));
-			if (data) {
-				setErrors(data);
-			} else {
-				closeModal();
-			}
-		} else {
-			setErrors([
-				"Confirm Password field must be the same as the Password field",
-			]);
-		}
-	};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (password === confirmPassword) {
+      const data = await dispatch(
+        signUp(
+          username,
+          email,
+          password,
+          firstName,
+          lastName,
+          address,
+          profilePicture
+        )
+      );
+      if (data) {
+        setErrors(data);
+      } else {
+        closeModal();
+      }
+    } else {
+      setErrors([
+        "Confirm Password field must be the same as the Password field",
+      ]);
+    }
+  };
 
+<<<<<<< HEAD
 	return (
 		<div className="signup-container">
 			<h1 className="signup-header">Sign Up</h1>
@@ -82,6 +97,107 @@ function SignupFormModal() {
 			</form>
          </div>
 	);
+=======
+  return (
+    <>
+      <h1>Sign Up</h1>
+      <form onSubmit={handleSubmit}>
+        <ul>
+          {errors.map((error, idx) => (
+            <li key={idx}>{error}</li>
+          ))}
+        </ul>
+        <div>
+          <label>
+            Email
+            <input
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Username
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Password
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Confirm Password
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            First Name
+            <input
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Last Name
+            <input
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Address
+            <input
+              type="text"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Profile Picture
+            <input
+              type="text"
+              value={profilePicture}
+              onChange={(e) => setProfilePicture(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <button type="submit">Sign Up</button>
+      </form>
+    </>
+  );
+>>>>>>> d476e8f6c66142995a4a2af5193000fdd5b6af38
 }
 
 export default SignupFormModal;

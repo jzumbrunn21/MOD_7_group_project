@@ -32,6 +32,7 @@ function LoginFormModal() {
     });
   };
   return (
+<<<<<<< HEAD
     <div className="login-container">
     <h1 className="login-header">Log In</h1>
     <form onSubmit={handleSubmit}>
@@ -65,6 +66,43 @@ function LoginFormModal() {
     <Link onClick={handleDemoUser} className="demo-link">Demo User</Link>
   </div>
   )
+=======
+    <>
+      <h1>Log In</h1>
+      <form onSubmit={handleSubmit}>
+        <ul>
+          {errors.map((error, idx) => (
+            <li key={idx}>{error}</li>
+          ))}
+        </ul>
+        <div>
+          <label>
+            Email
+            <input
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Password
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <button type="submit">Log In</button>
+      </form>
+      <button onClick={handleDemoUser}>Demo User</button>
+    </>
+  );
+>>>>>>> d476e8f6c66142995a4a2af5193000fdd5b6af38
 }
 
 export default LoginFormModal;

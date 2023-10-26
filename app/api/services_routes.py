@@ -20,13 +20,18 @@ from flask_login import current_user
 
 # Full CRUD: Create, Read, Read One, Update, Delete
 
-# Returns all the services
+# Returns all the services + BONUS SEARCH
 @services_routes.route('/')
 def all_services():
-    response = [service.to_dict() for service in Service.query.all()]
-    # return {"services": response}
-    # response = Service.query.all()
+    category = request.args.get('category')
+    if category:
+        services = Service.query.filter_by(service_category=category).all()
+    else:
+        services = Service.query.all()
+    
+    response = [service.to_dict() for service in services]
     return {"services": response}
+
 
 @services_routes.route('/my-services')
 def users_services():
