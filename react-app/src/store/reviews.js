@@ -5,10 +5,9 @@ const DELETE_REVIEW = "reviews/DELETE_REVIEW";
 
 // Action Creators
 // We will need the service id as well to set a review to a specific service
-const setReview = (review, serviceId) => ({
+const setReview = (review) => ({
   type: SET_REVIEW,
   review,
-  serviceId,
 });
 
 const readReviews = (reviews) => ({
@@ -23,18 +22,32 @@ const removeReview = (reviewId) => ({
 
 // Thunks
 export const createReviewThunk =
-  (reviewData, serviceId) => async (dispatch) => {
-    const response = await fetch("/reviews/new", {
+  (reviewData) => async (dispatch) => {
+    const response = await fetch("/api/reviews/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(reviewData),
     });
+    console.log(response)
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(setReview(data));
+      return data
+    } else {
+      return "Error";
+    }
+  };
+
+  export const getUserReviewsThunk = () => async (dispatch) => {
+    const response = await fetch("/api/reviews/user", {
+      method: "GET",
+    });
 
     if (response.ok) {
       const data = await response.json();
-      dispatch(setReview(data, serviceId));
+      dispatch(readReviews(data));
     } else {
       return "Error";
     }
@@ -54,7 +67,7 @@ export const getReviewsThunk = () => async (dispatch) => {
 };
 
 export const deleteReviewThunk = (reviewId) => async (dispatch) => {
-  const response = await fetch(`reviews/${reviewId}`, {
+  const response = await fetch(`/api/reviews/delete/${reviewId}`, {
     method: "DELETE",
   });
 
@@ -76,7 +89,7 @@ export default function reviewsReducer(state = initialState, action) {
       newState.reviews[action.review.id] = action.review;
       return newState;
     case READ_REVIEWS:
-      newState = { ...state };
+      newState = { ...state ,reviews:{}};
       action.reviews.reviews.forEach((review) => {
         newState.reviews[review.id] = review;
       });
