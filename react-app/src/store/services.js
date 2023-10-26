@@ -4,6 +4,7 @@ const READ_SERVICE = "services/READ_SERVICE";
 const READ_SERVICES = "services/READ_SERVICES";
 const UPDATE_SERVICE = "services/UPDATE_SERVICE";
 const DELETE_SERVICE = "services/DELETE_SERVICE";
+const READ_FILTERED_SERVICES = "services/READ_FILTERED_SERVICES"; 
 
 // Action creators
 
@@ -23,15 +24,23 @@ const readServices = (services) => ({
   services,
 });
 
-const updateService = (serviceData) => ({
+const updateService = (serviceData, serviceId) => ({
   type: UPDATE_SERVICE,
   serviceData,
+  serviceId,
 });
 
 const removeService = (serviceId) => ({
   type: DELETE_SERVICE,
   serviceId,
 });
+
+//BONUS SEARCH
+const readFilteredServices = (services) => ({
+  type: READ_FILTERED_SERVICES,
+  services,
+});
+
 
 // const getImage = (images) => ({
 //   type: GET_IMAGE,
@@ -72,28 +81,45 @@ export const getServiceThunk = (serviceId) => async (dispatch) => {
     // !!! What does the flask data look like?
     const data = await response.json();
     dispatch(readService(data));
+    return data
   } else {
     return "Error";
   }
 };
 
-export const getServicesThunk = () => async (dispatch) => {
-  const response = await fetch("/api/services", {
+// export const getServicesThunk = () => async (dispatch) => {
+//   const response = await fetch("/api/services", {
+//     method: "GET",
+//   });
+
+//   if (response.ok) {
+//     const data = await response.json();
+//     dispatch(readServices(data));
+//     // return data;
+//   } else {
+//     return "Error";
+//   }
+// };
+
+export const getServicesThunk = (category = null) => async (dispatch) => {
+  let url = "/api/services";
+  if (category) {
+    url += `?category=${category}`;
+  }
+
+  const response = await fetch(url, {
     method: "GET",
   });
 
   if (response.ok) {
     const data = await response.json();
     dispatch(readServices(data));
-    return data;
-  } else {
-    return "Error";
   }
 };
 
 export const updateServiceThunk =
   (serviceData, serviceId) => async (dispatch) => {
-    const response = await fetch(`/api/services/${serviceId}`, {
+    const response = await fetch(`/api/services/update/${serviceId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -103,15 +129,17 @@ export const updateServiceThunk =
 
     if (response.ok) {
       const data = await response.json();
-      dispatch(updateService(data));
+      dispatch(updateService(data, serviceId));
       return data;
     } else {
       return "Error";
     }
   };
 
+
 export const deleteServiceThunk = (serviceId) => async (dispatch) => {
   // Send an id, should be deleted in backend
+
   console.log(serviceId);
   const response = await fetch(`/api/services/${serviceId}`, {
     method: "DELETE",
@@ -136,7 +164,7 @@ export const getUserServicesThunk = () => async (dispatch) => {
 };
 
 // !!! What should our state be?
-const initialState = { services: {}, singleService: {} };
+const initialState = { services: {}, singleService: {},  filteredServices: {} };
 
 // Reducer
 export default function servicesReducer(state = initialState, action) {
@@ -151,14 +179,20 @@ export default function servicesReducer(state = initialState, action) {
       newState.singleService = action.service;
       return newState;
     case READ_SERVICES:
-      newState = { ...state };
+      newState = { ...state, services: {} };
       action.services.services.forEach((service) => {
         newState.services[service.id] = service;
       });
       return newState;
+    case READ_FILTERED_SERVICES:
+      newState = { ...state, filteredServices: {} };
+      action.services.services.forEach((service) => {
+        newState.filteredServices[service.id] = service;
+      });
+      return newState;
     case UPDATE_SERVICE:
       newState = { ...state };
-      newState.services[action.serviceData.id] = action.serviceData;
+      newState.services[action.serviceId] = action.serviceData;
       return newState;
     case DELETE_SERVICE:
       newState = { ...state };

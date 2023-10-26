@@ -80,10 +80,12 @@ def update_booking(id):
     # return redirect('/bookings')
 
 # Delete one booking
-@bookings_routes.route('/delete/<int:id>', methods=["DELETE"])
+@bookings_routes.route('/<int:id>', methods=["DELETE"])
 def delete_booking(id):
     deleted_booking = Booking.query.get(id)
-    # !!! Do we need to delete anything else?
-    db.session.delete(deleted_booking)
-    db.session.commit()
-    return {"message": "Booking deleted"}
+    if deleted_booking:
+        db.session.delete(deleted_booking)
+        db.session.commit()
+        return "Booking deleted successfully"
+    else:
+        return {"message": "Booking not found"}, 404

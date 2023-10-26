@@ -1,9 +1,10 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
-from .categories import categories
+# from .categories import CategoryEnum
 from sqlalchemy import DateTime
 from sqlalchemy.sql import func
 # from .user import User
 # from .service_image import ServiceImage
+
 
 
 class Service(db.Model):
@@ -20,7 +21,7 @@ class Service(db.Model):
     service_price = db.Column(db.Integer, nullable=False)
     service_length_est = db.Column(db.Integer, nullable=False)
     url = db.Column(db.String(255), nullable=False)
-    service_category = db.Column(db.Enum(*categories, name='category'), nullable=False)
+    service_category = db.Column(db.String(25), nullable=False)
     created_at = db.Column(DateTime, default=func.now())
     updated_at = db.Column(DateTime, default=func.now(), onupdate=func.now())
 

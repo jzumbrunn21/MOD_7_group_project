@@ -2,14 +2,14 @@ from app.models import db, Service,User, environment, SCHEMA
 from sqlalchemy.sql import text
 from faker import Faker
 import random
-from app.models.categories import categories
+# from app.models.categories import CategoryEnum
 from datetime import datetime, timedelta
 
 fake = Faker()
 
 def generate_image_url():
-    width = 400 
-    height = 300 
+    width = 400
+    height = 300
     image_id = fake.random_int(min=1, max=1000)
     return f"https://picsum.photos/400/300?image={image_id}"
 
@@ -17,6 +17,7 @@ def generate_image_url():
 def seed_services():
     services_num = db.session.query(Service).count()
     users_num = db.session.query(User).count()
+    categories = ['Lawn Service', 'Cleaning', 'Moving']
 
     for _ in range(users_num):
         provider_id = random.randint(1, users_num)
@@ -28,7 +29,7 @@ def seed_services():
             service_price=random.randint(10, 200),
             service_length_est=random.randint(1, 10),
             service_category=random.choice(categories),
-           url = generate_image_url() 
+            url = generate_image_url()
         )
 
         db.session.add(service)

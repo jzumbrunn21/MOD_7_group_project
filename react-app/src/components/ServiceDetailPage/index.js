@@ -14,13 +14,12 @@ const ServiceDetailPage = () => {
   const sessionUser = useSelector((state) => state.session.user);
 
   const dispatch = useDispatch();
-
   const history = useHistory();
 
   const [showBookingModal, setShowBookingModal] = useState(false);
-
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [bookingDate, setBookingDate] = useState(new Date());
+  const [errors, setErrors] = useState({});
 
   const serviceDetail = useSelector(
     (state) => Object.values(state.services.singleService)[0]
@@ -48,19 +47,35 @@ const ServiceDetailPage = () => {
   };
 
   const handleBookingDateChange = (event) => {
+    const newErrors = {};
     setBookingDate(event.target.value);
-    console.log("Selected booking date:", event.target.value);
+  
+    const selected_booking_date = event.target.value;
+    const inputDate = new Date(selected_booking_date);
+    const currentDate = new Date();
+  
+    if (inputDate < currentDate) {
+      console.log("Date has already passed");
+      newErrors.selected_booking_date = "Date has already passed";
+    } else {
+      console.log("Selected booking date:", event.target.value);
+      // Clear the error if the date is valid
+      newErrors.selected_booking_date = ""; // Clear the error
+    }
+  
+    setErrors(newErrors); // Update the errors state
   };
 
   const handleContinueToBilling = () => {
     // Check if the booking date is empty or in the past
-    const currentDate = new Date();
-    if (!bookingDate || bookingDate < currentDate) {
+    if (errors.selected_booking_date) {
       // Do not open the payment modal
+      console.log("bookingDate", bookingDate);
       return;
     }
-  
+
     // Open the payment modal
+    //if (bookingDate)
     setShowPaymentModal(true);
   };
 
@@ -81,6 +96,7 @@ const ServiceDetailPage = () => {
     dispatch(createBookingThunk(bookingData));
 
     console.log("Newly created booking data:", bookingData);
+    history.push('/my-booked-services')
   };
 
 
@@ -116,7 +132,7 @@ const ServiceDetailPage = () => {
             <p> {review.username}</p>
             <p>Rating: {review.star_rating}</p>
 
-            <img src={review.profilePhoto} alt="Profile" />
+            <img src={review.review_image} alt="Profile" />
             <p>{review.review}</p>
           </div>
         ))}
@@ -132,6 +148,10 @@ const ServiceDetailPage = () => {
             value={bookingDate}
             onChange={handleBookingDateChange}
           />
+
+      {errors.selected_booking_date && (
+      <p className="error-message">{errors.selected_booking_date}</p>
+       )}
 
           <button onClick={handleContinueToBilling}>Continue to Billing</button>
         </div>
