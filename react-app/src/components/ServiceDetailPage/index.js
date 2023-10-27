@@ -24,6 +24,8 @@ const ServiceDetailPage = () => {
   const [bookingDate, setBookingDate] = useState(new Date());
   const [errors, setErrors] = useState({});
   const [hasSelectedDate, setHasSelectedDate] = useState(false);
+  const bannerImage =
+    "https://hometurf.ca/wp-content/uploads/2023/10/lawn-care-mistakes.jpeg";
 
   const [averageRating, setAverageRating] = useState("0.00"); // Average rating state as a string
 
@@ -150,7 +152,16 @@ const ServiceDetailPage = () => {
     <div className="service-detail-container">
       {/* Background Image Container */}
 
-      <div className="background-image-container">
+      <div
+        className="background-image-container"
+        style={{
+          backgroundImage: `url(${bannerImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundPositionY: "-100px",
+          // backgroundPositionX: "-80px"
+        }}
+      >
         {sessionUser ? (
           <div>
             <h1>{serviceDetail.service_title}</h1>
