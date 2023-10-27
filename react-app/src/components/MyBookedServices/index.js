@@ -62,10 +62,40 @@ const MyBookedServices = () => {
   //     )
   // console.log(test)
 
-  const checkUndefined = (value) => {
-    if (value === undefined) return value;
-    else return "";
+  const checkIfReview = (value) => {
+    if (value === undefined) return true;
+    else return false
   };
+
+  //The add review modal
+  const addReviewModal = (booking) => {
+    return (<OpenModalButton
+                buttonText="Add your Review"
+                 modalComponent={
+                   <PostReviewModal
+                      serviceTitle="Service Title"
+                     onSubmit={() => setShowReviewModal(false)}
+                     serviceId={booking.service_id}
+                    />
+                   }
+                 />)
+  }
+
+  // The delete review modal
+  const deleteReview = (booking) => {
+    return ( <OpenModalButton
+    buttonText="Delete your Review"
+    modalComponent={
+      <DeleteReviewConfirmModal
+        reviewId={
+            reviews.filter(
+              (review) => booking.service_id === review.service_id
+            )[0]?.id
+        }
+      />
+    }
+  /> )
+  }
 
   return (
     <div className="my-booked-services-container">
@@ -126,40 +156,42 @@ const MyBookedServices = () => {
                 <p>Date and Time: {booking.start_date_and_time}</p>
                 <p>Status: Previous</p>
                 <p>
-                  Review:
-                  {checkUndefined(
+                  Review: {reviews.filter((review) => booking.service_id === review.service_id)[0]?.review}
+                  {/* {() => checkUndefined(
                     reviews.filter(
                       (review) => booking.service_id === review.service_id
-                    )[0].review
-                  )}
+                    )[0].review)} */}
                 </p>
+                  {checkIfReview(reviews.filter((review) => booking.service_id === review.service_id)[0]?.review) ? addReviewModal(booking) : deleteReview(booking)}
+                {/* // <OpenModalButton */}
+                {/* //   buttonText="Add your Review"
+                //   modalComponent={
+                //     <PostReviewModal
+                //       serviceTitle="Service Title"
+                //       onSubmit={() => setShowReviewModal(false)}
+                //       serviceId={booking.service_id}
+                //     />
+                //   }
+                // /> */}
 
-                <OpenModalButton
-                  buttonText="Add your Review"
-                  modalComponent={
-                    <PostReviewModal
-                      serviceTitle="Service Title"
-                      onSubmit={() => setShowReviewModal(false)}
-                      serviceId={booking.service_id}
-                    />
-                  }
-                />
 
-                {/* <button >Delete review</button> */}
-                <OpenModalButton
+                  {/* <OpenModalButton
                   buttonText="Delete your Review"
                   modalComponent={
                     <DeleteReviewConfirmModal
-                      reviewId={() =>
-                        checkUndefined(
+                      reviewId={
                           reviews.filter(
                             (review) => booking.service_id === review.service_id
-                          )[0].id
-                        )
+                          )[0]?.id
                       }
                     />
                   }
-                />
+                /> */}
+
+
+
+                {/* <button >Delete review</button> */}
+
                 {/* <button onClick={openReviewModal}>Add Your Review</button> */}
 
                 <button onClick={() => handleDelete(booking.id)}>
