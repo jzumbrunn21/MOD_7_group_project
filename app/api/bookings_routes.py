@@ -32,8 +32,8 @@ def all_bookings():
 # Creates one booking
 @bookings_routes.route('/new', methods=["POST"])
 def create_booking():
-    form = BillingForm()
-    print("FORMDATA***********", form.data)
+    # form = BillingForm()
+    # print("FORMDATA***********", form.data)
     data = request.get_json()
     user_id = data.get('user_id')
     service_id = data.get('service_id')
@@ -56,25 +56,26 @@ def create_booking():
     db.session.add(booking)
     db.session.commit()
 
-    if form.validate_on_submit():
-        print('CREATING BILLING')
+    # if form.validate_on_submit():
+    #     print('CREATING BILLING')
 
-        billing = Billing(
-                user_id=current_user.id,
-                booking_id=booking.id,
-                card_full_name=form.data['card_full_name'],
-                card_number=form.data['card_number'],
-                card_cvv=form.data['card_cvv'],
-                card_zipcode=form.data['card_zipcode'],
-                card_exp_data=form.data['card_exp_data']
-        )
-        db.session.add(billing)
-        db.session.commit()
+    #     billing = Billing(
+    #             user_id=current_user.id,
+    #             booking_id=booking.id,
+    #             card_full_name=form.data['card_full_name'],
+    #             card_number=form.data['card_number'],
+    #             card_cvv=form.data['card_cvv'],
+    #             card_zipcode=form.data['card_zipcode'],
+    #             card_exp_data=form.data['card_exp_data']
+    #     )
+    #     db.session.add(billing)
+    #     db.session.commit()
 
 
     print("Newly created booking:", booking.to_dict())
 
-    return {'Booking':booking.to_dict()}
+    return booking.to_dict()
+    # return {'Booking': booking.to_dict()}
 
 
 # Updates one booking

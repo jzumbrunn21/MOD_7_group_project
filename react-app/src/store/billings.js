@@ -8,7 +8,7 @@ const readBillings = (billings) => ({
   billings,
 });
 
-const setBilling = (billingData, bookingId) => ({
+const setBilling = (billingData) => ({
   type: SET_BILLING,
   billingData,
 });
@@ -28,12 +28,21 @@ export const getUserBillingsThunk = () => async (dispatch) => {
 
 export const createBillingThunk =
   (billingData, bookingId) => async (dispatch) => {
+    const {card_full_name, card_number, card_cvv, card_exp_date, card_zipcode} = billingData
     const response = await fetch("/api/billings/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(billingData),
+    //   body: JSON.stringify(billingData, {bookingId}),
+      body: JSON.stringify({
+        card_full_name,
+        card_number,
+        card_cvv,
+        card_exp_date,
+        card_zipcode,
+        bookingId
+      })
     });
 
     if (response.ok) {

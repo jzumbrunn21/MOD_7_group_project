@@ -98,9 +98,13 @@ const ServiceDetailPage = () => {
     };
 
     const newBooking = await dispatch(createBookingThunk(bookingData));
-    console.log("NEWBOOKING", newBooking.booking);
+    console.log("NEWBOOKING", newBooking);
     // const bookingId = newBooking.id;
-    // if(newBooking) dispatch(createBillingThunk(paymentInfo));
+    if(newBooking) {
+      const newBilling = await dispatch(createBillingThunk(paymentInfo, newBooking.id));
+      console.log("NEW BILLING", newBilling)
+    }
+
     console.log("Newly created booking data:", bookingData);
     history.push("/my-booked-services");
   };
