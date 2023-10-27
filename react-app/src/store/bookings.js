@@ -75,25 +75,23 @@ export const getBookingsThunk = () => async (dispatch) => {
   }
 };
 
-export const updateBookingThunk =
-  (bookingData, bookingId) => async (dispatch) => {
-    try {
-      const response = await fetch(`/bookings/${bookingId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookingData),
-      });
+export const updateBookingThunk = (bookingData, bookingId) => async (dispatch) => {
+  try {
+    const response = await fetch(`/api/bookings/update/${bookingId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bookingData),
+    });
 
-      if (response.ok) {
-        const data = await response.json();
-        dispatch(updateBooking(data, bookingId));
-      } else {
-        throw new Error("Error updating booking");
-      }
-    } catch (error) {
-      console.error(error);
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(updateBooking(data, bookingId));
+      return data;
+    } else {
+      throw new Error("Error updating booking");
+
     }
   };
 
@@ -132,9 +130,16 @@ export default function bookingsReducer(state = initialState, action) {
       });
       return newState;
     case UPDATE_BOOKING:
-      newState = { ...state };
-      newState.bookings[action.bookingId] = action.bookingData;
-      return newState;
+      return {
+        ...state,
+        bookings: {
+          ...state.bookings,
+          [action.bookingId]: {
+            ...state.bookings[action.bookingId],
+            ...action.bookingData,
+          },
+        },
+      };
     case DELETE_BOOKING:
       newState = { ...state };
       delete newState.bookings[action.bookingId];
