@@ -20,7 +20,7 @@ class Billing(db.Model):
     card_number = db.Column(db.String, CheckConstraint('cardNumber >= 1000000000000000 AND cardNumber <= 9999999999999999'), nullable=False)
     card_cvv = db.Column(db.String, nullable=False)
     card_zipcode = db.Column(db.String, nullable=False)
-    card_exp_date = db.Column(db.Date, nullable=False)
+    card_exp_date = db.Column(db.String, nullable=False)
     purchase_date_and_time = db.Column(DateTime, default=func.now())
 
 

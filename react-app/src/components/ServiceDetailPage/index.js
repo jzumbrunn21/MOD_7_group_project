@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useHistory } from 'react-router-dom';
-import PaymentInformationModal from '../PaymentInformationModal';
-import { getServiceThunk } from '../../store/services';
-import { createBookingThunk } from '../../store/bookings';
+
 import { getReviewsThunk } from "../../store/reviews";
-import './ServiceDetailPage.css';
-import OpenModalButton from '../OpenModalButton';
-import { useModal } from '../../context/Modal';
-import LoginFormModal from '../LoginFormModal';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams, useHistory } from "react-router-dom";
+
+import PaymentInformationModal from "../PaymentInformationModal";
+import { getServiceThunk } from "../../store/services";
+import { createBookingThunk } from "../../store/bookings";
+import { createBillingThunk } from "../../store/billings";
+
+import "./ServiceDetailPage.css";
+import OpenModalButton from "../OpenModalButton";
+import { useModal } from "../../context/Modal";
+import LoginFormModal from "../LoginFormModal";
 
 const ServiceDetailPage = () => {
   const { openModal } = useModal();
@@ -57,11 +61,13 @@ const ServiceDetailPage = () => {
     dispatch(getReviewsThunk());
   }, [dispatch]);
 
+
   // Update the average rating whenever the serviceReviews array changes
   useEffect(() => {
     const newAverageRating = calculateAverageRating();
     setAverageRating(newAverageRating);
   }, [serviceReviews]);
+
 
   if (serviceDetail === undefined) {
     return null;
@@ -103,7 +109,7 @@ const ServiceDetailPage = () => {
     setShowPaymentModal(true);
   };
 
-  const handleConfirmBooking = (paymentInfo) => {
+  const handleConfirmBooking = async (paymentInfo) => {
     // Set the payment info and close the payment modal
     setShowPaymentModal(false);
     console.log('Payment Information:', paymentInfo);
@@ -114,14 +120,25 @@ const ServiceDetailPage = () => {
       service_id: serviceId,
       start_date_and_time: bookingDate,
       status: true,
-      paymentInfo,
     };
 
-    dispatch(createBookingThunk(bookingData));
+    const newBooking = await dispatch(createBookingThunk(bookingData));
+    console.log("NEWBOOKING", newBooking);
+    // const bookingId = newBooking.id;
+    if(newBooking) {
+      const newBilling = await dispatch(createBillingThunk(paymentInfo, newBooking.id));
+      console.log("NEW BILLING", newBilling)
+    }
 
-    console.log('Newly created booking data:', bookingData);
-    history.push('/my-booked-services');
+
+    console.log("Newly created booking data:", bookingData);
+    history.push("/my-booked-services");
   };
+
+  // Use useModal to access the openModal function
+
+  console.log("The service: ", serviceDetail);
+
 
   const openLoginModal = () => {
     openModal(<LoginFormModal />);
@@ -130,6 +147,7 @@ const ServiceDetailPage = () => {
   return (
     <div className="service-detail-container">
       {/* Background Image Container */}
+
       <div className="background-image-container">
         {sessionUser ? (
           <div>
@@ -156,10 +174,21 @@ const ServiceDetailPage = () => {
               value={bookingDate}
               onChange={handleBookingDateChange}
             />
+
+
+            {errors.selected_booking_date && (
+              <p className="error-message">{errors.selected_booking_date}</p>
+            )}
+
+            <button onClick={handleContinueToBilling}>
+              Continue to Billing
+            </button>
+
             {errors.selected_booking_date && (
               <p className="error-message">{errors.selected_booking_date}</p>
             )}
             <button onClick={handleContinueToBilling}>Continue to Billing</button>
+
           </div>
         )}
       </div>
@@ -173,7 +202,9 @@ const ServiceDetailPage = () => {
       <div className="service-details">
         <div>
           <h2>Service Description</h2>
-          <p className="review-description">{serviceDetail.service_description}</p>
+          <p className="review-description">
+            {serviceDetail.service_description}
+          </p>
           <p>Provider Name</p>
           <p>${serviceDetail.service_price}</p>
         </div>
@@ -199,6 +230,7 @@ const ServiceDetailPage = () => {
               <p>{review.review}</p>
               {/* Convert star_rating to a number and display with 2 decimal places */}
               <p>★ {parseFloat(review.star_rating).toFixed(2)}</p>
+
             </div>
           </div>
         ))}
