@@ -95,13 +95,12 @@ const ServiceDetailPage = () => {
       service_id: serviceId,
       start_date_and_time: bookingDate,
       status: true,
-      paymentInfo,
     };
 
     const newBooking = await dispatch(createBookingThunk(bookingData));
-    console.log("NEWBOOKING", newBooking);
-    const bookingId = newBooking.id;
-    await dispatch(createBillingThunk(paymentInfo, bookingId));
+    console.log("NEWBOOKING", newBooking.booking);
+    // const bookingId = newBooking.id;
+    if(newBooking) dispatch(createBillingThunk(paymentInfo));
     console.log("Newly created booking data:", bookingData);
     history.push("/my-booked-services");
   };

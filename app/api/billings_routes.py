@@ -47,7 +47,7 @@ def create_billing():
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         billing = Billing(
-            user_id=form.data['user_id'],
+            user_id=current_user.id,
             booking_id=form.data['booking_id'],
             card_full_name=form.data['card_full_name'],
             card_number=form.data['card_number'],
@@ -58,6 +58,6 @@ def create_billing():
         db.session.add(billing)
         db.session.commit()
         # !!! Do we need to query it then return? Examples just returns the below
-        return billing.to_dict()
+        return billing.to_dict(), 201
     else:
-        return "Creation error!!!" #Placeholder
+        return {"Errors": form.errors} #Placeholder

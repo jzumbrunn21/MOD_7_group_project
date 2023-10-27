@@ -56,7 +56,7 @@ def create_booking():
 
     print("Newly created booking:", booking.to_dict())
 
-    return booking.to_dict()
+    return {'Booking':booking.to_dict()}
 
 
 # Updates one booking

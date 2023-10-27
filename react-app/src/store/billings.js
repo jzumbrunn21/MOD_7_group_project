@@ -33,9 +33,7 @@ export const createBillingThunk =
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        billingData,
-      }),
+      body: JSON.stringify(billingData),
     });
 
     if (response.ok) {

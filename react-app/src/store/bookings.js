@@ -46,6 +46,7 @@ export const createBookingThunk = (bookingData) => async (dispatch) => {
     if (response.ok) {
       const data = await response.json();
       dispatch(setBooking(data));
+      return data;
     } else {
       throw new Error("Error creating booking");
     }
@@ -73,26 +74,27 @@ export const getBookingsThunk = () => async (dispatch) => {
   }
 };
 
-export const updateBookingThunk = (bookingData, bookingId) => async (dispatch) => {
-  try {
-    const response = await fetch(`/bookings/${bookingId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(bookingData),
-    });
+export const updateBookingThunk =
+  (bookingData, bookingId) => async (dispatch) => {
+    try {
+      const response = await fetch(`/bookings/${bookingId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookingData),
+      });
 
-    if (response.ok) {
-      const data = await response.json();
-      dispatch(updateBooking(data, bookingId));
-    } else {
-      throw new Error("Error updating booking");
+      if (response.ok) {
+        const data = await response.json();
+        dispatch(updateBooking(data, bookingId));
+      } else {
+        throw new Error("Error updating booking");
+      }
+    } catch (error) {
+      console.error(error);
     }
-  } catch (error) {
-    console.error(error);
-  }
-};
+  };
 
 export const deleteBookingThunk = (bookingId) => async (dispatch) => {
   try {
