@@ -40,24 +40,24 @@ def all_billings():
 #     return jsonify(response) # Or json.dumps()?
 
 # Creates one billing
-@billings_routes.route('/new', methods=["POST"])
-def create_billing():
-    form = BillingForm()
-    # !!! Shoud we create the images here too? !!!
-    form['csrf_token'].data = request.cookies['csrf_token']
-    if form.validate_on_submit():
-        billing = Billing(
-            user_id=current_user.id,
-            booking_id=form.data['booking_id'],
-            card_full_name=form.data['card_full_name'],
-            card_number=form.data['card_number'],
-            card_cvv=form.data['card_cvv'],
-            card_zipcode=form.data['card_zipcode'],
-            card_exp_data=form.data['card_exp_data']
-        )
-        db.session.add(billing)
-        db.session.commit()
-        # !!! Do we need to query it then return? Examples just returns the below
-        return billing.to_dict(), 201
-    else:
-        return {"Errors": form.errors} #Placeholder
+# @billings_routes.route('/new', methods=["POST"])
+# def create_billing():
+#     form = BillingForm()
+#     # !!! Shoud we create the images here too? !!!
+#     form['csrf_token'].data = request.cookies['csrf_token']
+#     if form.validate_on_submit():
+#         billing = Billing(
+#             user_id=current_user.id,
+#             booking_id=form.data['booking_id'],
+#             card_full_name=form.data['card_full_name'],
+#             card_number=form.data['card_number'],
+#             card_cvv=form.data['card_cvv'],
+#             card_zipcode=form.data['card_zipcode'],
+#             card_exp_data=form.data['card_exp_data']
+#         )
+#         db.session.add(billing)
+#         db.session.commit()
+#         # !!! Do we need to query it then return? Examples just returns the below
+#         return billing.to_dict(), 201
+#     else:
+#         return {"Errors": form.errors} #Placeholder
