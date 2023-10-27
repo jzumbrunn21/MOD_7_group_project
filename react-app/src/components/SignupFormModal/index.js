@@ -92,6 +92,46 @@ function SignupFormModal() {
 					className="input-field"
 				/>
 				</label>
+				<label className="input-label">
+				First Name
+				<input
+					type="text"
+					value={firstName}
+					onChange={(e) => setFirstName(e.target.value)}
+					required
+					className="input-field"
+				/>
+				</label>
+				<label className="input-label">
+				Last Name
+				<input
+					type="text"
+					value={lastName}
+					onChange={(e) => setLastName(e.target.value)}
+					required
+					className="input-field"
+				/>
+				</label>
+				<label className="input-label">
+				Address
+				<input
+					type="text"
+					value={address}
+					onChange={(e) => setAddress(e.target.value)}
+					required
+					className="input-field"
+				/>
+				</label>
+				<label className="input-label">
+				Profile Picture
+				<input
+					type="text"
+					value={profilePicture}
+					onChange={(e) => setProfilePicture(e.target.value)}
+					required
+					className="input-field"
+				/>
+				</label>
 				<button type="submit" className="signup-button">Sign Up</button>
 			</form>
          </div>
