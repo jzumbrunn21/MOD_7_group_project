@@ -4,6 +4,8 @@ import "./DeleteConfirmationModal.css";
 import { deleteServiceThunk } from "../../store/services";
 import { Modal, useModal } from "../../context/Modal";
 
+import './DeleteConfirmationModal.css'
+
 const DeleteConfirmationModal = ({ serviceId, show, onCancel }) => {
   const dispatch = useDispatch();
   const { closeModal } = useModal();

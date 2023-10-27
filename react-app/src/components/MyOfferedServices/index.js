@@ -8,6 +8,8 @@ import DeleteConfirmationModal from "../DeleteConfirmationModal";
 import { Modal, useModal } from "../../context/Modal";
 import UpdateService from "../UpdateService";
 
+import "./MyOfferedServices.css"
+
 const MyOfferedServices = () => {
   const dispatch = useDispatch();
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -44,44 +46,37 @@ const MyOfferedServices = () => {
       {/* List of Offered Services */}
       <div className="offered-services-list">
         {userServices.map((service) => (
-          <div key={service.id} className="service-container">
-            <img src={service.url} alt={service.service_title} />
-            <div className="service-info">
-              <h3>{service.service_title}</h3>
-              <p>{service.service_description}</p>
-              <p>Reviews: {service.reviews}</p>
+          <div key={service.id} className="offered-service-container">
+            <div className="image-wrapper">
+              <img className="my-services-img" src={service.url} alt={service.service_title} />
             </div>
-            <div className="service-actions">
-              <Link
-                className="update-service-button"
-                to={`/services/update/${service.id}`}
-              >
-                Update
-              </Link>
-              {/* <button
-                className="delete-button"
-                onClick={() => setShowDeleteConfirmation(true)}
-              >
-                Delete
-              </button> */}
-              {/* <DeleteConfirmationModal
-                show={showDeleteConfirmation}
-                onCancel={() => setShowDeleteConfirmation(false)}
-                serviceId={service.id}
-              /> */}
-              <OpenModalButton
-                buttonText="Delete"
-                modalComponent={
-                  <DeleteConfirmationModal
-                    show={showDeleteConfirmation}
-                    onCancel={() => setShowDeleteConfirmation(false)}
-                    serviceId={service.id}
+            <div className="my-services-info">
+              <div className="service-info">
+                <h3 className="service-title">{service.service_title}</h3>
+                <p className="service-description">{service.service_description}</p>
+              </div>
+              <div className="service-actions">
+                <span className="reviews">Reviews: {service.reviews}</span>
+                <div className="service-btns">
+                  <Link
+                    className="update-service-button"
+                    to={`/services/update/${service.id}`}
+                  >
+                    Update
+                  </Link>
+                  <OpenModalButton
+                    className="delete-button"
+                    buttonText="Delete"
+                    modalComponent={
+                      <DeleteConfirmationModal
+                        show={showDeleteConfirmation}
+                        onCancel={() => setShowDeleteConfirmation(false)}
+                        serviceId={service.id}
+                      />
+                    }
                   />
-                }
-                // show={showDeleteConfirmation}
-                // onCancel={() => setShowDeleteConfirmation(false)}
-                // serviceId={service.id}
-              />
+                </div>
+              </div>
             </div>
           </div>
         ))}

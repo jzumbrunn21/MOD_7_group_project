@@ -3,7 +3,7 @@
     margin: 0 auto;
     padding: 20px;
   }
-  
+
   .background-image-container {
     text-align: center;
     position: relative;
@@ -13,12 +13,12 @@
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   }
-  
+
   .background-image-container h1 {
     font-size: 24px;
     margin-bottom: 10px;
   }
-  
+
   .background-image-container button {
     background-color: #007bff;
     color: #fff;
@@ -27,14 +27,16 @@
     cursor: pointer;
     margin-top: 10px;
   }
-  
+
   .navigation-info {
     text-align: center;
     margin-top: 20px;
     font-size: 14px;
   }
-  
+
   .service-details {
+    display: flex;
+    justify-content: space-between;
     text-align: left;
     margin-top: 20px;
     background: #fff;
@@ -43,48 +45,47 @@
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   }
-  
+
   .service-details h2 {
     font-size: 18px;
     margin-bottom: 10px;
   }
-  
+
   .service-details p {
     font-size: 16px;
-    margin-bottom: 10px;
+
   }
-  
+  .review-description{
+    margin-right: 20px;
+  }
   .service-details img {
     max-width: 100%;
     height: auto;
     margin-top: 10px;
   }
-  
+
   .reviews-section {
     text-align: left;
     margin-top: 20px;
   }
-  
+
   .reviews-section h2 {
     font-size: 18px;
     margin-bottom: 10px;
   }
-  
+
   /* Booking Modal Styles */
   .booking-modal {
     text-align: center;
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+    margin: 10px;
   }
-  
+
   .booking-modal h2 {
     font-size: 18px;
     margin-bottom: 10px;
   }
-  
+
   .booking-modal input {
     width: 100%;
     padding: 10px;
@@ -93,7 +94,7 @@
     border-radius: 5px;
     font-size: 16px;
   }
-  
+
   .booking-modal button {
     background-color: #007bff;
     color: #fff;
@@ -101,3 +102,40 @@
     border: none;
     cursor: pointer;
   }
+
+
+  /* Reviews Section */
+.reviews-section {
+  border-radius: 5px;
+}
+
+
+.review {
+  display: flex;
+
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  background-color: #fff;
+}
+.review-info{
+
+}
+.review p {
+  margin: 5px;
+}
+
+.review img {
+  max-width: 60%;
+  border-radius: 5px;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin: 0 10px;
+}
+
+.navigation-info {
+  text-align: left;
+}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import OpenModalButton from '../OpenModalButton';
 import DeleteReviewConfirmModal from '../DeleteReviewConfirmModal'
+import BillingDetailsModal from '../BillingDetailsModal'
 
 import PostReviewModal from '../PostReviewModal';
 
@@ -119,6 +120,16 @@ const MyBookedServices = () => {
                   <p>Review: {()=>checkUndefined(reviews.filter((review)=>
                   booking.service_id === review.service_id
                   )[0].review)} </p>
+
+                  <OpenModalButton
+                    buttonText="Billing Details"
+                    modalComponent={
+
+                    <BillingDetailsModal
+                      bookingId={booking.id}
+                    />
+                } />
+
                   {/* <button >Delete review</button> */}
                   <OpenModalButton
                     buttonText="Delete your Review"

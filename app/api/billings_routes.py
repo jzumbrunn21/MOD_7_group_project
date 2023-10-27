@@ -2,6 +2,8 @@ from flask import Blueprint, jsonify, request, redirect
 from app.models import db, Billing
 # Forms need importing
 from app.forms import BillingForm
+from flask_login import current_user
+
 billings_routes = Blueprint("billings", __name__)
 
 # !!!NOT COMPLETE
@@ -20,10 +22,11 @@ billings_routes = Blueprint("billings", __name__)
 
 # Partial CRUD: Create, Read, Read One(?)
 
-# Returns all the billings
-@billings_routes.route('/')
+# Returns all the billings of a user
+# Billings that match the
+@billings_routes.route('')
 def all_billings():
-    response = [billing.to_dict() for billing in Billing.query.all()]
+    response = [billing.to_dict() for billing in Billing.query.filter(current_user.id == Billing.user_id)]
     # return {"services": response}
     # response = Service.query.all()
     return {"billings": response}
