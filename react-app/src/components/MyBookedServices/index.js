@@ -6,6 +6,8 @@ import BillingDetailsModal from "../BillingDetailsModal";
 
 import PostReviewModal from "../PostReviewModal";
 
+import "./MyBookedServices.css"
+
 import { getBookingsThunk, deleteBookingThunk } from "../../store/bookings";
 import { getUserReviewsThunk } from "../../store/reviews";
 
@@ -70,6 +72,7 @@ const MyBookedServices = () => {
   //The add review modal
   const addReviewModal = (booking) => {
     return (<OpenModalButton
+                className="booked-modal-button"
                 buttonText="Add your Review"
                  modalComponent={
                    <PostReviewModal
@@ -99,6 +102,7 @@ const MyBookedServices = () => {
 
   return (
     <div className="my-booked-services-container">
+      <h1 className="my-bookings-title">My Booked Services</h1>
       <div className="tabs">
         <button
           className={activeTab ? "active" : ""}
