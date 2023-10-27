@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 .login-button{
     margin-bottom: 15px;
     margin-left: 0px;
 }
 
+=======
+.login-button {
+  margin-bottom: 15px;
+  margin-left: 0px;
+}
+>>>>>>> 1ae0d69c28d910c310c26c3a61c3ec02dc87cc9e
 .error {
   color: red;
 }
