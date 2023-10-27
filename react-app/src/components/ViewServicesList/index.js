@@ -80,7 +80,7 @@ const ViewServicesList = () => {
 
   const categories = ["Cleaning", "Lawn Service", "Moving"];
   const bannerImage =
-    "https://www.pennington.com/-/media/Project/OneWeb/Pennington/Images/blog/seed/Lawn-Mowing-101/lawnmowing_header.jpg?h=480&iar=0&w=1140&hash=A31A0D1154494243E72C807D9E502F04";
+    "https://as1.ftcdn.net/v2/jpg/04/27/47/64/1000_F_427476485_oTb1JxGzFAc5MnVb6KoCoZYTgCNm6fSk.jpg";
 
   return (
     <div className="services-list-container">
