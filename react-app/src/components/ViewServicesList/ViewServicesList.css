@@ -131,6 +131,9 @@ button {
   color: #000;
 }
 
+.star{
+  color: rgb(224, 205, 0);
+}
 @media (max-width: 768px) {
   .services-grid {
     justify-content: center;
