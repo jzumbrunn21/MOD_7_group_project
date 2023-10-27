@@ -175,15 +175,6 @@ const ServiceDetailPage = () => {
               onChange={handleBookingDateChange}
             />
 
-
-            {errors.selected_booking_date && (
-              <p className="error-message">{errors.selected_booking_date}</p>
-            )}
-
-            <button onClick={handleContinueToBilling}>
-              Continue to Billing
-            </button>
-
             {errors.selected_booking_date && (
               <p className="error-message">{errors.selected_booking_date}</p>
             )}
