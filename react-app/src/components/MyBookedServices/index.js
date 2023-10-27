@@ -102,7 +102,7 @@ const MyBookedServices = () => {
                     <BillingDetailsModal bookingId={booking.id} />
                   }
                 />
-                <button onClick={() => handleDelete(booking.id)}>Delete</button>
+                <button onClick={() => handleDelete(booking.id)}>Delete this Booking</button>
               </div>
             ))}
         </div>
@@ -152,7 +152,7 @@ const MyBookedServices = () => {
                 />
                 {/* <button onClick={openReviewModal}>Add Your Review</button> */}
 
-                <button onClick={() => handleDelete(booking.id)}>Delete</button>
+                <button onClick={() => handleDelete(booking.id)}>Delete this Booking</button>
 
                 {/* {showReviewModal && ( */}
                   <OpenModalButton

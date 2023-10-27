@@ -16,7 +16,12 @@ const PostReviewModal = ({ serviceTitle, serviceId }) => {
     const newErrors = {};
     if (!reviewText || reviewText.length < 25 || reviewText.length > 2000) {
       newErrors.reviewText =
-        "Review is required and msut be between 25 and 2000 characters";
+        "Review is required and must be between 25 and 2000 characters";
+      setErrors(newErrors);
+    }
+
+    if (rating < 1) {
+      newErrors.rating = "You must rate this service";
       setErrors(newErrors);
     }
 
@@ -65,6 +70,7 @@ const PostReviewModal = ({ serviceTitle, serviceId }) => {
             &#9733;
           </span>
         ))}
+        {errors.rating && <span className="error">{errors.rating}</span>}
       </div>
       <button onClick={handleReviewSubmit}>Submit your review</button>
     </div>
