@@ -46,6 +46,8 @@ export const createBookingThunk = (bookingData) => async (dispatch) => {
     if (response.ok) {
       const data = await response.json();
       dispatch(setBooking(data));
+      console.log("****BOOKING THUNK DATA", data)
+      return data;
     } else {
       throw new Error("Error creating booking");
     }
@@ -89,11 +91,9 @@ export const updateBookingThunk = (bookingData, bookingId) => async (dispatch) =
       return data;
     } else {
       throw new Error("Error updating booking");
+
     }
-  } catch (error) {
-    console.error(error);
-  }
-};
+  };
 
 export const deleteBookingThunk = (bookingId) => async (dispatch) => {
   try {

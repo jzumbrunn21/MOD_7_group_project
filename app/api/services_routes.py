@@ -28,7 +28,7 @@ def all_services():
         services = Service.query.filter_by(service_category=category).all()
     else:
         services = Service.query.all()
-    
+
     response = [service.to_dict() for service in services]
     return {"services": response}
 
@@ -46,7 +46,6 @@ def users_services():
 def create_service():
     form = ServiceForm()
     # imageForm = ImageForm()
-    # !!! Shoud we create the images here too? !!!
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         service = Service(

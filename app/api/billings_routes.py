@@ -2,6 +2,9 @@ from flask import Blueprint, jsonify, request, redirect
 from app.models import db, Billing
 # Forms need importing
 from app.forms import BillingForm
+from datetime import datetime
+from flask_login import current_user
+
 billings_routes = Blueprint("billings", __name__)
 
 # !!!NOT COMPLETE
@@ -20,10 +23,11 @@ billings_routes = Blueprint("billings", __name__)
 
 # Partial CRUD: Create, Read, Read One(?)
 
-# Returns all the billings
-@billings_routes.route('/')
+# Returns all the billings of a user
+# Billings that match the
+@billings_routes.route('')
 def all_billings():
-    response = [billing.to_dict() for billing in Billing.query.all()]
+    response = [billing.to_dict() for billing in Billing.query.filter(current_user.id == Billing.user_id)]
     # return {"services": response}
     # response = Service.query.all()
     return {"billings": response}
@@ -40,21 +44,28 @@ def all_billings():
 @billings_routes.route('/new', methods=["POST"])
 def create_billing():
     form = BillingForm()
-    # !!! Shoud we create the images here too? !!!
+    print("*****ROUTEDATA", form.data)
+    data = request.get_json()
+    booking_id = data.get('booking_id')
+    card_exp_date = data.get('card_exp_date')
+    # Convert card exp date data into datetime format for validation
+    expiration_time = datetime.strptime(card_exp_date + '-01', '%Y-%m-%d')
+    # !!! card_exp_date is in the format of Month/Year, this .strptime needs to be adjusted
+    formatted_date = expiration_time.strftime('%m/%y')
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         billing = Billing(
-            user_id=form.data['user_id'],
-            booking_id=form.data['booking_id'],
+            user_id=current_user.id,
+            booking_id=booking_id, # Different key because of how it is sent in thunk
             card_full_name=form.data['card_full_name'],
             card_number=form.data['card_number'],
             card_cvv=form.data['card_cvv'],
             card_zipcode=form.data['card_zipcode'],
-            card_exp_data=form.data['card_exp_data']
+            card_exp_date=formatted_date   # DateTime validated, use expiration_time variable
         )
         db.session.add(billing)
         db.session.commit()
         # !!! Do we need to query it then return? Examples just returns the below
-        return billing.to_dict()
+        return billing.to_dict(), 201
     else:
-        return "Creation error!!!" #Placeholder
+        return {"Errors": form.errors} #Placeholder

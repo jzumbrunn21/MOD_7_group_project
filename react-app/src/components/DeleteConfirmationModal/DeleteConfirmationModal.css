@@ -1,0 +1,22 @@
+
+.delete-confirmation-modal{
+    padding: 20px;
+    align-items: center;
+    text-align: center;
+}
+
+.button-container{
+    
+    align-items: center;
+}
+
+.confirm-delete-button{
+    background-color: rgb(190, 0, 0);
+    color: #fff
+}
+
+
+.cancel-delete-button{
+    background-color: #007bff;
+    color: #fff;
+}

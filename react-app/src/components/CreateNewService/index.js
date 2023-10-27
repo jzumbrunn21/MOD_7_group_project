@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { createServiceThunk } from "../../store/services";
-import "./CreateNewService.css";
+import "./CreateNewService.css"; // Import the CSS file
 
 const CreateNewService = () => {
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
-  // const [providerName, setProviderName] = useState("");
   const [description, setDescription] = useState("");
   const [url, setUrl] = useState("");
   const [price, setPrice] = useState(0);
@@ -22,29 +21,26 @@ const CreateNewService = () => {
 
     const newErrors = {};
     if (!title || title.length < 6 || title.length > 50) {
-      newErrors.title =
-        "Title is required and must be between 6 and 50 characters ";
+      newErrors.title = "Title is required and must be between 6 and 50 characters ";
     }
 
     if (!description || description.length < 1 || description.length > 2000) {
-      newErrors.description =
-        "Description is required and must be between 1 and 2000 characters ";
+      newErrors.description = "Description is required and must be between 1 and 2000 characters ";
     }
 
     const validUrlEndings = [".jpg", ".jpeg", ".png"];
-    if (
-      !url ||
-      !validUrlEndings.some((ending) => url.toLowerCase().endsWith(ending))
-    ) {
-      newErrors.url =
-        "Image url is required and must end in .jpg, .jpeg, or .png";
+    if (!url || !validUrlEndings.some((ending) => url.toLowerCase().endsWith(ending))) {
+      newErrors.url = "Image URL is required and must end in .jpg, .jpeg, or .png";
     }
+
     if (!price || price < 1) {
       newErrors.price = "Price is required";
     }
+
     if (!lengthEstimate || lengthEstimate < 1) {
       newErrors.lengthEstimate = "Length Estimate is required";
     }
+
     if (!category) {
       newErrors.category = "Category is required";
     }
@@ -53,26 +49,21 @@ const CreateNewService = () => {
       setErrors(newErrors);
       return;
     }
-    const service_title = title;
-    const service_description = description;
-    const service_price = price;
-    const service_length_est = lengthEstimate;
-    const service_category = category;
 
     const serviceData = {
-      service_title,
-      service_description,
+      service_title: title,
+      service_description: description,
       url,
-      service_price,
-      service_length_est,
-      service_category,
+      service_price: price,
+      service_length_est: lengthEstimate,
+      service_category: category,
     };
 
     const createdService = await dispatch(createServiceThunk(serviceData));
     if (createdService) {
       history.push(`/services/${createdService.id}`);
     } else {
-      return "Error"; //Placeholder
+      return "Error"; // Placeholder
     }
   };
 
@@ -95,6 +86,7 @@ const CreateNewService = () => {
           <label>
             Service Description
             <textarea
+              rows="5" // Adjust rows as needed
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
@@ -105,8 +97,12 @@ const CreateNewService = () => {
         </div>
         <div className="create-service-url">
           <label>
-            ImageUrl
-            <textarea value={url} onChange={(e) => setUrl(e.target.value)} />
+            Image URL
+            <input
+              type="text"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+            />
             {errors.url && <span className="error">{errors.url}</span>}
           </label>
         </div>
@@ -145,11 +141,6 @@ const CreateNewService = () => {
               <option value="Cleaning">Cleaning</option>
               <option value="Moving">Moving</option>
             </select>
-            {/* <input
-            type="text"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          /> */}
             {errors.category && (
               <span className="error">{errors.category}</span>
             )}

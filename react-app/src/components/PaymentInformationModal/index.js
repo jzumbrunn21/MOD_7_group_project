@@ -1,31 +1,33 @@
-import React, { useState } from 'react';
-import './PaymentInformation.css';
+import React, { useState } from "react";
+import "./PaymentInformation.css";
+import { useModal } from "../../context/Modal";
 
 const PaymentInformationModal = ({ onClose, onConfirmBooking }) => {
-  const [cardholderName, setCardholderName] = useState('');
-  const [cardNumber, setCardNumber] = useState('');
-  const [cvc, setCVC] = useState('');
-  const [expirationDate, setExpirationDate] = useState('');
-  const [zipCode, setZipCode] = useState('');
+  const [cardholderName, setCardholderName] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
+  const [cvv, setCVV] = useState("");
+  const [expirationDate, setExpirationDate] = useState("");
+  const [zipCode, setZipCode] = useState("");
   const [errors, setErrors] = useState({});
-
+  const { closeModal } = useModal;
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
 
     if (!/^[A-Za-z\s]+$/.test(cardholderName)) {
-      newErrors.cardholderName = 'Valid cardholder name is required (letters and spaces only)';
+      newErrors.cardholderName =
+        "Valid cardholder name is required (letters and spaces only)";
     }
 
     if (!/^\d{16}$/.test(cardNumber)) {
-      newErrors.cardNumber = 'Valid 16-digit card number is required';
+      newErrors.cardNumber = "Valid 16-digit card number is required";
     }
 
-    if (!/^\d{3}$/.test(cvc)) {
-      newErrors.cvc = 'Valid 3-digit CVC is required';
+    if (!/^\d{3}$/.test(cvv)) {
+      newErrors.cvv = "Valid 3-digit CVV is required";
     }
 
-    const [inputMonth, inputYear] = expirationDate.split('/');
+    const [inputMonth, inputYear] = expirationDate.split("/");
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1;
     const currentYear = currentDate.getFullYear() % 100;
@@ -33,31 +35,38 @@ const PaymentInformationModal = ({ onClose, onConfirmBooking }) => {
     const inputMonthNumber = parseInt(inputMonth, 10);
     const inputYearNumber = parseInt(inputYear, 10);
 
-    if(inputYearNumber < currentYear || (inputYearNumber === currentYear && inputMonthNumber < currentMonth)){
-      newErrors.expirationDate = 'Card expired';
+    if (
+      inputYearNumber < currentYear ||
+      (inputYearNumber === currentYear && inputMonthNumber < currentMonth)
+    ) {
+      newErrors.expirationDate = "Card expired";
     }
 
-
-    if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expirationDate)) {
-      newErrors.expirationDate = 'Valid expiration date (MM/YY) is required';
+    if (!expirationDate) {
+      newErrors.expirationDate = "Valid expiration date (MM/YY) is required";
     }
 
     if (!/^\d{5}$/.test(zipCode)) {
-      newErrors.zipCode = 'Valid 5-digit zip code is required';
+      newErrors.zipCode = "Valid 5-digit zip code is required";
     }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      // No errors, proceed to confirmation
+      const card_full_name = cardholderName;
+      const card_number = cardNumber;
+      const card_cvv = cvv;
+      const card_zipcode = zipCode;
+      const card_exp_date = expirationDate;
       const paymentInfo = {
-        cardholderName,
-        cardNumber,
-        cvc,
-        expirationDate,
-        zipCode,
+        card_full_name,
+        card_number,
+        card_cvv,
+        card_exp_date,
+        card_zipcode,
       };
       onConfirmBooking(paymentInfo);
+      //closeModal();
       onClose();
     }
   };
@@ -78,7 +87,9 @@ const PaymentInformationModal = ({ onClose, onConfirmBooking }) => {
             value={cardholderName}
             onChange={(e) => setCardholderName(e.target.value)}
           />
-          {errors.cardholderName && <p className="error-message">{errors.cardholderName}</p>}
+          {errors.cardholderName && (
+            <p className="error-message">{errors.cardholderName}</p>
+          )}
         </div>
 
         {/* Card Number Input */}
@@ -89,7 +100,9 @@ const PaymentInformationModal = ({ onClose, onConfirmBooking }) => {
             value={cardNumber}
             onChange={(e) => setCardNumber(e.target.value)}
           />
-          {errors.cardNumber && <p className="error-message">{errors.cardNumber}</p>}
+          {errors.cardNumber && (
+            <p className="error-message">{errors.cardNumber}</p>
+          )}
         </div>
 
         {/* CVC Input */}
@@ -97,21 +110,23 @@ const PaymentInformationModal = ({ onClose, onConfirmBooking }) => {
           <label>CVC:</label>
           <input
             type="number"
-            value={cvc}
-            onChange={(e) => setCVC(e.target.value)}
+            value={cvv}
+            onChange={(e) => setCVV(e.target.value)}
           />
           {errors.cvc && <p className="error-message">{errors.cvc}</p>}
         </div>
 
         {/* Expiration Date Input */}
         <div className="input-field">
-          <label>Expiration Date (MM/YY):</label>
+          <label>Expiration Date (MM/YYYY):</label>
           <input
-            type="tel"
+            type="month"
             value={expirationDate}
             onChange={(e) => setExpirationDate(e.target.value)}
           />
-          {errors.expirationDate && <p className="error-message">{errors.expirationDate}</p>}
+          {errors.expirationDate && (
+            <p className="error-message">{errors.expirationDate}</p>
+          )}
         </div>
 
         {/* Zip Code Input */}
