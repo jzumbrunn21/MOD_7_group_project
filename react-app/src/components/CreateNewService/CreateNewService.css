@@ -1,3 +1,68 @@
 .error {
   color: red;
 }
+
+.create-service-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.create-service-container h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.create-service-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-service-container label {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.create-service-container input,
+.create-service-container textarea,
+.create-service-container select {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.create-service-container .error {
+  color: #ff0000;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.create-service-container button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.create-service-container button:hover {
+  background-color: #0056b3;
+}
+
+.create-service-container textarea {
+
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: none;
+  height: 100%;
+}
