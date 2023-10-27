@@ -8,10 +8,12 @@ import DeleteConfirmationModal from "../DeleteConfirmationModal";
 import { Modal, useModal } from "../../context/Modal";
 import UpdateService from "../UpdateService";
 
-import "./MyOfferedServices.css"
+import "./MyOfferedServices.css";
 
 const MyOfferedServices = () => {
   const dispatch = useDispatch();
+  const bannerImage =
+    "https://www.directpoolsupplies.com.au/cdn/shop/articles/clean_pool_after_storm_1100x.jpg?v=1693983537";
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const userServices = useSelector((state) =>
     Object.values(state.services.services)
@@ -38,7 +40,15 @@ const MyOfferedServices = () => {
   return (
     <div className="my-offered-services-container">
       {/* Background Image Container */}
-      <div className="background-image-container">
+      <div
+        className="background-image-container"
+        style={{
+          backgroundImage: `url(${bannerImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundPositionY: "-250px",
+        }}
+      >
         <h1>My Offered Services</h1>
         <button onClick={onCreateNewService}>Create Your New Service</button>
       </div>
@@ -48,12 +58,18 @@ const MyOfferedServices = () => {
         {userServices.map((service) => (
           <div key={service.id} className="offered-service-container">
             <div className="image-wrapper">
-              <img className="my-services-img" src={service.url} alt={service.service_title} />
+              <img
+                className="my-services-img"
+                src={service.url}
+                alt={service.service_title}
+              />
             </div>
             <div className="my-services-info">
               <div className="service-info">
                 <h3 className="service-title">{service.service_title}</h3>
-                <p className="service-description">{service.service_description}</p>
+                <p className="service-description">
+                  {service.service_description}
+                </p>
               </div>
               <div className="service-actions">
                 <span className="reviews">Reviews: {service.reviews}</span>
