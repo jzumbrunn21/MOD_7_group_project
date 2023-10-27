@@ -73,31 +73,27 @@ export const getBookingsThunk = () => async (dispatch) => {
   }
 };
 
-export const updateBookingThunk =
-  (bookingData, bookingId) => async (dispatch) => {
-    console.log("BOOKINGID", bookingId);
-    try {
-      console.log("DATA", bookingData);
-      const response = await fetch(`/api/bookings/update/${bookingId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookingData),
-      });
+export const updateBookingThunk = (bookingData, bookingId) => async (dispatch) => {
+  try {
+    const response = await fetch(`/api/bookings/update/${bookingId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bookingData),
+    });
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log("THUNKDATA", data);
-        dispatch(updateBooking(data, bookingId));
-        return data;
-      } else {
-        throw new Error("Error updating booking");
-      }
-    } catch (error) {
-      console.error(error);
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(updateBooking(data, bookingId));
+      return data;
+    } else {
+      throw new Error("Error updating booking");
     }
-  };
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export const deleteBookingThunk = (bookingId) => async (dispatch) => {
   try {
@@ -134,12 +130,16 @@ export default function bookingsReducer(state = initialState, action) {
       });
       return newState;
     case UPDATE_BOOKING:
-      newState = { ...state };
-      console.log("BEFORE NEW STATE", newState);
-      console.log("BOOKINGSACTION", newState.bookings[action.bookingId]);
-      console.log("ACTIONDATA", action.bookingData);
-      newState.bookings[action.bookingId] = action.bookingData;
-      return newState;
+      return {
+        ...state,
+        bookings: {
+          ...state.bookings,
+          [action.bookingId]: {
+            ...state.bookings[action.bookingId],
+            ...action.bookingData,
+          },
+        },
+      };
     case DELETE_BOOKING:
       newState = { ...state };
       delete newState.bookings[action.bookingId];

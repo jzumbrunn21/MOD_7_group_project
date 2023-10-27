@@ -64,28 +64,19 @@ def create_booking():
 def update_booking(id):
     form = BookingForm()
     form['csrf_token'].data = request.cookies['csrf_token']
-    # print('**************************', form.data)
+
     if form.validate_on_submit():
         booking_to_update = Booking.query.get(id)
         validDateFormat = datetime.strptime(form.data['start_date_and_time'], '%Y-%m-%dT%H:%M')
 
-        print('*******BOOKINGTOUPDATE************', booking_to_update)
-        # booking_to_update.user_id=form.data['user_id'],
-        # booking_to_update.service_id=form.data['service_id'],
-        booking_to_update.start_date_and_time=validDateFormat
-        # datetime.strptime(start_date_and_time, '%Y-%m-%dT%H:%M')
-        # booking_to_update.status=form.data['status'],
-        # !!! Do we include created_at, updated_at?
-        # db.session.add(service)
-        # db.session.update() ???
+        booking_to_update.start_date_and_time = validDateFormat
         db.session.commit()
 
         return booking_to_update.to_dict(), 201
     else:
         return {"Errors": form.errors}
-    # !!! Should this go to all bookings?
-    # Should redirection only happen in frontend?
-    # return redirect('/bookings')
+    
+    
 
 # Delete one booking
 @bookings_routes.route('/<int:id>', methods=["DELETE"])
