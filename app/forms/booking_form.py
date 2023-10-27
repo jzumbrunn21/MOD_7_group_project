@@ -5,11 +5,11 @@ from app.models import Booking
 from datetime import datetime
 
 def time_date_check(field, form):
-    today_and_now = datetime.now()
+    today_and_now = datetime()
 
     if field.data > today_and_now:
         raise ValidationError('You must book for a date in the future')
 
 
 class BookingForm(FlaskForm):
-    start_date_and_time = StringField('start_date_and_time')
+    start_date_and_time = DateTimeField('start_date_and_time', validators=[DataRequired()])
