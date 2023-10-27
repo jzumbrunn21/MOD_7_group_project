@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import "./ViewServicesList.css";
-import { getServicesThunk, getImageThunk } from "../../store/services";
+import { getServicesThunk } from "../../store/services";
+import { getReviewsThunk } from "../../store/reviews";
 import { useModal } from "../../context/Modal";
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
@@ -14,10 +15,39 @@ const ViewServicesList = () => {
     Object.values(state.services.services)
   );
   const [categoryFilter, setCategoryFilter] = useState(null);
+  const reviews = useSelector((state) => Object.values(state.reviews.reviews));
+
+  // State to store average ratings
+  const [averageRatings, setAverageRatings] = useState({});
 
   useEffect(() => {
     dispatch(getServicesThunk());
+    dispatch(getReviewsThunk());
   }, [dispatch]);
+
+  useEffect(() => {
+    const averageRatingsData = {};
+    services.forEach((service) => {
+      const serviceId = service.id;
+      const serviceReviews = reviews.filter(
+        (review) => review.service_id === serviceId
+      );
+
+      if (serviceReviews.length === 0) {
+        averageRatingsData[serviceId] = 'New';
+      } else {
+        const sum = serviceReviews.reduce((total, review) => {
+          const rating = parseFloat(review.star_rating);
+          return isNaN(rating) ? total : total + rating;
+        }, 0);
+
+        const average = (sum / serviceReviews.length).toFixed(2);
+        averageRatingsData[serviceId] = average;
+      }
+    });
+
+    setAverageRatings(averageRatingsData);
+  }, [services, reviews]);
 
   const handleFilter = (e) => {
     const inputCategory = e.target.value.toLowerCase();
@@ -28,20 +58,16 @@ const ViewServicesList = () => {
     }
   };
 
-  // Use useModal to access the openModal function
   const { openModal } = useModal();
 
-  // Define a function to open the login modal
   const openLoginModal = () => {
     openModal(<LoginFormModal />);
   };
 
-  // Function to clear the filter
   const clearFilter = () => {
     setCategoryFilter(null);
   };
 
-  // Filter services based on the selected category
   const filteredServices = categoryFilter
     ? services.filter(
       (service) =>
@@ -49,17 +75,10 @@ const ViewServicesList = () => {
     )
     : services;
 
-  // Define the test label based on the selected category
   const testLabel = categoryFilter
     ? `This is your result for category: ${categoryFilter}`
     : "";
 
-  // Function to handle category clicks and update the filter
-  const handleCategoryClick = (category) => {
-    setCategoryFilter(category);
-  };
-
-  // Categories to display as buttons
   const categories = ["Cleaning", "Lawn Service", "Moving"];
 
   return (
@@ -87,9 +106,8 @@ const ViewServicesList = () => {
           </div>
         )}
         <div className="service-labels">
-          {/* Map through categories and create clickable labels */}
           {categories.map((category) => (
-            <span key={category} onClick={() => handleCategoryClick(category.toLowerCase())}>
+            <span key={category} onClick={() => setCategoryFilter(category.toLowerCase())}>
               {category}
             </span>
           ))}
@@ -109,7 +127,7 @@ const ViewServicesList = () => {
               <p>{service.service_description}</p>
               <div className="price-rating-wrapper">
                 <p>Price ${service.service_price}/h</p>
-                <p>Rating:★ {service.rating}/5</p>
+                <p><span className="star">★</span> {averageRatings[service.id]}</p>
               </div>
             </div>
           </Link>
