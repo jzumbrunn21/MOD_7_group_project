@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { updateBookingThunk } from "../../store/bookings";
 
+<<<<<<< HEAD
 const UpdateBookingModal = ({ bookingId }) => {
+=======
+const UpdateBookingModal = ({ bookingId, onClose }) => {
+>>>>>>> a9ed8be441d747db900fee3835d0556e07625114
   const sessionUser = useSelector((state) => state.session.user);
   const [bookingDate, setBookingDate] = useState(""); // Use an empty string
   const [errors, setErrors] = useState({});
@@ -21,9 +25,14 @@ const UpdateBookingModal = ({ bookingId }) => {
     } else {
       newErrors.selected_booking_date = "";
     }
+<<<<<<< HEAD
 
     setErrors(newErrors);
     setBookingDate(selected_booking_date);
+=======
+    setErrors(newErrors); // Update the errors state
+
+>>>>>>> a9ed8be441d747db900fee3835d0556e07625114
   };
 
   const handleUpdateBooking = () => {
@@ -34,6 +43,8 @@ const UpdateBookingModal = ({ bookingId }) => {
     };
 
     dispatch(updateBookingThunk(updatedBookingData, bookingId));
+
+    onClose();
     closeModal();
   };
 
