@@ -102,6 +102,14 @@ const MyBookedServices = () => {
                   <p>Service ID: {booking.service_id}</p>
                   <p>Date and Time: {booking.start_date_and_time}</p>
                   <p>Status: Upcoming</p>
+                  <OpenModalButton
+                    buttonText="Billing Details"
+                    modalComponent={
+
+                    <BillingDetailsModal
+                      bookingId={booking.id}
+                    />
+                } />
                   <button onClick={() => handleDelete(booking.id)}>Delete</button>
                 </div>
               ))}
