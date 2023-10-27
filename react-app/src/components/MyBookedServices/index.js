@@ -21,11 +21,6 @@ const MyBookedServices = () => {
   const [userBookingsLength, setUserBookingsLength] = useState(0);
 
   useEffect(() => {
-<<<<<<< HEAD
-=======
-    // setCurrentBookings(bookings);
-    console.log("***HIT GET BOOKINGS")
->>>>>>> a9ed8be441d747db900fee3835d0556e07625114
     dispatch(getBookingsThunk()).then(() => setIsLoading(false));
   }, [dispatch, modalActive]);
 
@@ -108,20 +103,12 @@ const MyBookedServices = () => {
                 <div>
                   <OpenModalButton
                     buttonText="Update"
-<<<<<<< HEAD
                     onButtonClick={() => setModalActive(!modalActive)}
                     onModalClose={() => setModalActive(!modalActive)}
                     modalComponent={
                       <UpdateBookingModal
                         bookingId={booking.id}
                         onUpdateBooking={handleUpdateBooking}
-=======
-                    onButtonClick={(e) => setModalActive(!modalActive)}
-                    // onModalClose={(e) => setModalActive(!modalActive)}
-                    modalComponent={
-                      <UpdateBookingModal bookingId={booking.id}
-                        onClose={closeUpdateModal}
->>>>>>> a9ed8be441d747db900fee3835d0556e07625114
                       />
                     }
                   />
