@@ -45,20 +45,23 @@ def all_billings():
 def create_billing():
     form = BillingForm()
     print("*****ROUTEDATA", form.data)
+    data = request.get_json()
+    booking_id = data.get('booking_id')
+    card_exp_date = data.get('card_exp_date')
     # Convert card exp date data into datetime format for validation
-    expiration_time = datetime.strptime(form.data['card_exp_date'], '%Y-%m-%dT%H:%M')
+    expiration_time = datetime.strptime(card_exp_date + '-01', '%Y-%m-%d')
     # !!! card_exp_date is in the format of Month/Year, this .strptime needs to be adjusted
-    
+    formatted_date = expiration_time.strftime('%m/%y')
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         billing = Billing(
             user_id=current_user.id,
-            booking_id=form.data['bookingId'], # Different key because of how it is sent in thunk
+            booking_id=booking_id, # Different key because of how it is sent in thunk
             card_full_name=form.data['card_full_name'],
             card_number=form.data['card_number'],
             card_cvv=form.data['card_cvv'],
             card_zipcode=form.data['card_zipcode'],
-            card_exp_data=expiration_time   # DateTime validated, use expiration_time variable
+            card_exp_date=formatted_date   # DateTime validated, use expiration_time variable
         )
         db.session.add(billing)
         db.session.commit()

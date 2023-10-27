@@ -118,7 +118,7 @@ const PaymentInformationModal = ({ onClose, onConfirmBooking }) => {
 
         {/* Expiration Date Input */}
         <div className="input-field">
-          <label>Expiration Date (MM/YY):</label>
+          <label>Expiration Date (MM/YYYY):</label>
           <input
             type="month"
             value={expirationDate}

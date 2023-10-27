@@ -8,9 +8,10 @@ const readBillings = (billings) => ({
   billings,
 });
 
-const setBilling = (billingData) => ({
+const setBilling = (billingData, booking_id) => ({
   type: SET_BILLING,
   billingData,
+  booking_id,
 });
 
 // Thunks
@@ -27,27 +28,33 @@ export const getUserBillingsThunk = () => async (dispatch) => {
 };
 
 export const createBillingThunk =
-  (billingData, bookingId) => async (dispatch) => {
-    const {card_full_name, card_number, card_cvv, card_exp_date, card_zipcode} = billingData
+  (billingData, booking_id) => async (dispatch) => {
+    const {
+      card_full_name,
+      card_number,
+      card_cvv,
+      card_exp_date,
+      card_zipcode,
+    } = billingData;
     const response = await fetch("/api/billings/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-    //   body: JSON.stringify(billingData, {bookingId}),
+      //   body: JSON.stringify(billingData, {bookingId}),
       body: JSON.stringify({
         card_full_name,
         card_number,
         card_cvv,
         card_exp_date,
         card_zipcode,
-        bookingId
-      })
+        booking_id,
+      }),
     });
 
     if (response.ok) {
       const data = await response.json();
-      dispatch(setBilling(data, bookingId));
+      dispatch(setBilling(data, booking_id));
       return data;
     } else {
       return "Error";
