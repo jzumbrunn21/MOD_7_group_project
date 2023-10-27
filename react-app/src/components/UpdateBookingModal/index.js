@@ -4,7 +4,8 @@ import { useParams, useHistory } from "react-router-dom";
 
 import { useModal } from "../../context/Modal";
 import { updateBookingThunk } from "../../store/bookings";
-const UpdateBookingModal = ({ bookingId }) => {
+
+const UpdateBookingModal = ({ bookingId, onClose }) => {
   const sessionUser = useSelector((state) => state.session.user);
   const [bookingDate, setBookingDate] = useState(new Date());
   const [errors, setErrors] = useState({});
@@ -28,8 +29,8 @@ const UpdateBookingModal = ({ bookingId }) => {
       // Clear the error if the date is valid
       newErrors.selected_booking_date = ""; // Clear the error
     }
-
     setErrors(newErrors); // Update the errors state
+
   };
 
   //   setBookingDate(bookingDate);
@@ -43,6 +44,8 @@ const UpdateBookingModal = ({ bookingId }) => {
     };
     console.log("Newly created booking data:", updatedBookingData);
     dispatch(updateBookingThunk(updatedBookingData, bookingId));
+
+    onClose();
     closeModal();
 
     // history.push("/my-booked-services");

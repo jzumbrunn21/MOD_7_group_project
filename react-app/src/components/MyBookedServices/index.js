@@ -28,10 +28,12 @@ const MyBookedServices = () => {
 
   useEffect(() => {
     // setCurrentBookings(bookings);
+    console.log("***HIT GET BOOKINGS")
     dispatch(getBookingsThunk()).then(() => setIsLoading(false));
   }, [dispatch, modalActive]);
 
   useEffect(() => {
+    console.log("***HIT GET USER REVIEWS")
     dispatch(getUserReviewsThunk());
   }, [dispatch]);
 
@@ -65,11 +67,15 @@ const MyBookedServices = () => {
   //     )
   // console.log(test)
 
+  const closeUpdateModal = () => {
+    setModalActive(!modalActive);
+  }
+
   const checkUndefined = (value) => {
     if (value === undefined) return value;
     else return "";
   };
-
+  console.log("****MODAL ACTIVE CHECK", modalActive)
   return (
     <div className="my-booked-services-container">
       <div className="tabs">
@@ -103,9 +109,11 @@ const MyBookedServices = () => {
                   <OpenModalButton
                     buttonText="Update"
                     onButtonClick={(e) => setModalActive(!modalActive)}
-                    onModalClose={(e) => setModalActive(!modalActive)}
+                    // onModalClose={(e) => setModalActive(!modalActive)}
                     modalComponent={
-                      <UpdateBookingModal bookingId={booking.id} />
+                      <UpdateBookingModal bookingId={booking.id}
+                        onClose={closeUpdateModal}
+                      />
                     }
                   />
                 </div>
