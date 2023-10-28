@@ -25,11 +25,14 @@ const ServiceDetailPage = () => {
   const [bookingDate, setBookingDate] = useState(new Date());
   const [errors, setErrors] = useState({});
 
-  const [averageRating, setAverageRating] = useState('0.00'); // Average rating state as a string
+  const [averageRating, setAverageRating] = useState('0.00');
 
   const serviceDetail = useSelector(
     (state) => Object.values(state.services.singleService)[0]
   );
+
+  console.log("SERVICE DETAIL provider_id", serviceDetail?.provider_id);
+
   const reviews = useSelector((state) => Object.values(state.reviews.reviews));
   const serviceReviews = reviews.filter(
     (review) => review.service_id === parseInt(serviceId)
@@ -125,7 +128,7 @@ const ServiceDetailPage = () => {
     const newBooking = await dispatch(createBookingThunk(bookingData));
     console.log("NEWBOOKING", newBooking);
     // const bookingId = newBooking.id;
-    if(newBooking) {
+    if (newBooking) {
       const newBilling = await dispatch(createBillingThunk(paymentInfo, newBooking.id));
       console.log("NEW BILLING", newBilling)
     }
@@ -152,10 +155,12 @@ const ServiceDetailPage = () => {
         {sessionUser ? (
           <div>
             <h1>{serviceDetail.service_title}</h1>
-            <button onClick={handleBookNow}>Book Now</button>
+            {sessionUser.id !== serviceDetail.provider_id ? (
+              <button onClick={handleBookNow}>Book Now</button>
+            ) : null}
           </div>
         ) : (
-          <div className="background-image-container">
+          <div>
             <h1>{serviceDetail.service_title}</h1>
             <OpenModalButton
               buttonText="Book Now"
@@ -164,6 +169,7 @@ const ServiceDetailPage = () => {
             />
           </div>
         )}
+
         {/* Booking Modal */}
         {showBookingModal && (
           <div className="booking-modal">
@@ -196,7 +202,7 @@ const ServiceDetailPage = () => {
           <p className="review-description">
             {serviceDetail.service_description}
           </p>
-          <p>Provider Name</p>
+          <p>Provider Name {serviceDetail.provider_id}</p>
           <p>${serviceDetail.service_price}</p>
         </div>
         <div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import "./ViewServicesList.css";
@@ -17,16 +17,10 @@ const ViewServicesList = () => {
   const [categoryFilter, setCategoryFilter] = useState(null);
   const reviews = useSelector((state) => Object.values(state.reviews.reviews));
 
-  // State to store average ratings
-  const [averageRatings, setAverageRatings] = useState({});
-
-  useEffect(() => {
-    dispatch(getServicesThunk());
-    dispatch(getReviewsThunk());
-  }, [dispatch]);
-
-  useEffect(() => {
+  // Calculate average ratings using useMemo
+  const averageRatings = useMemo(() => {
     const averageRatingsData = {};
+
     services.forEach((service) => {
       const serviceId = service.id;
       const serviceReviews = reviews.filter(
@@ -46,8 +40,13 @@ const ViewServicesList = () => {
       }
     });
 
-    setAverageRatings(averageRatingsData);
+    return averageRatingsData;
   }, [services, reviews]);
+
+  useEffect(() => {
+    dispatch(getServicesThunk());
+    dispatch(getReviewsThunk());
+  }, [dispatch]);
 
   const handleFilter = (e) => {
     const inputCategory = e.target.value.toLowerCase();
