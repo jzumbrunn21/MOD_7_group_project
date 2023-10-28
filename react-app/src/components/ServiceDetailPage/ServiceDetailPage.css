@@ -1,114 +1,115 @@
 .service-detail-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  }
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
 
-  .background-image-container {
-    text-align: center;
-    position: relative;
-    background: #f0f0f0;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  }
+.background-image-container {
+  text-align: center;
+  position: relative;
+  background: #f0f0f0;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
 
-  .background-image-container h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
+.background-image-container h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
 
-  .background-image-container button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    margin-top: 10px;
-  }
+.background-image-container button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
 
-  .navigation-info {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 14px;
-  }
+.navigation-info {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
 
-  .service-details {
-    display: flex;
-    justify-content: space-between;
-    text-align: left;
-    margin-top: 20px;
-    background: #fff;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  }
+.service-details {
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  margin-top: 20px;
+  background: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
 
-  .service-details h2 {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
+.service-details h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
 
-  .service-details p {
-    font-size: 16px;
+.service-details p {
+  font-size: 16px;
+}
+.review-description {
+  margin-right: 20px;
+}
+.service-details img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+}
 
-  }
-  .review-description{
-    margin-right: 20px;
-  }
-  .service-details img {
-    max-width: 100%;
-    height: auto;
-    margin-top: 10px;
-  }
+.reviews-section {
+  text-align: left;
+  margin-top: 20px;
+}
 
-  .reviews-section {
-    text-align: left;
-    margin-top: 20px;
-  }
+.reviews-section h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
 
-  .reviews-section h2 {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
+/* Booking Modal Styles */
+.booking-modal {
+  text-align: center;
 
-  /* Booking Modal Styles */
-  .booking-modal {
-    text-align: center;
+  margin: 10px;
+}
 
-    margin: 10px;
-  }
+.booking-modal h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
 
-  .booking-modal h2 {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
+.booking-modal input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
 
-  .booking-modal input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-  }
+.booking-modal button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+.booking-modal button:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+}
 
-  .booking-modal button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-  }
-
-
-  /* Reviews Section */
+/* Reviews Section */
 .reviews-section {
   border-radius: 5px;
 }
-
 
 .review {
   display: flex;
@@ -120,8 +121,7 @@
   border-radius: 5px;
   background-color: #fff;
 }
-.review-info{
-
+.review-info {
 }
 .review p {
   margin: 5px;
