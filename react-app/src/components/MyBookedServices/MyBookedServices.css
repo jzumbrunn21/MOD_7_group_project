@@ -6,11 +6,53 @@
 }
 
 .my-bookings-title{
-    color: red
+    margin-left: 50px;
 }
 
-.service-container{
+.upcoming-my-bookings-service-container{
     width: 95%;
     margin-left: 25px;
+    margin-bottom: 30px;
     background-color: #d7d7d7;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.previous-my-bookings-service-container{
+    width: 95%;
+    margin-left: 25px;
+    margin-bottom: 30px;
+    background-color: #d7d7d7;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.booking-name-and-billing{
+    /* border: solid green; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 13%;
+}
+
+.booking-information{
+    /* border: solid orange; */
+    width: 40%;
+}
+
+.booking-action-buttons{
+    /* border: solid red; */
+    display: flex;
+    flex-direction: column;
+    height: 125px;
+    justify-content: space-around;
+}
+
+.booking-status-review{
+    /* border: solid blue; */
+    width: 20%;
 }
