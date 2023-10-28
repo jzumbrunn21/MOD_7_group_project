@@ -1,3 +1,67 @@
 .error {
-    color: red;
-  }
+  color: red;
+}
+
+.update-service-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.update-service-container h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.update-service-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.update-service-container label {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.update-service-container input,
+.update-service-container textarea,
+.update-service-container select {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.update-service-container .error {
+  color: #ff0000;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.update-service-container button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.update-service-container button:hover {
+  background-color: #0056b3;
+}
+
+.update-service-container textarea {
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: none;
+  height: 100%;
+}
