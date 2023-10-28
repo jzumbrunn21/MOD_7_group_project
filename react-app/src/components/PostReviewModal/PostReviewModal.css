@@ -30,9 +30,13 @@
   font-size: 20px;
 }
 
-.post-review-modal span {
+.star-container {
   font-size: 40px;
   cursor: pointer;
   position: relative;
   bottom: 20px;
+}
+.review-error {
+  font-size: 15px;
+  color: red;
 }
