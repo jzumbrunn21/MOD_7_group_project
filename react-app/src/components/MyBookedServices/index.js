@@ -5,6 +5,7 @@ import DeleteReviewConfirmModal from "../DeleteReviewConfirmModal";
 import UpdateBookingModal from "../UpdateBookingModal";
 import PostReviewModal from "../PostReviewModal";
 import { getBookingsThunk, deleteBookingThunk, updateBookingThunk } from "../../store/bookings";
+import "./MyBookedServices.css"
 
 import BillingDetailsModal from "../BillingDetailsModal";
 
@@ -113,6 +114,7 @@ const MyBookedServices = () => {
     console.log("****MODAL ACTIVE CHECK", modalActive)
     return (
       <div className="my-booked-services-container">
+        <h1 className="my-bookings-title">My Booked Services</h1>
         <div className="tabs">
           <button
             className={activeTab ? "active" : ""}
@@ -134,8 +136,8 @@ const MyBookedServices = () => {
             {userBookings
               .filter((booking) => booking.status === true)
               .map((booking) => (
-                <div key={booking.id} className="service-container">
-                  <h3>Booking ID: {booking.id}</h3>
+                <div key={booking.id} className="upcoming-my-bookings-service-container">
+                  <h3>Booking ID #{booking.id}</h3>
                   <p>User ID: {booking.user_id}</p>
                   <p>Service ID: {booking.service_id}</p>
                   <p>Date and Time: {booking.start_date_and_time}</p>
@@ -173,8 +175,9 @@ const MyBookedServices = () => {
             {userBookings
               .filter((booking) => booking.status === false)
               .map((booking) => (
-                <div key={booking.id} className="service-container">
-                  <h3>Booking ID: {booking.id}</h3>
+                <div key={booking.id} className="previous-my-bookings-service-container">
+                  <div className="booking-name-and-billing">
+                  <h3>Booking ID #{booking.id}</h3>
 
                   <OpenModalButton
                     buttonText="Billing Details"
@@ -182,10 +185,14 @@ const MyBookedServices = () => {
                       <BillingDetailsModal bookingId={booking.id} />
                     }
                   />
+                  </div>
+                  <div className="booking-information">
                   <p>User ID: {booking.user_id}</p>
                   <p>Service ID: {booking.service_id}</p>
                   <p>Date and Time: {booking.start_date_and_time}</p>
-                  <p>Status: Previous</p>
+                  </div>
+                  <div className="booking-status-review">
+                  <p>Status: Completed</p>
                   <p>
 
                     Review: {reviews.filter((review) => booking.service_id === review.service_id)[0]?.review}
@@ -194,6 +201,8 @@ const MyBookedServices = () => {
                       (review) => booking.service_id === review.service_id
                     )[0].review)} */}
                   </p>
+                  </div>
+                  <p className="booking-action-buttons">
                   {checkIfReview(reviews.filter((review) => booking.service_id === review.service_id)[0]?.review) ? addReviewModal(booking) : deleteReview(booking)}
                   {/* // <OpenModalButton */}
                   {/* //   buttonText="Add your Review"
@@ -229,7 +238,7 @@ const MyBookedServices = () => {
                   <button onClick={() => handleDelete(booking.id)}>
                     Delete this Booking
                   </button>
-
+                  </p>
                   {/* {showReviewModal && ( */}
 
                   {/* )} */}

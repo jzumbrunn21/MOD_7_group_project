@@ -4,14 +4,15 @@ import { logout } from "../../store/session";
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
-import { Link } from "react-router-dom";
-import './ProfileButton.css'
+import { Link, useHistory } from "react-router-dom";
+import "./ProfileButton.css";
 import ProfileImage from "./ProfileImage.png";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
+  const history = useHistory();
 
   const openMenu = () => {
     if (showMenu) return;
@@ -35,6 +36,8 @@ function ProfileButton({ user }) {
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout());
+    history.push("/");
+    closeMenu();
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
@@ -42,46 +45,44 @@ function ProfileButton({ user }) {
 
   return (
     <>
-    <div className="navigation-container">
-      <div className="profile-button-container">
-      <button className='profile-button' onClick={openMenu}>
-        {/* <i className="fas fa-user-circle" /> */}
-        <img className="profile-image" src={ProfileImage} alt="Logo" />
-      </button>
-      </div>
-      <ul className={ulClassName} ref={ulRef}>
-        {user ? (
-          <>
-            {user.username}
-            {user.email}
+      <div className="navigation-container">
+        <div className="profile-button-container">
+          <button className="profile-button" onClick={openMenu}>
+            {/* <i className="fas fa-user-circle" /> */}
+            <img className="profile-image" src={ProfileImage} alt="Logo" />
+          </button>
+        </div>
+        <ul className={ulClassName} ref={ulRef}>
+          {user ? (
+            <>
+              {user.username}
+              {user.email}
 
+              <Link to="/my-services">My services</Link>
 
-              <Link to='/my-services'>My services</Link>
+              <Link to="/my-booked-services">My booked services</Link>
 
-              <Link to='/my-booked-services'>My booked services</Link>
-
-              <Link to='/create-service'>Create your service</Link>
+              <Link to="/create-service">Create your service</Link>
 
               <button onClick={handleLogout}>Log Out</button>
+            </>
+          ) : (
+            <>
+              <OpenModalButton
+                buttonText="Log In"
+                onItemClick={closeMenu}
+                modalComponent={<LoginFormModal />}
+              />
 
-          </>
-        ) : (
-          <>
-            <OpenModalButton
-              buttonText="Log In"
-              onItemClick={closeMenu}
-              modalComponent={<LoginFormModal />}
-            />
-
-            <OpenModalButton
-              buttonText="Sign Up"
-              onItemClick={closeMenu}
-              modalComponent={<SignupFormModal />}
-            />
-          </>
-        )}
-      </ul>
-    </div>
+              <OpenModalButton
+                buttonText="Sign Up"
+                onItemClick={closeMenu}
+                modalComponent={<SignupFormModal />}
+              />
+            </>
+          )}
+        </ul>
+      </div>
     </>
   );
 }

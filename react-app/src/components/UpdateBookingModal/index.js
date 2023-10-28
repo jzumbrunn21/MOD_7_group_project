@@ -4,17 +4,20 @@ import { useParams, useHistory } from "react-router-dom";
 
 import { useModal } from "../../context/Modal";
 import { updateBookingThunk } from "../../store/bookings";
+import "./UpdateBookingModal.css";
 const UpdateBookingModal = ({ bookingId }) => {
   const sessionUser = useSelector((state) => state.session.user);
   const [bookingDate, setBookingDate] = useState(new Date());
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const { closeModal } = useModal();
+  const [hasSelectedDate, setHasSelectedDate] = useState(false);
 
   const handleBookingDateChange = (event) => {
     const newErrors = {};
 
     setBookingDate(event.target.value);
+    setHasSelectedDate(true);
 
     const selected_booking_date = event.target.value;
     const inputDate = new Date(selected_booking_date);
@@ -47,6 +50,7 @@ const UpdateBookingModal = ({ bookingId }) => {
 
     // history.push("/my-booked-services");
   };
+  const handleDisable = !hasSelectedDate || errors.selected_booking_date !== "";
 
   return (
     <>
@@ -56,15 +60,17 @@ const UpdateBookingModal = ({ bookingId }) => {
           type="datetime-local"
           placeholder="MM/DD/YYYY HH:mm AM"
           value={bookingDate}
-          //   onChange={handleBookingDateChange}
-          onChange={(e) => setBookingDate(e.target.value)}
+          onChange={handleBookingDateChange}
+          // onChange={(e) => setBookingDate(e.target.value)}
         />
 
         {errors.selected_booking_date && (
           <p className="error-message">{errors.selected_booking_date}</p>
         )}
 
-        <button onClick={handleUpdateBooking}>Update Booking</button>
+        <button onClick={handleUpdateBooking} disabled={handleDisable}>
+          Update Booking
+        </button>
       </div>
     </>
   );

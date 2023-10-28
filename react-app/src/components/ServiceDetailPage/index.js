@@ -1,4 +1,3 @@
-
 import { getReviewsThunk } from "../../store/reviews";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,8 +23,11 @@ const ServiceDetailPage = () => {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [bookingDate, setBookingDate] = useState(new Date());
   const [errors, setErrors] = useState({});
+  const [hasSelectedDate, setHasSelectedDate] = useState(false);
+  const bannerImage =
+    "https://st2.depositphotos.com/4612235/6944/i/450/depositphotos_69442233-stock-photo-man-with-lawn-mower.jpg";
 
-  const [averageRating, setAverageRating] = useState('0.00'); // Average rating state as a string
+  const [averageRating, setAverageRating] = useState("0.00"); // Average rating state as a string
 
   const serviceDetail = useSelector(
     (state) => Object.values(state.services.singleService)[0]
@@ -34,12 +36,12 @@ const ServiceDetailPage = () => {
   const serviceReviews = reviews.filter(
     (review) => review.service_id === parseInt(serviceId)
   );
-  console.log('service reviews', serviceReviews);
+  console.log("service reviews", serviceReviews);
 
   // Function to calculate the average rating
   const calculateAverageRating = () => {
     if (serviceReviews.length === 0) {
-      return 'New'; //If no reviews
+      return "New"; //If no reviews
     }
 
     //get sum of all reviews
@@ -61,13 +63,11 @@ const ServiceDetailPage = () => {
     dispatch(getReviewsThunk());
   }, [dispatch]);
 
-
   // Update the average rating whenever the serviceReviews array changes
   useEffect(() => {
     const newAverageRating = calculateAverageRating();
     setAverageRating(newAverageRating);
   }, [serviceReviews]);
-
 
   if (serviceDetail === undefined) {
     return null;
@@ -80,18 +80,19 @@ const ServiceDetailPage = () => {
   const handleBookingDateChange = (event) => {
     const newErrors = {};
     setBookingDate(event.target.value);
+    setHasSelectedDate(true);
 
     const selected_booking_date = event.target.value;
     const inputDate = new Date(selected_booking_date);
     const currentDate = new Date();
 
     if (inputDate < currentDate) {
-      console.log('Date has already passed');
-      newErrors.selected_booking_date = 'Date has already passed';
+      console.log("Date has already passed");
+      newErrors.selected_booking_date = "Date has already passed";
     } else {
-      console.log('Selected booking date:', event.target.value);
+      console.log("Selected booking date:", event.target.value);
       // Clear the error if the date is valid
-      newErrors.selected_booking_date = '';
+      newErrors.selected_booking_date = "";
     }
 
     setErrors(newErrors); // Update the errors state
@@ -99,9 +100,10 @@ const ServiceDetailPage = () => {
 
   const handleContinueToBilling = () => {
     // Check if the booking date is empty or in the past
+
     if (errors.selected_booking_date) {
       // Do not open the payment modal
-      console.log('bookingDate', bookingDate);
+      // console.log('bookingDate', bookingDate);
       return;
     }
 
@@ -112,7 +114,7 @@ const ServiceDetailPage = () => {
   const handleConfirmBooking = async (paymentInfo) => {
     // Set the payment info and close the payment modal
     setShowPaymentModal(false);
-    console.log('Payment Information:', paymentInfo);
+    console.log("Payment Information:", paymentInfo);
 
     // Proceed with creating the booking
     const bookingData = {
@@ -125,11 +127,12 @@ const ServiceDetailPage = () => {
     const newBooking = await dispatch(createBookingThunk(bookingData));
     console.log("NEWBOOKING", newBooking);
     // const bookingId = newBooking.id;
-    if(newBooking) {
-      const newBilling = await dispatch(createBillingThunk(paymentInfo, newBooking.id));
-      console.log("NEW BILLING", newBilling)
+    if (newBooking) {
+      const newBilling = await dispatch(
+        createBillingThunk(paymentInfo, newBooking.id)
+      );
+      console.log("NEW BILLING", newBilling);
     }
-
 
     console.log("Newly created booking data:", bookingData);
     history.push("/my-booked-services");
@@ -139,30 +142,42 @@ const ServiceDetailPage = () => {
 
   console.log("The service: ", serviceDetail);
 
-
   const openLoginModal = () => {
     openModal(<LoginFormModal />);
   };
+
+  const handleDisable = !hasSelectedDate;
 
   return (
     <div className="service-detail-container">
       {/* Background Image Container */}
 
-      <div className="background-image-container">
+      <div
+        className="background-image-container"
+        style={{
+          backgroundImage: `url(${bannerImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundPositionY: "-100px",
+          // backgroundPositionX: "-80px"
+        }}
+      >
         {sessionUser ? (
           <div>
             <h1>{serviceDetail.service_title}</h1>
             <button onClick={handleBookNow}>Book Now</button>
           </div>
         ) : (
-          <div className="background-image-container">
+          // <div className="background-image-container">
+          <>
             <h1>{serviceDetail.service_title}</h1>
             <OpenModalButton
               buttonText="Book Now"
               onItemClick={openLoginModal}
               modalComponent={<LoginFormModal />}
             />
-          </div>
+          </>
+          // </div>
         )}
         {/* Booking Modal */}
         {showBookingModal && (
@@ -178,8 +193,9 @@ const ServiceDetailPage = () => {
             {errors.selected_booking_date && (
               <p className="error-message">{errors.selected_booking_date}</p>
             )}
-            <button onClick={handleContinueToBilling}>Continue to Billing</button>
-
+            <button onClick={handleContinueToBilling} disabled={handleDisable}>
+              Continue to Billing
+            </button>
           </div>
         )}
       </div>
@@ -221,7 +237,6 @@ const ServiceDetailPage = () => {
               <p>{review.review}</p>
               {/* Convert star_rating to a number and display with 2 decimal places */}
               <p>★ {parseFloat(review.star_rating).toFixed(2)}</p>
-
             </div>
           </div>
         ))}
