@@ -4,7 +4,7 @@
   padding: 20px;
 }
 
-.background-image-container {
+.service-detail-background-image-container {
   text-align: center;
   position: relative;
   background: #f0f0f0;
@@ -15,12 +15,12 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.background-image-container h1 {
+.service-detail-background-image-container h1 {
   font-size: 24px;
   margin-bottom: 10px;
 }
 
-.background-image-container button {
+.service-detail-background-image-container button {
   background-color: #007bff;
   color: #fff;
   padding: 10px 20px;

@@ -153,7 +153,7 @@ const ServiceDetailPage = () => {
       {/* Background Image Container */}
 
       <div
-        className="background-image-container"
+        className="service-detail-background-image-container"
         style={{
           backgroundImage: `url(${bannerImage})`,
           backgroundSize: "cover",
