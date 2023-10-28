@@ -138,7 +138,7 @@ const MyBookedServices = () => {
               .map((booking) => (
                 <div key={booking.id} className="upcoming-my-bookings-service-container">
                   <h3>Booking ID #{booking.id}</h3>
-                  <p>User ID: {booking.user_id}</p>
+                  {/* <p>User ID: {booking.user_id}</p> */}
                   <p>Service ID: {booking.service_id}</p>
                   <p>Date and Time: {booking.start_date_and_time}</p>
                   <p>Status: Upcoming</p>
