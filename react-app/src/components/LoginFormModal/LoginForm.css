@@ -5,3 +5,15 @@
 .error {
   color: red;
 }
+.login-container {
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* align-content: center; */
+  width: 300px;
+  text-align: center;
+}
+
+.login-container input {
+  position: relative;
+  right: -35px
+}
