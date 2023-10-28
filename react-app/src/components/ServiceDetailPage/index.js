@@ -168,14 +168,16 @@ const ServiceDetailPage = () => {
             <button onClick={handleBookNow}>Book Now</button>
           </div>
         ) : (
-          <div className="background-image-container">
+          // <div className="background-image-container">
+          <>
             <h1>{serviceDetail.service_title}</h1>
             <OpenModalButton
               buttonText="Book Now"
               onItemClick={openLoginModal}
               modalComponent={<LoginFormModal />}
             />
-          </div>
+          </>
+          // </div>
         )}
         {/* Booking Modal */}
         {showBookingModal && (
