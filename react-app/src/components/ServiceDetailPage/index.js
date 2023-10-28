@@ -25,7 +25,7 @@ const ServiceDetailPage = () => {
   const [errors, setErrors] = useState({});
   const [hasSelectedDate, setHasSelectedDate] = useState(false);
   const bannerImage =
-    "https://hometurf.ca/wp-content/uploads/2023/10/lawn-care-mistakes.jpeg";
+    "https://st2.depositphotos.com/4612235/6944/i/450/depositphotos_69442233-stock-photo-man-with-lawn-mower.jpg";
 
   const [averageRating, setAverageRating] = useState("0.00"); // Average rating state as a string
 
