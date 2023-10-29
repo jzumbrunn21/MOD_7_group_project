@@ -10,11 +10,14 @@ import "./MyBookedServices.css"
 import BillingDetailsModal from "../BillingDetailsModal";
 
 import { getUserReviewsThunk } from "../../store/reviews";
+import { getServicesThunk } from "../../store/services";
 
 const MyBookedServices = () => {
   const sessionUser = useSelector((state) => state.session.user);
   const reviews = useSelector((state) => Object.values(state.reviews.reviews));
   const bookings = useSelector((state) => state.bookings.bookings);
+  const services = useSelector((state) => Object.values(state.services.services))
+  // console.log("here are the services ***", services)
   const dispatch = useDispatch();
 
   const [activeTab, setActiveTab] = useState(true);
@@ -29,9 +32,13 @@ const MyBookedServices = () => {
   }, [dispatch, modalActive]);
 
   useEffect(() => {
-    console.log("***HIT GET USER REVIEWS")
+    // console.log("***HIT GET USER REVIEWS")
     dispatch(getUserReviewsThunk());
   }, [dispatch]);
+
+  useEffect(() =>{
+    dispatch(getServicesThunk())
+  }, [dispatch])
 
   useEffect(() => {
     if (!isLoading) {
@@ -111,6 +118,11 @@ const MyBookedServices = () => {
       if (value === undefined) return value;
       else return "";
     };
+
+    if (services === undefined){
+      return null
+    }
+
     console.log("****MODAL ACTIVE CHECK", modalActive)
     return (
       <div className="my-booked-services-container">
@@ -139,7 +151,11 @@ const MyBookedServices = () => {
                 <div key={booking.id} className="upcoming-my-bookings-service-container">
                   <h3>Booking ID #{booking.id}</h3>
                   {/* <p>User ID: {booking.user_id}</p> */}
-                  <p>Service ID: {booking.service_id}</p>
+                  {/* <p>Service ID: {booking.service_id}</p> */}
+                  <div className="upcoming-service-details">
+                  <p>Service Category: {services.filter(service => service.id === booking.service_id)[0]?.service_category}</p>
+                  <p>Service: {services.filter(service => service.id === booking.service_id)[0]?.service_title}</p>
+                  </div>
                   <p>Date and Time: {booking.start_date_and_time}</p>
                   <p>Status: Upcoming</p>
 
@@ -187,8 +203,11 @@ const MyBookedServices = () => {
                   />
                   </div>
                   <div className="booking-information">
-                  <p>User ID: {booking.user_id}</p>
-                  <p>Service ID: {booking.service_id}</p>
+                  {/* <p>User ID: {booking.user_id}</p>
+                  <p>Service ID: {booking.service_id}</p> */}
+                  <p>Service Category: {services.filter(service => service.id === booking.service_id)[0]?.service_category}</p>
+                  <p>Service: {services.filter(service => service.id === booking.service_id)[0]?.service_title}</p>
+                  {/* <p>Service: {services.filter(service => service.id === booking.service_id)}</p> */}
                   <p>Date and Time: {booking.start_date_and_time}</p>
                   </div>
                   <div className="booking-status-review">
