@@ -38,6 +38,7 @@ const UpdateBookingModal = ({ bookingId }) => {
   //   setBookingDate(bookingDate);
   const start_date_and_time = bookingDate;
   const handleUpdateBooking = () => {
+    console.log("START DATE")
     const updatedBookingData = {
       //   user_id: sessionUser.id,
       //   service_id: serviceId,

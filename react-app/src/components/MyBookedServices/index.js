@@ -74,6 +74,19 @@ const MyBookedServices = () => {
     });
   };
 
+  //Update the booking status
+  // const handleUpdateStatus = (bookingId, sameDate) => {
+  //   console.log("The same date", sameDate)
+  //
+  //  convertedDate =
+  //   const bookingData = {
+  //     start_date_and_time: convertedDate,
+  //     status: false,
+  //   };
+
+  //   dispatch(updateBookingThunk(bookingData, bookingId))
+  // }
+
   const closeUpdateModal = () => {
     setModalActive(!modalActive);
   }
@@ -123,7 +136,7 @@ const MyBookedServices = () => {
       return null
     }
 
-    console.log("****MODAL ACTIVE CHECK", modalActive)
+    // console.log("****MODAL ACTIVE CHECK", modalActive)
     return (
       <div className="my-booked-services-container">
         <h1 className="my-bookings-title">My Booked Services</h1>
@@ -158,7 +171,7 @@ const MyBookedServices = () => {
                   </div>
                   <p>Date and Time: {booking.start_date_and_time}</p>
                   <p>Status: Upcoming</p>
-
+                  {/* <button onClick={handleUpdateStatus(booking.id, booking.start_date_and_time)}>Update Status</button> */}
                   <div>
                     <OpenModalButton
                       buttonText="Update"
