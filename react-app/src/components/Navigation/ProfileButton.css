@@ -1,7 +1,6 @@
 .profile-dropdown{
     display: flex;
     flex-direction: column;
-
     row-gap: 10px;
     background-color: white;
     border: 1px solid rgb(164, 164, 164);

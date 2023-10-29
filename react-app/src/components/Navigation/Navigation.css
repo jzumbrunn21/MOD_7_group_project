@@ -1,13 +1,3 @@
-.profile-dropdown {
-  position: absolute;
-  top: 110px;
-
-
-  z-index: 1;
-
-  right:20px;
-
-}
 
 .hidden {
   display: none;
@@ -15,8 +5,37 @@
 
 .navigation{
   display: flex;
+  
   flex-direction: row;
   justify-content: space-around;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 91px;
+  z-index: 1;
+}
+
+.profile-dropdown > *{
+  color: #000;
+  text-decoration: none;
+}
+
+.profile-dropdown > *:hover{
+  color: #007bff;
+  text-decoration: none;
+}
+
+.profile-dropdown button{
+  background-color: #007bff;
+  color: #fff;
+  border: 2px solid #007bff;
+}
+
+.profile-dropdown button:hover{
+  color: #28a745;
+  background-color: #fff  ;
+  border: 2px solid #28a745;
 }
 
 .navigation-logo {
@@ -28,4 +47,5 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 }

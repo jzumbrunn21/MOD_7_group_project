@@ -38,6 +38,7 @@ const MyOfferedServices = () => {
   };
 
   return (
+
     <div className="my-offered-services-container">
       {/* Background Image Container */}
       <div
@@ -72,7 +73,7 @@ const MyOfferedServices = () => {
                 </p>
               </div>
               <div className="service-actions">
-                <span className="reviews">Reviews: {service.reviews}</span>
+                {/* <span className="reviews">Reviews: {service.reviews}</span> */}
                 <div className="service-btns">
                   <Link
                     className="update-service-button"

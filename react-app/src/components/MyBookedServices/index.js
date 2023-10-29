@@ -74,6 +74,26 @@ const MyBookedServices = () => {
     });
   };
 
+  //Update the booking status
+  const handleUpdateStatus = (bookingId, sameDate) => {
+    // let convertedDate;
+    // // console.log("The same date", sameDate)
+    // const year = sameDate.slice(12,16)
+    // const month = sameDate.slice(8, 11)
+    // const day = sameDate.slice(5, 7)
+    // const hour =
+    // console.log("year", year)
+    // console.log("month", month)
+    // console.log("day", day)
+    // const start_date_and_time = sameDate
+    const bookingData = {
+      // start_date_and_time,
+      status: false,
+    };
+
+    dispatch(updateBookingThunk(bookingData, bookingId))
+  }
+
   const closeUpdateModal = () => {
     setModalActive(!modalActive);
   }
@@ -123,7 +143,7 @@ const MyBookedServices = () => {
       return null
     }
 
-    console.log("****MODAL ACTIVE CHECK", modalActive)
+    // console.log("****MODAL ACTIVE CHECK", modalActive)
     return (
       <div className="my-booked-services-container">
         <h1 className="my-bookings-title">My Booked Services</h1>
@@ -159,15 +179,19 @@ const MyBookedServices = () => {
                   <p>Date and Time: {booking.start_date_and_time}</p>
                   <p>Status: Upcoming</p>
 
+                  <button onClick={() => handleUpdateStatus(booking.id, booking.start_date_and_time)}>Update Status</button>
+
                   <div>
-                    <OpenModalButton
+                    <OpenModalButton className="update-time"
                       buttonText="Update"
                       onButtonClick={() => setModalActive(!modalActive)}
                       onModalClose={() => setModalActive(!modalActive)}
                       modalComponent={
                         <UpdateBookingModal
                           bookingId={booking.id}
-                          onUpdateBooking={handleUpdateBooking}
+
+                          onUpdateBooking={() => handleUpdateBooking}
+
                         />
                       }
                     />
