@@ -28,7 +28,7 @@ const ViewServicesList = () => {
       );
 
       if (serviceReviews.length === 0) {
-        averageRatingsData[serviceId] = 'New';
+        averageRatingsData[serviceId] = "New";
       } else {
         const sum = serviceReviews.reduce((total, review) => {
           const rating = parseFloat(review.star_rating);
@@ -68,10 +68,9 @@ const ViewServicesList = () => {
   };
 
   const filteredServices = categoryFilter
-    ? services.filter(
-      (service) =>
+    ? services.filter((service) =>
         service.service_category.toLowerCase().startsWith(categoryFilter)
-    )
+      )
     : services;
 
   const testLabel = categoryFilter
@@ -79,11 +78,21 @@ const ViewServicesList = () => {
     : "";
 
   const categories = ["Cleaning", "Lawn Service", "Moving"];
+  const bannerImage =
+    "https://as1.ftcdn.net/v2/jpg/04/27/47/64/1000_F_427476485_oTb1JxGzFAc5MnVb6KoCoZYTgCNm6fSk.jpg";
 
   return (
     <div className="services-list-container">
-      <div className="services-header">
-        <h1>{sessionUser ? "Book Your Next Task" : "Get help, Gain happiness"}</h1>
+      <div
+        className="services-header"
+        style={{
+          backgroundImage: `url(${bannerImage})`,
+          backgroundSize: "cover",
+        }}
+      >
+        <h1>
+          {sessionUser ? "Book Your Next Task" : "Get help, Gain happiness"}
+        </h1>
         {!sessionUser && <p>Just tasks.</p>}
         {!sessionUser && (
           <div className="search-bar">
@@ -92,7 +101,11 @@ const ViewServicesList = () => {
               placeholder="Search for services"
               onChange={handleFilter}
             />
-            <OpenModalButton buttonText="Get Help Today" onItemClick={openLoginModal} modalComponent={<LoginFormModal />} />
+            <OpenModalButton
+              buttonText="Get Help Today"
+              onItemClick={openLoginModal}
+              modalComponent={<LoginFormModal />}
+            />
           </div>
         )}
         {sessionUser && (
@@ -106,7 +119,10 @@ const ViewServicesList = () => {
         )}
         <div className="service-labels">
           {categories.map((category) => (
-            <span key={category} onClick={() => setCategoryFilter(category.toLowerCase())}>
+            <span
+              key={category}
+              onClick={() => setCategoryFilter(category.toLowerCase())}
+            >
               {category}
             </span>
           ))}
@@ -119,14 +135,20 @@ const ViewServicesList = () => {
       {testLabel && <p>{testLabel}</p>}
       <div className="services-grid">
         {filteredServices.map((service) => (
-          <Link to={`/services/${service.id}`} key={service.id} className="service-container">
+          <Link
+            to={`/services/${service.id}`}
+            key={service.id}
+            className="service-container"
+          >
             <img src={service.url} alt={service.title} />
             <div className="service-info">
               <h3>{service.service_title}</h3>
               <p>{service.service_description}</p>
               <div className="price-rating-wrapper">
                 <p>Price ${service.service_price}/h</p>
-                <p><span className="star">★</span> {averageRatings[service.id]}</p>
+                <p>
+                  <span className="star">★</span> {averageRatings[service.id]}
+                </p>
               </div>
             </div>
           </Link>
