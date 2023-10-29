@@ -69,8 +69,8 @@ const ViewServicesList = () => {
 
   const filteredServices = categoryFilter
     ? services.filter((service) =>
-        service.service_category.toLowerCase().startsWith(categoryFilter)
-      )
+      service.service_category.toLowerCase().startsWith(categoryFilter)
+    )
     : services;
 
   const testLabel = categoryFilter
@@ -88,12 +88,13 @@ const ViewServicesList = () => {
         style={{
           backgroundImage: `url(${bannerImage})`,
           backgroundSize: "cover",
+          opacity: 1.1
         }}
       >
-        <h1>
+        <h1 className="main-header">
           {sessionUser ? "Book Your Next Task" : "Get help, Gain happiness"}
         </h1>
-        {!sessionUser && <p>Just tasks.</p>}
+        {!sessionUser && <p className="main-header">Just tasks.</p>}
         {!sessionUser && (
           <div className="search-bar">
             <input

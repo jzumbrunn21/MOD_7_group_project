@@ -5,6 +5,7 @@ import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
+import Footer from "./components/Footer";
 import ViewServicesList from "./components/ViewServicesList";
 import ServiceDetailPage from "./components/ServiceDetailPage";
 import CreateNewService from "./components/CreateNewService";
@@ -48,6 +49,7 @@ function App() {
           </Route>
         </Switch>
       )}
+      <Footer isLoaded={isLoaded} />
     </>
   );
 }

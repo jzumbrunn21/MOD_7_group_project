@@ -1,0 +1,24 @@
+.footer {
+    display: flex;
+    justify-content: space-around;
+    background-color: #5d3d2f;
+    color: white;
+    padding: 20px;
+  }
+  
+  .column {
+    text-align: center;
+    margin: 10px;
+  }
+  
+  .column a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin: 5px 0;
+  }
+  
+  .column a:hover {
+    text-decoration: underline;
+  }
+  
