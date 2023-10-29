@@ -86,13 +86,19 @@ def update_booking(id):
     print("****************PURE DATA", data)
     form['csrf_token'].data = request.cookies['csrf_token']
     print("********** FORM UPDATE DATA", form.data)
-    if form.validate_on_submit():
+    if data.get('start_date_and_time') == None:
+        booking_to_update = Booking.query.get(id)
+
+        booking_to_update.status = data.get('status') #UPDATES THE STATUS
+        db.session.commit()
+        return booking_to_update.to_dict(), 201
+    elif form.validate_on_submit():
         booking_to_update = Booking.query.get(id)
         validDateFormat = datetime.strptime(form.data['start_date_and_time'], '%Y-%m-%dT%H:%M')
 
         booking_to_update.start_date_and_time = validDateFormat
 
-        booking_to_update.status = data.get('status') #UPDATES THE STATUS
+
 
         db.session.commit()
 
