@@ -2,6 +2,10 @@
   max-width: 1440px;
   margin: 0 auto;
   padding: 20px;
+  min-height: 80vh; 
+  display: flex;
+  flex-direction: column;
+  
 }
 
 .background-image-container {

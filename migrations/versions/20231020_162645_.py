@@ -65,7 +65,7 @@ def upgrade():
     sa.Column('card_number', sa.String(), nullable=False),
     sa.Column('card_cvv', sa.String(), nullable=False),
     sa.Column('card_zipcode', sa.String(), nullable=False),
-    sa.Column('card_exp_date', sa.Date(), nullable=False),
+    sa.Column('card_exp_date', sa.String(), nullable=False),
     sa.Column('purchase_date_and_time', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['booking_id'], ['bookings.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),

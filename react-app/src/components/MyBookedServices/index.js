@@ -182,14 +182,16 @@ const MyBookedServices = () => {
                   <button onClick={() => handleUpdateStatus(booking.id, booking.start_date_and_time)}>Update Status</button>
 
                   <div>
-                    <OpenModalButton
+                    <OpenModalButton className="update-time"
                       buttonText="Update"
                       onButtonClick={() => setModalActive(!modalActive)}
                       onModalClose={() => setModalActive(!modalActive)}
                       modalComponent={
                         <UpdateBookingModal
                           bookingId={booking.id}
+
                           onUpdateBooking={() => handleUpdateBooking}
+
                         />
                       }
                     />

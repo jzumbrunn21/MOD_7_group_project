@@ -1,9 +1,42 @@
-
 .star-filled {
-    color: rgb(255, 188, 18);
-  }
+  color: rgb(255, 188, 18);
+}
 
+.star-empty {
+  color: gray;
+}
 
-  .star-empty {
-    color: gray;
-  }
+.post-review-modal {
+  border: none;
+  /* background-color: #f9f9f9; */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  /* border-radius: 4px; */
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.post-review-modal h2 {
+  font-size: 30px;
+}
+
+.post-review-modal textarea {
+  height: 100px;
+  width: auto;
+}
+
+.post-review-modal h3 {
+  font-size: 20px;
+}
+
+.star-container {
+  font-size: 40px;
+  cursor: pointer;
+  position: relative;
+  bottom: 20px;
+}
+.review-error {
+  font-size: 15px;
+  color: red;
+}

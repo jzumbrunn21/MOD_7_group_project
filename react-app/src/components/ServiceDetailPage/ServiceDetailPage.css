@@ -47,6 +47,10 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+.service-detail-header{
+  color: #fff;
+}
+
 .service-details h2 {
   font-size: 18px;
   margin-bottom: 10px;
