@@ -27,11 +27,14 @@ const ServiceDetailPage = () => {
   const bannerImage =
     "https://st2.depositphotos.com/4612235/6944/i/450/depositphotos_69442233-stock-photo-man-with-lawn-mower.jpg";
 
-  const [averageRating, setAverageRating] = useState("0.00"); // Average rating state as a string
+  const [averageRating, setAverageRating] = useState('0.00');
 
   const serviceDetail = useSelector(
     (state) => Object.values(state.services.singleService)[0]
   );
+
+  console.log("SERVICE DETAIL provider_id", serviceDetail?.provider_id);
+
   const reviews = useSelector((state) => Object.values(state.reviews.reviews));
   const serviceReviews = reviews.filter(
     (review) => review.service_id === parseInt(serviceId)
@@ -128,10 +131,8 @@ const ServiceDetailPage = () => {
     console.log("NEWBOOKING", newBooking);
     // const bookingId = newBooking.id;
     if (newBooking) {
-      const newBilling = await dispatch(
-        createBillingThunk(paymentInfo, newBooking.id)
-      );
-      console.log("NEW BILLING", newBilling);
+      const newBilling = await dispatch(createBillingThunk(paymentInfo, newBooking.id));
+      console.log("NEW BILLING", newBilling)
     }
 
     console.log("Newly created booking data:", bookingData);
@@ -165,7 +166,9 @@ const ServiceDetailPage = () => {
         {sessionUser ? (
           <div>
             <h1>{serviceDetail.service_title}</h1>
-            <button onClick={handleBookNow}>Book Now</button>
+            {sessionUser.id !== serviceDetail.provider_id ? (
+              <button onClick={handleBookNow}>Book Now</button>
+            ) : null}
           </div>
         ) : (
           // <div className="background-image-container">
@@ -179,6 +182,7 @@ const ServiceDetailPage = () => {
           </>
           // </div>
         )}
+
         {/* Booking Modal */}
         {showBookingModal && (
           <div className="booking-modal">
@@ -212,7 +216,7 @@ const ServiceDetailPage = () => {
           <p className="review-description">
             {serviceDetail.service_description}
           </p>
-          <p>Provider Name</p>
+          <p>Provider Name {serviceDetail.provider_id}</p>
           <p>${serviceDetail.service_price}</p>
         </div>
         <div>
