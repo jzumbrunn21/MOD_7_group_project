@@ -82,20 +82,29 @@ def create_booking():
 @bookings_routes.route('/update/<int:id>', methods=["PUT"])
 def update_booking(id):
     form = BookingForm()
+    data = request.get_json()
+    print("****************PURE DATA", data)
     form['csrf_token'].data = request.cookies['csrf_token']
+    print("********** FORM UPDATE DATA", form.data)
+    if data.get('start_date_and_time') == None:
+        booking_to_update = Booking.query.get(id)
 
-    if form.validate_on_submit():
+        booking_to_update.status = data.get('status') #UPDATES THE STATUS
+        db.session.commit()
+        return booking_to_update.to_dict(), 201
+    elif form.validate_on_submit():
         booking_to_update = Booking.query.get(id)
         validDateFormat = datetime.strptime(form.data['start_date_and_time'], '%Y-%m-%dT%H:%M')
 
         booking_to_update.start_date_and_time = validDateFormat
+
+
+
         db.session.commit()
 
         return booking_to_update.to_dict(), 201
     else:
         return {"Errors": form.errors}
-    
-    
 
 # Delete one booking
 @bookings_routes.route('/<int:id>', methods=["DELETE"])
