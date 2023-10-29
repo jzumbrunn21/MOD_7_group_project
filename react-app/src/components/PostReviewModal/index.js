@@ -51,15 +51,15 @@ const PostReviewModal = ({ serviceTitle, serviceId }) => {
 
   return (
     <div className="post-review-modal">
-      <h2>Post a Review on {serviceTitle}</h2>
-      <p>How did your job go?</p>
+      <h2>Post a Review</h2>
+      <h4>How did your job go?</h4>
       <textarea
         value={reviewText}
         onChange={(e) => setReviewText(e.target.value)}
         placeholder="Write your review here"
       />
       {errors.reviewText && <span className="error">{errors.reviewText}</span>}
-      <p>Rating:</p>
+      <h4>Rating</h4>
       <div>
         {[1, 2, 3, 4, 5].map((star) => (
           <span
