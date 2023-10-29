@@ -165,7 +165,7 @@ const ServiceDetailPage = () => {
       >
         {sessionUser ? (
           <div>
-            <h1>{serviceDetail.service_title}</h1>
+            <h1 className="service-detail-header">{serviceDetail.service_title}</h1>
             {sessionUser.id !== serviceDetail.provider_id ? (
               <button onClick={handleBookNow}>Book Now</button>
             ) : null}

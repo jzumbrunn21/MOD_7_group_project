@@ -38,6 +38,7 @@ const MyOfferedServices = () => {
   };
 
   return (
+    
     <div className="my-offered-services-container">
       {/* Background Image Container */}
       <div

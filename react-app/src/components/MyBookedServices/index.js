@@ -160,13 +160,14 @@ const MyBookedServices = () => {
                   <p>Status: Upcoming</p>
 
                   <div>
-                    <OpenModalButton
+                    <OpenModalButton className="update-time"
                       buttonText="Update"
                       onButtonClick={() => setModalActive(!modalActive)}
                       onModalClose={() => setModalActive(!modalActive)}
                       modalComponent={
                         <UpdateBookingModal
                           bookingId={booking.id}
+                          
                           onUpdateBooking={handleUpdateBooking}
                         />
                       }
