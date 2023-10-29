@@ -51,16 +51,20 @@ const PostReviewModal = ({ serviceTitle, serviceId }) => {
 
   return (
     <div className="post-review-modal">
-      <h2>Post a Review on {serviceTitle}</h2>
-      <p>How did your job go?</p>
-      <textarea
-        value={reviewText}
-        onChange={(e) => setReviewText(e.target.value)}
-        placeholder="Write your review here"
-      />
-      {errors.reviewText && <span className="error">{errors.reviewText}</span>}
-      <p>Rating:</p>
       <div>
+        <h2>Post a Review</h2>
+        <h4>How did your job go?</h4>
+        <textarea
+          value={reviewText}
+          onChange={(e) => setReviewText(e.target.value)}
+          placeholder="Write your review here"
+        />
+      </div>
+      {errors.reviewText && (
+        <span className="review-error">{errors.reviewText}</span>
+      )}
+      <h4>Rating</h4>
+      <div className="star-container">
         {[1, 2, 3, 4, 5].map((star) => (
           <span
             key={star}
@@ -70,8 +74,8 @@ const PostReviewModal = ({ serviceTitle, serviceId }) => {
             &#9733;
           </span>
         ))}
-        {errors.rating && <span className="error">{errors.rating}</span>}
       </div>
+      {errors.rating && <span className="review-error">{errors.rating}</span>}
       <button onClick={handleReviewSubmit}>Submit your review</button>
     </div>
   );

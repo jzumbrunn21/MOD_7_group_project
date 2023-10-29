@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import "./ViewServicesList.css";
@@ -17,16 +17,10 @@ const ViewServicesList = () => {
   const [categoryFilter, setCategoryFilter] = useState(null);
   const reviews = useSelector((state) => Object.values(state.reviews.reviews));
 
-  // State to store average ratings
-  const [averageRatings, setAverageRatings] = useState({});
-
-  useEffect(() => {
-    dispatch(getServicesThunk());
-    dispatch(getReviewsThunk());
-  }, [dispatch]);
-
-  useEffect(() => {
+  // Calculate average ratings using useMemo
+  const averageRatings = useMemo(() => {
     const averageRatingsData = {};
+
     services.forEach((service) => {
       const serviceId = service.id;
       const serviceReviews = reviews.filter(
@@ -46,8 +40,13 @@ const ViewServicesList = () => {
       }
     });
 
-    setAverageRatings(averageRatingsData);
+    return averageRatingsData;
   }, [services, reviews]);
+
+  useEffect(() => {
+    dispatch(getServicesThunk());
+    dispatch(getReviewsThunk());
+  }, [dispatch]);
 
   const handleFilter = (e) => {
     const inputCategory = e.target.value.toLowerCase();
@@ -70,8 +69,8 @@ const ViewServicesList = () => {
 
   const filteredServices = categoryFilter
     ? services.filter((service) =>
-        service.service_category.toLowerCase().startsWith(categoryFilter)
-      )
+      service.service_category.toLowerCase().startsWith(categoryFilter)
+    )
     : services;
 
   const testLabel = categoryFilter
@@ -89,12 +88,13 @@ const ViewServicesList = () => {
         style={{
           backgroundImage: `url(${bannerImage})`,
           backgroundSize: "cover",
+          opacity: 1.1
         }}
       >
-        <h1>
+        <h1 className="main-header">
           {sessionUser ? "Book Your Next Task" : "Get help, Gain happiness"}
         </h1>
-        {!sessionUser && <p>Just tasks.</p>}
+        {!sessionUser && <p className="main-header">Just tasks.</p>}
         {!sessionUser && (
           <div className="search-bar">
             <input

@@ -9,6 +9,10 @@
     margin-left: 50px;
 }
 
+/* .upcoming-service-details{
+
+} */
+
 .upcoming-my-bookings-service-container{
     width: 95%;
     margin-left: 25px;
@@ -41,7 +45,7 @@
 
 .booking-information{
     /* border: solid orange; */
-    width: 40%;
+    width: 27%;
 }
 
 .booking-action-buttons{
