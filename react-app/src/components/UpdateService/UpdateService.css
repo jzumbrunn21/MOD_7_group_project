@@ -2,6 +2,15 @@
   color: red;
 }
 
+.update-service-wrapper{
+  max-width: 100vw;
+  min-height: 80vh; 
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+
 .update-service-container {
   max-width: 500px;
   margin: 0 auto;
