@@ -96,7 +96,7 @@ export default function reviewsReducer(state = initialState, action) {
       return newState;
     case DELETE_REVIEW:
       newState = { ...state };
-      delete newState[action.reviewId];
+      delete newState.reviews[action.reviewId];
       return newState;
     default:
       return state;
