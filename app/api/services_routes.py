@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request, redirect, render_template
 from app.models import db, Service
+from .aws_helpers import upload_file_to_s3, get_unique_filename, remove_file_from_s3
 # Forms need importing
 from app.forms import ServiceForm
 services_routes = Blueprint("services", __name__)
@@ -46,8 +47,22 @@ def users_services():
 def create_service():
     form = ServiceForm()
     # imageForm = ImageForm()
+    # print('*****FORM DATA"', form.data)
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
+        image = form.data['url']
+
+        image.filename = get_unique_filename(image.filename)
+        upload = upload_file_to_s3(image)
+
+        if "url" not in upload:
+            return "URL NOT IN UPLOAD"
+
+        url = upload["url"]
+
+        print('**************************', url)
+
+
         service = Service(
             # provider_id=form.provider_id.data,
             # service_title=form.service_title.data,
@@ -63,7 +78,7 @@ def create_service():
             service_price=form.data['service_price'],
             service_length_est=form.data['service_length_est'],
             service_category=form.data['service_category'],
-            url=form.data['url']
+            url=url
         )
         # image = ServiceImage(
         #     service_id=form.service_id.data,
@@ -96,6 +111,19 @@ def update_service(id):
     form = ServiceForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
+
+        image = form.data['url']
+
+        image.filename = get_unique_filename(image.filename)
+        upload = upload_file_to_s3(image)
+
+        if "url" not in upload:
+            return "URL NOT IN UPLOAD"
+
+        url = upload["url"]
+
+
+
         service_to_update = Service.query.get(id)
 
         # service_to_update.provider_id=current_user.id,
@@ -104,7 +132,7 @@ def update_service(id):
         service_to_update.service_title=form.data['service_title']
         service_to_update.service_description=form.data['service_description']
         service_to_update.service_price=form.data['service_price']
-        service_to_update.url=form.data['url']
+        service_to_update.url=url
         service_to_update.service_length_est=form.data['service_length_est']
         service_to_update.service_category=form.data['service_category']
         # !!! Do we include created_at, updated_at?

@@ -19,18 +19,16 @@ function SignupFormModal() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
     if (password === confirmPassword) {
-      const data = await dispatch(
-        signUp(
-          username,
-          email,
-          password,
-          firstName,
-          lastName,
-          address,
-          profilePicture
-        )
-      );
+      formData.append("email", email);
+      formData.append("username", username);
+      formData.append("password", password);
+      formData.append("first_name", firstName);
+      formData.append("last_name", lastName);
+      formData.append("address", address);
+      formData.append("profile_picture", profilePicture);
+      const data = await dispatch(signUp(formData));
       if (data) {
         setErrors(data);
       } else {
@@ -43,99 +41,104 @@ function SignupFormModal() {
     }
   };
 
-	return (
-		<div className="signup-container">
-			<h1 className="signup-header">Sign Up</h1>
-			<form onSubmit={handleSubmit}>
-				<ul className="error-list">
-				{errors.map((error, idx) => (
-					<li key={idx} className="error-item">{error}</li>
-				))}
-				</ul>
-				<label className="input-label">
-				Email
-				<input
-					type="text"
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-					required
-					className="input-field"
-				/>
-				</label>
-				<label className="input-label">
-				Username
-				<input
-					type="text"
-					value={username}
-					onChange={(e) => setUsername(e.target.value)}
-					required
-					className="input-field"
-				/>
-				</label>
-				<label className="input-label">
-				Password
-				<input
-					type="password"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-					required
-					className="input-field"
-				/>
-				</label>
-				<label className="input-label">
-				Confirm Password
-				<input
-					type="password"
-					value={confirmPassword}
-					onChange={(e) => setConfirmPassword(e.target.value)}
-					required
-					className="input-field"
-				/>
-				</label>
-				<label className="input-label">
-				First Name
-				<input
-					type="text"
-					value={firstName}
-					onChange={(e) => setFirstName(e.target.value)}
-					required
-					className="input-field"
-				/>
-				</label>
-				<label className="input-label">
-				Last Name
-				<input
-					type="text"
-					value={lastName}
-					onChange={(e) => setLastName(e.target.value)}
-					required
-					className="input-field"
-				/>
-				</label>
-				<label className="input-label">
-				Address
-				<input
-					type="text"
-					value={address}
-					onChange={(e) => setAddress(e.target.value)}
-					required
-					className="input-field"
-				/>
-				</label>
-				<label className="input-label">
-				Profile Picture
-				<input
-					type="text"
-					value={profilePicture}
-					onChange={(e) => setProfilePicture(e.target.value)}
-					required
-					className="input-field"
-				/>
-				</label>
-				<button type="submit" className="signup-button">Sign Up</button>
-			</form>
-         </div>
-	);
+  return (
+    <div className="signup-container">
+      <h1 className="signup-header">Sign Up</h1>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <ul className="error-list">
+          {errors.map((error, idx) => (
+            <li key={idx} className="error-item">
+              {error}
+            </li>
+          ))}
+        </ul>
+        <label className="input-label">
+          Email
+          <input
+            type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="input-field"
+          />
+        </label>
+        <label className="input-label">
+          Username
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            className="input-field"
+          />
+        </label>
+        <label className="input-label">
+          Password
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="input-field"
+          />
+        </label>
+        <label className="input-label">
+          Confirm Password
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            className="input-field"
+          />
+        </label>
+        <label className="input-label">
+          First Name
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+            className="input-field"
+          />
+        </label>
+        <label className="input-label">
+          Last Name
+          <input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+            className="input-field"
+          />
+        </label>
+        <label className="input-label">
+          Address
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            required
+            className="input-field"
+          />
+        </label>
+        <label className="input-label">
+          <div>Profile Picture</div>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setProfilePicture(e.target.files[0])}
+            required
+          />
+        </label>
+        <div>
+          <button type="submit" className="signup-button">
+            Sign Up
+          </button>
+        </div>
+      </form>
+    </div>
+  );
 }
 
 export default SignupFormModal;
