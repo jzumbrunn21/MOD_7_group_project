@@ -126,10 +126,13 @@ export const updateServiceThunk =
   (serviceData, serviceId) => async (dispatch) => {
     const response = await fetch(`/api/services/update/${serviceId}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(serviceData),
+      // headers: {
+      //   "Content-Type": "application/json",
+      // },
+      body:
+        // JSON.stringify(
+        serviceData,
+      // ),
     });
 
     if (response.ok) {
