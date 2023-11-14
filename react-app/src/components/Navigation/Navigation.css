@@ -5,7 +5,6 @@
 
 .navigation{
   display: flex;
-  
   flex-direction: row;
   justify-content: space-around;
 }
@@ -13,24 +12,35 @@
 .profile-dropdown {
   position: absolute;
   top: 91px;
+  right: 0;
   z-index: 1;
 }
 
-.profile-dropdown > *{
+.profile-dropdown > *:not(:first-child, :last-child){
+  border-left: 2px solid #fff;
+  padding-left: 10px;
   color: #000;
   text-decoration: none;
 }
 
-.profile-dropdown > *:hover{
+.profile-dropdown > *:hover:not(:first-child, :last-child){
+  border-left: 2px solid #007bff;
   color: #007bff;
   text-decoration: none;
 }
 
-.profile-dropdown button{
+/* .profile-dropdown button{
   background-color: #007bff;
   color: #fff;
   border: 2px solid #007bff;
+} */
+
+
+
+.profile-button_user-info:hover{
+  color: #000;
 }
+
 
 .profile-dropdown button:hover{
   color: #28a745;

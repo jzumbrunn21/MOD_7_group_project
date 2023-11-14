@@ -1,19 +1,58 @@
-.login-button {
-  margin-bottom: 15px;
-  margin-left: 0px;
-}
+/* LoginForm.css */
+
+
 .error {
   color: red;
 }
+
 .login-container {
-  /* justify-content: center; */
-  /* align-items: center; */
-  /* align-content: center; */
   width: 300px;
   text-align: center;
 }
 
 .login-container input {
   position: relative;
-  right: -35px
+  right: -35px;
+}
+
+.login-modal_header {
+  text-align: center;
+  font-size: 24px;
+}
+
+.login-modal_wrapper {
+  width: 300px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.login-button {
+  width: 30%;
+  border: none;
+  margin-bottom: 15px;
+  align-self: center;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 5px;
+}
+
+.login-modal_label {
+  display: flex;
+  flex-direction: column;
+}
+
+.demo-link {
+  text-decoration: none;
+  color: #000;
+  font-weight: 600;
 }
