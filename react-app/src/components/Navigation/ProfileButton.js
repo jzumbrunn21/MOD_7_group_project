@@ -40,7 +40,7 @@ function ProfileButton({ user }) {
     closeMenu();
   };
 
-  const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
+  const ulClassName = "profile-dropdown btn" + (showMenu ? "" : " hidden");
   const closeMenu = () => setShowMenu(false);
 
   return (
@@ -64,10 +64,10 @@ function ProfileButton({ user }) {
 
               <Link to="/create-service">Create your service</Link>
 
-              <button onClick={handleLogout}>Log Out</button>
+              <button onClick={handleLogout} className="profile-button_logout">Log Out</button>
             </>
           ) : (
-            <>
+            <div className='profile-button_no-user'>
               <OpenModalButton
                 buttonText="Log In"
                 onItemClick={closeMenu}
@@ -79,7 +79,7 @@ function ProfileButton({ user }) {
                 onItemClick={closeMenu}
                 modalComponent={<SignupFormModal />}
               />
-            </>
+            </div>
           )}
         </ul>
       </div>
