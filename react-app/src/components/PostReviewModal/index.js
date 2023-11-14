@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createReviewThunk } from "../../store/reviews";
 import "./PostReviewModal.css";
 import { Modal, useModal } from "../../context/Modal";
@@ -10,7 +10,8 @@ const PostReviewModal = ({ serviceTitle, serviceId }) => {
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(0);
   const [errors, setErrors] = useState({});
-  console.log(serviceId);
+  const sessionUser = useSelector((state) => state.session.user);
+  // console.log("SESSION USER", sessionUser);
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
@@ -31,8 +32,7 @@ const PostReviewModal = ({ serviceTitle, serviceId }) => {
     }
     const review = reviewText;
     const star_rating = rating;
-    const review_image =
-      "https://upload.wikimedia.org/wikipedia/commons/6/64/The_Puppy.jpg";
+    const review_image = sessionUser.profile_picture;
     const service_id = serviceId;
     const reviewData = {
       service_id,

@@ -21,17 +21,23 @@ const CreateNewService = () => {
 
     const newErrors = {};
     if (!title || title.length < 6 || title.length > 50) {
-      newErrors.title = "Title is required and must be between 6 and 50 characters ";
+      newErrors.title =
+        "Title is required and must be between 6 and 50 characters ";
     }
 
     if (!description || description.length < 1 || description.length > 2000) {
-      newErrors.description = "Description is required and must be between 1 and 2000 characters ";
+      newErrors.description =
+        "Description is required and must be between 1 and 2000 characters ";
     }
 
-    const validUrlEndings = [".jpg", ".jpeg", ".png"];
-    if (!url || !validUrlEndings.some((ending) => url.toLowerCase().endsWith(ending))) {
-      newErrors.url = "Image URL is required and must end in .jpg, .jpeg, or .png";
-    }
+    // const validUrlEndings = [".jpg", ".jpeg", ".png"];
+    // if (
+    //   !url ||
+    //   !validUrlEndings.some((ending) => url.toLowerCase().endsWith(ending))
+    // ) {
+    //   newErrors.url =
+    //     "Image URL is required and must end in .jpg, .jpeg, or .png";
+    // }
 
     if (!price || price < 1) {
       newErrors.price = "Price is required";
@@ -50,16 +56,26 @@ const CreateNewService = () => {
       return;
     }
 
-    const serviceData = {
-      service_title: title,
-      service_description: description,
-      url,
-      service_price: price,
-      service_length_est: lengthEstimate,
-      service_category: category,
-    };
+    const formData = new FormData();
+    formData.append("url", url);
+    formData.append("service_title", title);
+    formData.append("service_description", description);
+    formData.append("service_price", price);
+    formData.append("service_length_est", lengthEstimate);
+    formData.append("service_category", category);
 
-    const createdService = await dispatch(createServiceThunk(serviceData));
+    console.log("formdata", formData.get("url"));
+    console.log("formdata", formData.get("service_title"));
+    // const serviceData = {
+    //   service_title: title,
+    //   service_description: description,
+    //   url,
+    //   service_price: price,
+    //   service_length_est: lengthEstimate,
+    //   service_category: category,
+    // };
+
+    const createdService = await dispatch(createServiceThunk(formData));
     if (createdService) {
       history.push(`/services/${createdService.id}`);
     } else {
@@ -71,7 +87,7 @@ const CreateNewService = () => {
     <div className="create-service-wrapper">
       <div className="create-service-container">
         <h1>Create Your New Service</h1>
-        <form onSubmit={handleSubmit}>
+        <form encType="multipart/form-data" onSubmit={handleSubmit}>
           <div className="create-service-title">
             <label>
               What's your service called?
@@ -100,9 +116,9 @@ const CreateNewService = () => {
             <label>
               Image URL
               <input
-                type="text"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
+                type="file"
+                accept="image/*"
+                onChange={(e) => setUrl(e.target.files[0])}
               />
               {errors.url && <span className="error">{errors.url}</span>}
             </label>
