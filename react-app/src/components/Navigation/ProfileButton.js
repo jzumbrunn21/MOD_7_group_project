@@ -48,16 +48,16 @@ function ProfileButton({ user }) {
       <div className="navigation-container">
         <div className="profile-button-container">
           <button className="profile-button" onClick={openMenu}>
-            {/* <i className="fas fa-user-circle" /> */}
             <img className="profile-image" src={ProfileImage} alt="Logo" />
           </button>
         </div>
         <ul className={ulClassName} ref={ulRef}>
           {user ? (
             <>
-              {user.username}
-              {user.email}
-
+              <div className="profile-button_user-info">
+                {user.username}
+                {user.email}
+              </div>
               <Link to="/my-services">My services</Link>
 
               <Link to="/my-booked-services">My booked services</Link>
