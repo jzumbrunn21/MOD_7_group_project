@@ -123,7 +123,7 @@ function SignupFormModal() {
           />
         </label>
         <label className="input-label">
-          Profile Picture
+          <div>Profile Picture</div>
           <input
             type="file"
             accept="image/*"
@@ -131,9 +131,11 @@ function SignupFormModal() {
             required
           />
         </label>
-        <button type="submit" className="signup-button">
-          Sign Up
-        </button>
+        <div>
+          <button type="submit" className="signup-button">
+            Sign Up
+          </button>
+        </div>
       </form>
     </div>
   );
