@@ -13,5 +13,5 @@ class ServiceForm(FlaskForm):
     service_price = IntegerField('price', validators=[DataRequired(), NumberRange(min=1, message='Service Price cannot be $0')])
     service_length_est = IntegerField('length_est', validators=[DataRequired(), NumberRange(min=1, message='Service Estimate is a minimum 1 hour')])
     service_category = SelectField('category', choices=[('Lawn Service', 'Lawn Service'),('Cleaning','Cleaning'), ('Moving','Moving')]) #double check
-    url = FileField('url', validators=[FileRequired(), FileAllowed(list(ALLOWED_EXTENSIONS))])
+    url = FileField('url', validators=[FileAllowed(list(ALLOWED_EXTENSIONS))])
     submit = SubmitField('submit')
