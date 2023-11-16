@@ -38,6 +38,9 @@ const CreateNewService = () => {
     //   newErrors.url =
     //     "Image URL is required and must end in .jpg, .jpeg, or .png";
     // }
+    if (!url) {
+      newErrors.url = "Image URL is required";
+    }
 
     if (!price || price < 1) {
       newErrors.price = "Price is required";

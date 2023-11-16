@@ -134,7 +134,7 @@ const UpdateService = (serviceData) => {
     // };
 
     const formData = new FormData();
-    formData.append("url", url);
+    if (url) formData.append("url", url);
     formData.append("service_title", title);
     formData.append("service_description", description);
     formData.append("service_price", price);
