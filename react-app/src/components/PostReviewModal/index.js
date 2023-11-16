@@ -8,6 +8,7 @@ const PostReviewModal = ({ serviceTitle, serviceId }) => {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
   const [reviewText, setReviewText] = useState("");
+  const [reviewImage, setReviewImage] = useState("");
   const [rating, setRating] = useState(0);
   const [errors, setErrors] = useState({});
   const sessionUser = useSelector((state) => state.session.user);
@@ -30,18 +31,24 @@ const PostReviewModal = ({ serviceTitle, serviceId }) => {
       setErrors(newErrors);
       return;
     }
-    const review = reviewText;
-    const star_rating = rating;
-    const review_image = sessionUser.profile_picture;
-    const service_id = serviceId;
-    const reviewData = {
-      service_id,
-      review,
-      review_image,
-      star_rating,
-    };
+    // const review = reviewText;
+    // const star_rating = rating;
+    // const review_image = sessionUser.profile_picture;
+    // const service_id = serviceId;
+    // const reviewData = {
+    //   service_id,
+    //   review,
+    //   review_image,
+    //   star_rating,
+    // };
+    const formData = new FormData();
+    formData.append('service_id', serviceId);
+    formData.append('review', reviewText);
+    formData.append('star_rating', rating);
+    formData.append('review_image', reviewImage)
 
-    const createdReview = await dispatch(createReviewThunk(reviewData));
+    console.log("Review image from formData", formData.get('review_image'));
+    const createdReview = await dispatch(createReviewThunk(formData));
     console.log(createdReview);
     // if(createdReview){
     //     closeModal()
@@ -63,6 +70,14 @@ const PostReviewModal = ({ serviceTitle, serviceId }) => {
       {errors.reviewText && (
         <span className="review-error">{errors.reviewText}</span>
       )}
+      <div className="create-review-url">
+        <label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setReviewImage(e.target.files[0])} />
+        </label>
+      </div>
       <h4>Rating</h4>
       <div className="star-container">
         {[1, 2, 3, 4, 5].map((star) => (

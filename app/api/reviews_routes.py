@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request, redirect
 from app.models import db, Review, Service
+from .aws_helpers import upload_file_to_s3, get_unique_filename, remove_file_from_s3
 # Forms need importing
 from app.forms import ReviewForm
 reviews_routes = Blueprint("reviews", __name__)
@@ -39,21 +40,38 @@ def all_reviews():
 @reviews_routes.route('/new', methods=["POST"])
 def create_review():
     form = ReviewForm()
-    print('***form***',form.data)
+
     form['csrf_token'].data = request.cookies['csrf_token']
+    print('***form***',form.data)
     if form.validate_on_submit():
+        image = form.data['review_image']
+
+        print('*** Image Result ***', image)
+
+        image.filename = get_unique_filename(image.filename)
+        print('*** Image Filename ***', image.filename)
+        upload = upload_file_to_s3(image)
+
+        print('*** S3 Upload Result ***', upload)
+
+        if "url" not in upload:
+            return "URL NOT IN UPLOAD"
+        
+        url = upload['url']
+
+        print('**************************', url)
 
         review = Review(
             user_id=current_user.id,
             service_id=form.data['service_id'],
             review=form.data['review'],
-            review_image=form.data['review_image'],
+            review_image=url,
             star_rating=form.data['star_rating']
         )
         db.session.add(review)
         db.session.commit()
         # !!! Do we need to query it then return? Examples just returns the below
-        return review.to_dict()
+        return review.to_dict(), 201
     else:
         return {"Errors": form.errors} #Placeholder
 

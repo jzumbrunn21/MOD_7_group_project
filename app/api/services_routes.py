@@ -54,7 +54,7 @@ def create_service():
 
         image.filename = get_unique_filename(image.filename)
         upload = upload_file_to_s3(image)
-
+        print('*** S3 Upload Result ***', upload)
         if "url" not in upload:
             return "URL NOT IN UPLOAD"
 

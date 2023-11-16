@@ -21,24 +21,32 @@ const removeReview = (reviewId) => ({
 });
 
 // Thunks
-export const createReviewThunk =
-  (reviewData) => async (dispatch) => {
+export const createReviewThunk = (reviewData) => async (dispatch) => {
+  try {
+    console.log("review Data from thunk", reviewData.get('review_image'));
     const response = await fetch("/api/reviews/new", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(reviewData),
+      // body: JSON.stringify(reviewData),
+      body: reviewData,
     });
-    console.log(response)
+
+    console.log("Response", response);
+
     if (response.ok) {
       const data = await response.json();
       dispatch(setReview(data));
-      return data
+      return data;
     } else {
+      // Handle non-JSON response
+      const errorMessage = await response.text();
+      console.error(errorMessage);
       return "Error";
     }
-  };
+  } catch (error) {
+    console.error("Error in createReviewThunk:", error);
+    return "Error";
+  }
+};
 
   export const getUserReviewsThunk = () => async (dispatch) => {
     const response = await fetch("/api/reviews/user", {
