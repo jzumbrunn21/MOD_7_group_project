@@ -5,7 +5,7 @@ from .aws_helpers import upload_file_to_s3, get_unique_filename, remove_file_fro
 from app.forms import ReviewForm
 reviews_routes = Blueprint("reviews", __name__)
 from flask_login import current_user
-
+import io
 # Could the below be used for error messages?
 
 # def validation_errors_to_error_messages(validation_errors):
@@ -42,14 +42,21 @@ def create_review():
     form = ReviewForm()
 
     form['csrf_token'].data = request.cookies['csrf_token']
-    print('***form***',form.data)
+    print('***form***', form.data)
     if form.validate_on_submit():
         image = form.data['review_image']
 
-        print('*** Image Result ***', image)
+        print('*** Image Result ***', type(image))
 
         image.filename = get_unique_filename(image.filename)
-        print('*** Image Filename ***', image.filename)
+        print('*** Image Filename ***', type(image.filename))
+
+        # Read the content of the image into bytes
+        image_content = image.read()
+
+        # Convert the bytes to a new FileStorage object
+
+        # Upload the file content to S3
         upload = upload_file_to_s3(image)
 
         print('*** S3 Upload Result ***', upload)
@@ -70,10 +77,10 @@ def create_review():
         )
         db.session.add(review)
         db.session.commit()
-        # !!! Do we need to query it then return? Examples just returns the below
+        # !!! Do we need to query it then return? Examples just return the below
         return review.to_dict(), 201
     else:
-        return {"Errors": form.errors} #Placeholder
+        return {"Errors": form.errors}  # Placeholder
 
 @reviews_routes.route('/user', methods=['GET'])
 def user_reviews():
