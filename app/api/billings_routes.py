@@ -69,3 +69,15 @@ def create_billing():
         return billing.to_dict(), 201
     else:
         return {"Errors": form.errors} #Placeholder
+
+
+@billings_routes.route('/<int:id>', methods=["DELETE"])
+def delete_billing(id):
+    deleted_billing = Billing.query.get(id)
+
+    if deleted_billing:
+        db.session.delete(deleted_billing)
+        db.session.commit()
+        return {"message": "Billing deleted."}
+    else:
+        return 'Error'
