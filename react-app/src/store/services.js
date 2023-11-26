@@ -51,7 +51,7 @@ const readFilteredServices = (services) => ({
 // !!! Review all thunks with team, still work in progress
 // !!! Review how we are handling errors
 export const createServiceThunk = (serviceData) => async (dispatch) => {
-  console.log("service Data from thunk", serviceData);
+  // console.log("service Data from thunk", serviceData);
   const response = await fetch("/api/services/new", {
     method: "POST",
     // headers: {
@@ -147,7 +147,7 @@ export const updateServiceThunk =
 export const deleteServiceThunk = (serviceId) => async (dispatch) => {
   // Send an id, should be deleted in backend
 
-  console.log(serviceId);
+  // console.log(serviceId);
   const response = await fetch(`/api/services/${serviceId}`, {
     method: "DELETE",
   });
@@ -203,8 +203,8 @@ export default function servicesReducer(state = initialState, action) {
       return newState;
     case DELETE_SERVICE:
       newState = { ...state };
-      console.log("NEWSTATE", newState);
-      console.log("serviceId", action.serviceId);
+      // console.log("NEWSTATE", newState);
+      // console.log("serviceId", action.serviceId);
       delete newState.services[action.serviceId];
       return newState;
     // case GET_IMAGE:

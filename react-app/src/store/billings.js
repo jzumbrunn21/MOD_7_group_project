@@ -68,7 +68,7 @@ export const createBillingThunk =
   };
 
 export const deleteBillingThunk = (billingId) => async (dispatch) => {
-  console.log("RESPOSE", billingId);
+  // console.log("RESPOSE", billingId);
   const response = await fetch(`/api/billings/${billingId}`, {
     method: "DELETE",
   });
