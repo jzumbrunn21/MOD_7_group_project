@@ -67,8 +67,8 @@ const CreateNewService = () => {
     formData.append("service_length_est", lengthEstimate);
     formData.append("service_category", category);
 
-    console.log("formdata", formData.get("url"));
-    console.log("formdata", formData.get("service_title"));
+    // console.log("formdata", formData.get("url"));
+    // console.log("formdata", formData.get("service_title"));
     // const serviceData = {
     //   service_title: title,
     //   service_description: description,

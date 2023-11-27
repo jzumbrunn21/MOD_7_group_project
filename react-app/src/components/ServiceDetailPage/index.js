@@ -33,13 +33,13 @@ const ServiceDetailPage = () => {
     (state) => Object.values(state.services.singleService)[0]
   );
 
-  console.log("SERVICE DETAIL provider_id", serviceDetail?.provider_id);
+  // console.log("SERVICE DETAIL provider_id", serviceDetail?.provider_id);
 
   const reviews = useSelector((state) => Object.values(state.reviews.reviews));
   const serviceReviews = reviews.filter(
     (review) => review.service_id === parseInt(serviceId)
   );
-  console.log("service reviews", serviceReviews);
+  // console.log("service reviews", serviceReviews);
 
   // Function to calculate the average rating
   const calculateAverageRating = () => {
@@ -117,7 +117,7 @@ const ServiceDetailPage = () => {
   const handleConfirmBooking = async (paymentInfo) => {
     // Set the payment info and close the payment modal
     setShowPaymentModal(false);
-    console.log("Payment Information:", paymentInfo);
+    // console.log("Payment Information:", paymentInfo);
 
     // Proceed with creating the booking
     const bookingData = {
@@ -128,20 +128,20 @@ const ServiceDetailPage = () => {
     };
 
     const newBooking = await dispatch(createBookingThunk(bookingData));
-    console.log("NEWBOOKING", newBooking);
+    // console.log("NEWBOOKING", newBooking);
     // const bookingId = newBooking.id;
     if (newBooking) {
       const newBilling = await dispatch(createBillingThunk(paymentInfo, newBooking.id));
-      console.log("NEW BILLING", newBilling)
+      // console.log("NEW BILLING", newBilling)
     }
 
-    console.log("Newly created booking data:", bookingData);
+    // console.log("Newly created booking data:", bookingData);
     history.push("/my-booked-services");
   };
 
   // Use useModal to access the openModal function
 
-  console.log("The service: ", serviceDetail);
+  // console.log("The service: ", serviceDetail);
 
   const openLoginModal = () => {
     openModal(<LoginFormModal />);

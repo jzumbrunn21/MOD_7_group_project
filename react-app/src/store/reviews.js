@@ -30,7 +30,7 @@ export const createReviewThunk =
       },
       body: JSON.stringify(reviewData),
     });
-    console.log(response)
+    // console.log(response)
     if (response.ok) {
       const data = await response.json();
       dispatch(setReview(data));

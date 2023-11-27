@@ -42,7 +42,7 @@ const PostReviewModal = ({ serviceTitle, serviceId }) => {
     };
 
     const createdReview = await dispatch(createReviewThunk(reviewData));
-    console.log(createdReview);
+    // console.log(createdReview);
     // if(createdReview){
     //     closeModal()
     // }
