@@ -1,9 +1,9 @@
-# Flask React Project
+# Service Squirrel
 
-This is the starter for the Flask React project.
+Service Squirrel is full-stack service marketplace for jobs such as cleaning, lawn work and more. It was created with React, Redux, and Flask.
 
 ## Getting started
-1. Clone this repository (only this branch)
+1. Clone this repository (only 'Main' branch)
 
 2. Install dependencies
 
