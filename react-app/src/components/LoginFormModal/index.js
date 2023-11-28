@@ -40,24 +40,24 @@ function LoginFormModal() {
             <li key={idx} className="error-item">{error}</li>
           ))}
         </ul>
-        <label className="input-label">
+        <label className="login-input-label">
           Email
           <input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="input-field"
+            className="login-input-field"
           />
         </label>
-        <label className="input-label">
+        <label className="login-input-label">
           Password
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="input-field"
+            className="login-input-field"
           />
         </label>
         <button type="submit" className="login-button">Log In</button>

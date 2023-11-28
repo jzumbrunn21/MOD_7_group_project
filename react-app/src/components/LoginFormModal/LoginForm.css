@@ -1,18 +1,24 @@
 /* LoginForm.css */
 
-
 .error {
   color: red;
 }
 
-.login-container {
+/* .login-container {
   width: 300px;
   text-align: center;
-}
+} */
 
-.login-container input {
-  position: relative;
-  right: -35px;
+.login-input-label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  font-weight: bold;
 }
 
 .login-modal_header {
@@ -25,6 +31,7 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   text-align: center;
 }
@@ -33,6 +40,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  /* text-align: center; */
   margin-top: 15px;
 }
 
@@ -40,7 +49,6 @@
   width: 30%;
   border: none;
   margin-bottom: 15px;
-  align-self: center;
   background-color: #007bff;
   color: #fff;
   padding: 10px 5px;
@@ -55,4 +63,6 @@
   text-decoration: none;
   color: #000;
   font-weight: 600;
+  position: relative;
+  left: 5px;
 }
