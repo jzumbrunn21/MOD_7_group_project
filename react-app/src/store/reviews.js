@@ -1,6 +1,7 @@
 // Partial CRUD: CRD
 const SET_REVIEW = "reviews/SET_REVIEWS";
 const READ_REVIEWS = "reviews/READ_REVIEW";
+const UPDATE_REVIEW = 'reviews/UPDATE_REVIEW';
 const DELETE_REVIEW = "reviews/DELETE_REVIEW";
 
 // Action Creators
@@ -13,6 +14,12 @@ const setReview = (review) => ({
 const readReviews = (reviews) => ({
   type: READ_REVIEWS,
   reviews,
+});
+
+const updateReview = (reviewId, reviewData) => ({
+  type: UPDATE_REVIEW,
+  reviewId,
+  reviewData,
 });
 
 const removeReview = (reviewId) => ({
@@ -44,6 +51,30 @@ export const createReviewThunk = (reviewData) => async (dispatch) => {
     }
   } catch (error) {
     console.error("Error in createReviewThunk:", error);
+    return "Error";
+  }
+};
+
+export const updateReviewThunk = (reviewId, reviewData) => async (dispatch) => {
+  
+  try {
+    const response = await fetch(`/api/reviews/update/${reviewId}`, {
+      method: "PUT",
+      body: reviewData,
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(updateReview(data, reviewId));
+      return data;
+    } else {
+      // Handle non-JSON response
+      const errorMessage = await response.text();
+      console.error(errorMessage);
+      return "Error";
+    }
+  } catch (error) {
+    console.error("Error in updateReviewThunk:", error);
     return "Error";
   }
 };
@@ -101,6 +132,10 @@ export default function reviewsReducer(state = initialState, action) {
       action.reviews.reviews.forEach((review) => {
         newState.reviews[review.id] = review;
       });
+      return newState;
+    case UPDATE_REVIEW:
+      newState = {...state};
+      newState.reviews[action.reviewId] = action.reviewData
       return newState;
     case DELETE_REVIEW:
       newState = { ...state };

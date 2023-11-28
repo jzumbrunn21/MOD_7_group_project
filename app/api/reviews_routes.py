@@ -81,6 +81,32 @@ def create_review():
         return review.to_dict(), 201
     else:
         return {"Errors": form.errors}  # Placeholder
+    
+@reviews_routes.route('/update/<int:id>', methods=["PUT"])
+def update_review(id):
+    form = ReviewForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        image = form.data['review_image']
+        if image is not None:
+            image.filename = get_unique_filename(image.filename)
+            upload = upload_file_to_s3(image)
+
+            if "url" not in upload:
+                return "URL not in upload"
+            url = upload['url']
+        else:
+            url = Review.query.get(id).url
+        
+        review_to_update = Review.query.get(id)
+        review_to_update.review = form.data['review']
+        review_to_update.star_rating = form.data['star_rating']
+        review_to_update.review_image = url
+
+        db.session.commit()
+        return review_to_update.to_dict(), 201
+    else:
+        return {"Errors": form.errors}
 
 @reviews_routes.route('/user', methods=['GET'])
 def user_reviews():

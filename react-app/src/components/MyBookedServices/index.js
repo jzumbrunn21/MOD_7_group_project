@@ -107,6 +107,19 @@ const MyBookedServices = () => {
   //The add review modal
   const addReviewModal = (booking) => {
     return (<OpenModalButton
+      buttonText="Update your Review"
+      modalComponent={
+        <PostReviewModal
+          serviceTitle="Service Title"
+          onSubmit={() => setShowReviewModal(false)}
+          serviceId={booking.service_id}
+        />
+      }
+    />)
+  }
+
+  const updateReviewModal = (booking) => {
+    return (<OpenModalButton
       buttonText="Add your Review"
       modalComponent={
         <PostReviewModal
@@ -129,6 +142,19 @@ const MyBookedServices = () => {
               (review) => booking.service_id === review.service_id
             )[0]?.id
           }
+        />
+      }
+    />)
+  }
+
+  const updateReview = (booking) => {
+    return (<OpenModalButton
+      buttonText="Add your Review"
+      modalComponent={
+        <PostReviewModal
+          serviceTitle="Service Title"
+          onSubmit={() => setShowReviewModal(false)}
+          serviceId={booking.service_id}
         />
       }
     />)
@@ -246,7 +272,7 @@ const MyBookedServices = () => {
                   </p>
                   </div>
                   <p className="booking-action-buttons">
-                  {checkIfReview(reviews.filter((review) => booking.service_id === review.service_id)[0]?.review) ? addReviewModal(booking) : deleteReview(booking)}
+                  {checkIfReview(reviews.filter((review) => booking.service_id === review.service_id)[0]?.review) ? updateReviewModal(booking) :<div>{ addReviewModal(booking)}{deleteReview(booking)}</div> }
                   {/* // <OpenModalButton */}
                   {/* //   buttonText="Add your Review"
                 //   modalComponent={
