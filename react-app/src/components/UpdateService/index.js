@@ -8,10 +8,10 @@ const UpdateService = (serviceData) => {
   // const serviceId = serviceData.match.params.serviceId
   const paramId = useParams();
   const dispatch = useDispatch();
-  console.log(typeof paramId);
-  console.log(paramId);
+  // console.log(typeof paramId);
+  // console.log(paramId);
   // console.log(serviceId)
-  console.log("The service data", serviceData);
+  // console.log("The service data", serviceData);
   const serviceDetail = useSelector(
     (state) => Object.values(state.services.singleService)[0]
   );
@@ -71,7 +71,7 @@ const UpdateService = (serviceData) => {
     let res = await dispatch(getServiceThunk(paramId.serviceId));
     let response = res.service;
     // console.log(response)
-    console.log("*** DISPATCH RETURN", res);
+    // console.log("*** DISPATCH RETURN", res);
     setTitle(response.service_title);
     setUrl(response.url);
     setDescription(response.service_description);
@@ -134,7 +134,7 @@ const UpdateService = (serviceData) => {
     // };
 
     const formData = new FormData();
-    formData.append("url", url);
+    if (url) formData.append("url", url);
     formData.append("service_title", title);
     formData.append("service_description", description);
     formData.append("service_price", price);

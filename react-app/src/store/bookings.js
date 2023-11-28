@@ -46,7 +46,7 @@ export const createBookingThunk = (bookingData) => async (dispatch) => {
     if (response.ok) {
       const data = await response.json();
       dispatch(setBooking(data));
-      console.log("****BOOKING THUNK DATA", data)
+      // console.log("****BOOKING THUNK DATA", data)
       return data;
     } else {
       throw new Error("Error creating booking");
@@ -102,7 +102,7 @@ export const deleteBookingThunk = (bookingId) => async (dispatch) => {
     const response = await fetch(`/api/bookings/${bookingId}`, {
       method: "DELETE",
     });
-    console.log("bookings id", bookingId);
+    // console.log("bookings id", bookingId);
 
     if (response.ok) {
       dispatch(removeBooking(bookingId));

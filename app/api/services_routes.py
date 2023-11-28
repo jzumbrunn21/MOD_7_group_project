@@ -111,16 +111,19 @@ def update_service(id):
     form = ServiceForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
-
         image = form.data['url']
+        if image is not None:
 
-        image.filename = get_unique_filename(image.filename)
-        upload = upload_file_to_s3(image)
 
-        if "url" not in upload:
-            return "URL NOT IN UPLOAD"
+            image.filename = get_unique_filename(image.filename)
+            upload = upload_file_to_s3(image)
 
-        url = upload["url"]
+            if "url" not in upload:
+                return "URL NOT IN UPLOAD"
+
+            url = upload["url"]
+        else:
+            url = Service.query.get(id).url
 
 
 

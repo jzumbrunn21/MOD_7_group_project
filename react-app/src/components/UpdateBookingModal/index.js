@@ -38,14 +38,14 @@ const UpdateBookingModal = ({ bookingId }) => {
   //   setBookingDate(bookingDate);
   const start_date_and_time = bookingDate;
   const handleUpdateBooking = () => {
-    console.log("START DATE")
+    // console.log("START DATE")
     const updatedBookingData = {
       //   user_id: sessionUser.id,
       //   service_id: serviceId,
       start_date_and_time,
       status: true,
     };
-    console.log("Newly created booking data:", updatedBookingData);
+    // console.log("Newly created booking data:", updatedBookingData);
     dispatch(updateBookingThunk(updatedBookingData, bookingId));
     closeModal();
 
