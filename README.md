@@ -52,7 +52,7 @@ https://github.com/jzumbrunn21/Service_Squirrel/assets/126112107/d8f9c4e8-7fe7-4
 ## Contributers
 ### Fei Chen [LinkedIn](https://www.linkedin.com/in/fei-c-651612193/)
 ### Sofiia Kryvushko [LinkedIn](https://www.linkedin.com/in/sofiia-kryvushko/)
-### Shawn Transmonte [LinkedIn](https://www.linkedin.com/in/shawn-trasmonte-116a22267/)
+### Shawn Trasmonte [LinkedIn](https://www.linkedin.com/in/shawn-trasmonte-116a22267/)
 ### Josh Zumbrunn [LinkedIn](https://www.linkedin.com/in/josh-zumbrunn-622622274)
  
 
