@@ -13,6 +13,8 @@ import OpenModalButton from "../OpenModalButton";
 import { useModal } from "../../context/Modal";
 import LoginFormModal from "../LoginFormModal";
 
+import noImage from "./no-photo-available.jpeg";
+
 const ServiceDetailPage = () => {
   const { openModal } = useModal();
   const { serviceId } = useParams();
@@ -27,7 +29,7 @@ const ServiceDetailPage = () => {
   const bannerImage =
     "https://st2.depositphotos.com/4612235/6944/i/450/depositphotos_69442233-stock-photo-man-with-lawn-mower.jpg";
 
-  const [averageRating, setAverageRating] = useState('0.00');
+  const [averageRating, setAverageRating] = useState("0.00");
 
   const serviceDetail = useSelector(
     (state) => Object.values(state.services.singleService)[0]
@@ -131,7 +133,9 @@ const ServiceDetailPage = () => {
     // console.log("NEWBOOKING", newBooking);
     // const bookingId = newBooking.id;
     if (newBooking) {
-      const newBilling = await dispatch(createBillingThunk(paymentInfo, newBooking.id));
+      const newBilling = await dispatch(
+        createBillingThunk(paymentInfo, newBooking.id)
+      );
       // console.log("NEW BILLING", newBilling)
     }
 
@@ -165,7 +169,9 @@ const ServiceDetailPage = () => {
       >
         {sessionUser ? (
           <div>
-            <h1 className="service-detail-header">{serviceDetail.service_title}</h1>
+            <h1 className="service-detail-header">
+              {serviceDetail.service_title}
+            </h1>
             {sessionUser.id !== serviceDetail.provider_id ? (
               <button onClick={handleBookNow}>Book Now</button>
             ) : null}
@@ -235,7 +241,14 @@ const ServiceDetailPage = () => {
         <h2>Reviews</h2>
         {serviceReviews.map((review) => (
           <div key={review.id} className="review">
-            <img src={review.review_image} alt="Profile" />
+            <img
+              src={
+                review.user.profile_picture
+                  ? review.user.profile_picture
+                  : noImage
+              }
+              alt="Profile"
+            />
             <div className="review-info">
               <p>{review.username}</p>
               <p>{review.review}</p>
