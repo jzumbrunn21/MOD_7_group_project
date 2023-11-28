@@ -73,6 +73,11 @@ button {
   margin: 20px 0;
 }
 
+.home-service-image {
+  height: 210px;
+  border: solid 1px black;
+}
+
 .services-grid {
   display: flex;
   flex-wrap: wrap;
@@ -109,10 +114,17 @@ button {
   object-fit: cover;
 }
 
-.service-info {
+.home-service-info {
   padding: 10px;
   text-align: center;
   color: #000;
+  display: flex;
+    flex: 1 1;
+    padding: 10px;
+    color: #000;
+    flex-direction: column;
+    justify-content: space-between;
+
 }
 
 .rating {
