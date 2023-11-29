@@ -4,6 +4,8 @@ import boto3
 import botocore
 import os
 import uuid
+import io
+from werkzeug.datastructures import FileStorage
 
 s3 = boto3.client(
    "s3",
@@ -22,20 +24,27 @@ def get_unique_filename(filename):
 
 def upload_file_to_s3(file, acl="public-read"):
     try:
+        if isinstance(file, FileStorage):
+            filename = file.filename
+            file_content = file.read()
+        else:
+            # Assume file is already a bytes-like object
+            filename = get_unique_filename("file")
+            file_content = file
+
         s3.upload_fileobj(
-            file,
+            io.BytesIO(file_content),
             BUCKET_NAME,
-            file.filename,
+            filename,
             ExtraArgs={
                 "ACL": acl,
-                "ContentType": file.content_type
+                "ContentType": file.content_type if isinstance(file, FileStorage) else "application/octet-stream"
             }
         )
     except Exception as e:
-        # in case the your s3 upload fails
         return {"errors": str(e)}
 
-    return {"url": f"{S3_LOCATION}{file.filename}"}
+    return {"url": f"{S3_LOCATION}{filename}"}
 
 def remove_file_from_s3(image_url):
     # AWS needs the image file name, not the URL,
