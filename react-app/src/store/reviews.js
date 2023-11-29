@@ -56,6 +56,9 @@ export const createReviewThunk = (reviewData) => async (dispatch) => {
 };
 
 export const updateReviewThunk = (reviewId, reviewData) => async (dispatch) => {
+  reviewData.forEach((value, key) => {
+    console.log(`${key}: ${value}`);
+  });
   
   try {
     const response = await fetch(`/api/reviews/update/${reviewId}`, {
@@ -65,7 +68,7 @@ export const updateReviewThunk = (reviewId, reviewData) => async (dispatch) => {
 
     if (response.ok) {
       const data = await response.json();
-      dispatch(updateReview(data, reviewId));
+      dispatch(updateReview( reviewId, data));
       return data;
     } else {
       // Handle non-JSON response

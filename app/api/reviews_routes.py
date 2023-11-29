@@ -6,6 +6,7 @@ from app.forms import ReviewForm
 reviews_routes = Blueprint("reviews", __name__)
 from flask_login import current_user
 import io
+from werkzeug.utils import secure_filename
 # Could the below be used for error messages?
 
 # def validation_errors_to_error_messages(validation_errors):
@@ -81,32 +82,42 @@ def create_review():
         return review.to_dict(), 201
     else:
         return {"Errors": form.errors}  # Placeholder
-    
+
 @reviews_routes.route('/update/<int:id>', methods=["PUT"])
 def update_review(id):
     form = ReviewForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+
     if form.validate_on_submit():
-        image = form.data['review_image']
-        if image is not None:
-            image.filename = get_unique_filename(image.filename)
-            upload = upload_file_to_s3(image)
+        # Parse the FormData manually
+        service_id = int(request.form['service_id'])
+        review = request.form['review']
+        star_rating = int(request.form['star_rating'])
+        review_image = request.files['review_image'] if 'review_image' in request.files else None
+
+        review_to_update = Review.query.get(id)
+        review_to_update.review = review
+        review_to_update.star_rating = star_rating
+
+        if review_image:
+            # Handle the review_image
+            image_filename = secure_filename(review_image.filename)
+            unique_filename = get_unique_filename(image_filename)
+            review_image.filename = unique_filename
+
+            upload = upload_file_to_s3(review_image)
 
             if "url" not in upload:
                 return "URL not in upload"
+
             url = upload['url']
-        else:
-            url = Review.query.get(id).url
-        
-        review_to_update = Review.query.get(id)
-        review_to_update.review = form.data['review']
-        review_to_update.star_rating = form.data['star_rating']
-        review_to_update.review_image = url
+            review_to_update.review_image = url
 
         db.session.commit()
         return review_to_update.to_dict(), 201
     else:
         return {"Errors": form.errors}
+
 
 @reviews_routes.route('/user', methods=['GET'])
 def user_reviews():

@@ -6,56 +6,57 @@ import { Modal, useModal } from "../../context/Modal";
 import { getReviewsThunk } from "../../store/reviews";
 
 const PostReviewModal = ({ reviewData, serviceId }) => {
+
   const dispatch = useDispatch();
   const { closeModal } = useModal();
-  const [reviewText, setReviewText] = useState("");
-  const [reviewImage, setReviewImage] = useState("");
-  const [rating, setRating] = useState(0);
   const [errors, setErrors] = useState({});
   const sessionUser = useSelector((state) => state.session.user);
   const reviews = useSelector((state) => Object.values(state.reviews.reviews));
-  const existingReview = reviews.find((review) => review.service_id === serviceId);
+  const existingReview = reviews.find((review) => review?.service_id === serviceId);
+  const [reviewText, setReviewText] = useState("");
+  const [reviewImage, setReviewImage] = useState("");
+  const [rating, setRating] = useState(0);
 
-  // Move the function declaration above its usage
+  useEffect(() => {
+    getDetails();
+  }, []);
+
   const getDetails = async () => {
-    
-    console.log("Existing review id", existingReview.id);
     if (existingReview) {
       setReviewText(existingReview.review);
-      setRating(existingReview.star_rating);
 
-      // Handle existing review image
+      setRating(Number(existingReview.star_rating));
+
       if (existingReview.review_image) {
         setReviewImage(existingReview.review_image);
       }
     }
   };
 
-  useEffect(() => {
-    getDetails();
 
-  },[]);
-
-  
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
-  
+
     if (!reviewText || reviewText.length < 25 || reviewText.length > 2000) {
       newErrors.reviewText =
         "Review is required and must be between 25 and 2000 characters";
     }
-  
+
     if (rating < 1) {
       newErrors.rating = "You must rate this service";
     }
-  
+
+    if (!reviewImage) {
+      newErrors.reviewImage = "Image is required";
+    }
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-  
+
     const formData = new FormData();
     formData.append('service_id', serviceId);
     formData.append('review', reviewText);
@@ -63,18 +64,21 @@ const PostReviewModal = ({ reviewData, serviceId }) => {
     console.log("Review Text:", reviewText);
     console.log("Rating:", rating);
     console.log("Review Image:", reviewImage);
-  
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+
     // Append the updated image if a new one is selected
     if (reviewImage instanceof File) {
       formData.append('review_image', reviewImage);
     }
-  
+
     const action = reviews.some((review) => review.service_id === serviceId)
       ? () => updateReviewThunk(existingReview.id, formData)
       : () => createReviewThunk(formData);
-  
+
     const createdReview = await dispatch(action());
-  
+
     if (createdReview) {
       closeModal();
     }
@@ -102,6 +106,9 @@ const PostReviewModal = ({ reviewData, serviceId }) => {
             onChange={(e) => setReviewImage(e.target.files[0])}
           />
         </label>
+        {errors.reviewImage && (
+          <div className="review-error">{errors.reviewImage}</div>
+        )}
       </div>
       <h4>Rating</h4>
       <div className="star-container">
