@@ -2,21 +2,34 @@
   max-width: 1440px;
   margin: 0 auto;
   padding: 20px;
-  min-height: 80vh; 
+  min-height: 80vh;
   display: flex;
   flex-direction: column;
-  
 }
 
 .background-image-container {
   background-color: #f0f0f0;
-  text-align: center;
+  /* text-align: center; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   height: 150px;
   padding: 20px;
 }
 
 .background-image-container h1 {
   font-size: 24px;
+  text-align: center;
+  justify-self: center;
+  align-self: center;
+}
+
+.background-image-container button {
+  font-size: 15px;
+  background-color: #5d3d2f;
+  color: #fff;
+  padding: 10px;
 }
 
 .offered-service-container {
@@ -78,6 +91,7 @@
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  text-decoration: none;
 }
 
 .update-service-button:hover {

@@ -36,15 +36,15 @@ input[type="text"] {
 }
 
 button {
-  /* background-color: #007bff; */
-  /* color: #fff; */
+  background-color: #007bff;
+  color: #fff;
   /* border: none; */
-  /* padding: 10px 20px; */
+  padding: 10px;
   border-radius: 5px;
   font-size: 16px;
   margin-left: 10px;
   cursor: pointer;
-  background-color: transparent;
+  /* background-color: transparent; */
 }
 
 .service-labels {
