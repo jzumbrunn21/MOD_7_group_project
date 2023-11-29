@@ -89,6 +89,7 @@ const MyBookedServices = () => {
   const addReviewModal = (booking) => (
     <OpenModalButton
       buttonText="Update your Review"
+      className="update-review-btn"
       modalComponent={
         <PostReviewModal
           serviceTitle="Service Title"
@@ -115,6 +116,7 @@ const MyBookedServices = () => {
   const deleteReview = (booking) => (
     <OpenModalButton
       buttonText="Delete your Review"
+      className="delete-review-btn"
       modalComponent={
         <DeleteReviewConfirmModal
           reviewId={
@@ -176,6 +178,7 @@ const MyBookedServices = () => {
                 <div className="booking-billing-wrapper">
                   <h3>Booking ID #{booking.id}</h3>
                   <OpenModalButton
+                  className="billing-details-btn"
                     buttonText="Billing Details"
                     modalComponent={<BillingDetailsModal bookingId={booking.id} />}
                   />
