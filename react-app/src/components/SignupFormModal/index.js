@@ -43,8 +43,12 @@ function SignupFormModal() {
 
   return (
     <div className="signup-container">
-      <h1 className="signup-header">Sign Up</h1>
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
+      <form
+        onSubmit={handleSubmit}
+        encType="multipart/form-data"
+        className="signup-form"
+      >
+        <h1 className="signup-header">Sign Up</h1>
         <ul className="error-list">
           {errors.map((error, idx) => (
             <li key={idx} className="error-item">
@@ -122,13 +126,14 @@ function SignupFormModal() {
             className="input-field"
           />
         </label>
-        <label className="input-label">
-          <div>Profile Picture</div>
+        <label className="file-input-label">
+          <div>Upload your Profile Picture</div>
           <input
             type="file"
             accept="image/*"
             onChange={(e) => setProfilePicture(e.target.files[0])}
             required
+            style={{ display: "none" }}
           />
         </label>
         <div>

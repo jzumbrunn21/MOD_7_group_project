@@ -5,6 +5,7 @@ import "./ViewServicesList.css";
 import { getServicesThunk } from "../../store/services";
 import { getReviewsThunk } from "../../store/reviews";
 import { useModal } from "../../context/Modal";
+import noImage from "./no-photo-available.jpeg";
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 
@@ -81,6 +82,10 @@ const ViewServicesList = () => {
   const bannerImage =
     "https://as1.ftcdn.net/v2/jpg/04/27/47/64/1000_F_427476485_oTb1JxGzFAc5MnVb6KoCoZYTgCNm6fSk.jpg";
 
+    const invalidImage = (e) => {
+      e.currentTarget.src = noImage;
+    };
+
   return (
     <div className="services-list-container">
       <div
@@ -141,8 +146,8 @@ const ViewServicesList = () => {
             key={service.id}
             className="service-container"
           >
-            <img src={service.url} alt={service.title} />
-            <div className="service-info">
+            <img className="home-service-image" src={service.url} alt={service.title} onError={invalidImage}/>
+            <div className="home-service-info">
               <h3>{service.service_title}</h3>
               <p>{service.service_description}</p>
               <div className="price-rating-wrapper">
