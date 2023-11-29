@@ -29,6 +29,9 @@ const removeReview = (reviewId) => ({
 
 // Thunks
 export const createReviewThunk = (reviewData) => async (dispatch) => {
+  reviewData.forEach((value, key) =>{
+    console.log(`From create review ${key}: ${value}`);
+  })
   try {
     console.log("review Data from thunk", reviewData.get('review_image'));
     const response = await fetch("/api/reviews/new", {

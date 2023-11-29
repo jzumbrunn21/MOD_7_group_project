@@ -14,7 +14,7 @@ const PostReviewModal = ({ reviewData, serviceId }) => {
   const reviews = useSelector((state) => Object.values(state.reviews.reviews));
   const existingReview = reviews.find((review) => review?.service_id === serviceId);
   const [reviewText, setReviewText] = useState("");
-  const [reviewImage, setReviewImage] = useState("");
+  const [reviewImage, setReviewImage] = useState(null);
   const [rating, setRating] = useState(0);
 
   useEffect(() => {
@@ -24,7 +24,6 @@ const PostReviewModal = ({ reviewData, serviceId }) => {
   const getDetails = async () => {
     if (existingReview) {
       setReviewText(existingReview.review);
-
       setRating(Number(existingReview.star_rating));
 
       if (existingReview.review_image) {
@@ -32,8 +31,6 @@ const PostReviewModal = ({ reviewData, serviceId }) => {
       }
     }
   };
-
-
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -48,7 +45,7 @@ const PostReviewModal = ({ reviewData, serviceId }) => {
       newErrors.rating = "You must rate this service";
     }
 
-    if (!reviewImage) {
+    if (reviewImage === null || reviewImage === undefined) { // Update the check
       newErrors.reviewImage = "Image is required";
     }
 
@@ -61,12 +58,6 @@ const PostReviewModal = ({ reviewData, serviceId }) => {
     formData.append('service_id', serviceId);
     formData.append('review', reviewText);
     formData.append('star_rating', rating);
-    console.log("Review Text:", reviewText);
-    console.log("Rating:", rating);
-    console.log("Review Image:", reviewImage);
-    formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
 
     // Append the updated image if a new one is selected
     if (reviewImage instanceof File) {
@@ -83,6 +74,7 @@ const PostReviewModal = ({ reviewData, serviceId }) => {
       closeModal();
     }
   };
+
 
   return (
     <div className="post-review-modal">

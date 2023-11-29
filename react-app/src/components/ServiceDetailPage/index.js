@@ -41,7 +41,8 @@ const ServiceDetailPage = () => {
   const serviceReviews = reviews.filter(
     (review) => review.service_id === parseInt(serviceId)
   );
-  // console.log("service reviews", serviceReviews);
+
+  console.log("service reviews", serviceReviews[3].review_image);
 
   // Function to calculate the average rating
   const calculateAverageRating = () => {
@@ -66,7 +67,7 @@ const ServiceDetailPage = () => {
 
   useEffect(() => {
     dispatch(getReviewsThunk());
-  }, [dispatch]);
+  }, [dispatch, reviews.length]);
 
   // Update the average rating whenever the serviceReviews array changes
   useEffect(() => {
@@ -241,12 +242,9 @@ const ServiceDetailPage = () => {
         <h2>Reviews</h2>
         {serviceReviews.map((review) => (
           <div key={review.id} className="review">
+            {console.log("Review Image URL:", review.review_image)}
             <img
-              src={
-                review.user.profile_picture
-                  ? review.user.profile_picture
-                  : noImage
-              }
+              src={review.review_image ? review.review_image : noImage}
               alt="Profile"
             />
             <div className="review-info">

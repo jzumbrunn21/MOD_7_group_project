@@ -49,13 +49,9 @@ def create_review():
 
         print('*** Image Result ***', type(image))
 
-        image.filename = get_unique_filename(image.filename)
-        print('*** Image Filename ***', type(image.filename))
-
-        # Read the content of the image into bytes
-        image_content = image.read()
-
-        # Convert the bytes to a new FileStorage object
+        image_filename = secure_filename(image.filename)
+        unique_filename = get_unique_filename(image_filename)
+        image.filename = unique_filename
 
         # Upload the file content to S3
         upload = upload_file_to_s3(image)
@@ -78,10 +74,9 @@ def create_review():
         )
         db.session.add(review)
         db.session.commit()
-        # !!! Do we need to query it then return? Examples just return the below
         return review.to_dict(), 201
     else:
-        return {"Errors": form.errors}  # Placeholder
+        return {"Errors": form.errors}
 
 @reviews_routes.route('/update/<int:id>', methods=["PUT"])
 def update_review(id):

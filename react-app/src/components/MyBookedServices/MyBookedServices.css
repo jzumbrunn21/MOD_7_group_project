@@ -1,77 +1,141 @@
-.my-booked-services-container{
+.my-booked-services-container {
     max-width: 1440px;
-    min-height: 80vh; 
+    min-height: 80vh;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-}
-
-.tabs{
+  }
+  
+  .tabs {
     display: flex;
     justify-content: center;
-    background: #d1d1d1;
+    /* background: #d1d1d1; */
     margin-bottom: 25px;
-}
-
-.my-bookings-title{
+  }
+  
+  .my-bookings-title {
     margin-left: 50px;
-}
+  }
 
-/* .upcoming-service-details{
+  .tabs button {
+    background-color: #4caf50; 
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  
 
-} */
-
-.upcoming-my-bookings-service-container{
+  .tabs button.active {
+    background-color: #008CBA; 
+  }
+  
+  .upcoming-my-bookings-service-container,
+  .previous-my-bookings-service-container {
     width: 95%;
-    margin-left: 25px;
+    margin: 0 auto;
     margin-bottom: 30px;
-    border: 1px solid #000;
     border-radius: 10px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
-}
-
-.previous-my-bookings-service-container{
-    width: 95%;
-    margin-left: 25px;
-    margin-bottom: 30px;
-    border: 1px solid #000;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-}
-
-.booking-name-and-billing{
-    /* border: solid green; */
+    justify-content: space-between;
+    padding: 10px;
+  }
+  
+  .booking-name-and-billing,
+  /* .booking-information, */
+  .booking-action-buttons,
+  .booking-status-review {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .booking-name-and-billing {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 13%;
-}
-
-.booking-information{
-    /* border: solid orange; */
+  }
+  
+  .booking-information {
     width: 27%;
-}
-
-.booking-action-buttons{
-    /* border: solid red; */
+  }
+  
+  .booking-action-buttons {
     display: flex;
     flex-direction: column;
     height: 125px;
     justify-content: space-around;
-}
-
-.booking-status-review{
-    /* border: solid blue; */
+  }
+  
+  .booking-status-review {
     width: 20%;
-}
-
-
- .update-time button{
+  }
+  
+  .date-time-wrapper,
+  .status-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .update-time button {
     background-color: #28a745 !important;
-}
+  }
+  
+  .booking-billing-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+  }
+  
+  .update-buttton {
+    background-color: #28a745;
+    color: #fff;
+    padding: 5px;
+    border: none;
+    font-size: 14px;
+  }
+  
+  .delete-button {
+    margin-top: 20px;
+  }
+  
+  .upcoming-my-bookings-service-container {
+    background-color: #e0f7fa;
+  }
+  
+  .previous-my-bookings-service-container {
+    background-color: #feede7; 
+  }
+
+  .update-buttons{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+  }
+  
+  @media (max-width: 768px) {
+    .upcoming-my-bookings-service-container,
+    .previous-my-bookings-service-container {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  
+    .booking-name-and-billing,
+    .booking-information,
+    .booking-action-buttons,
+    .booking-status-review {
+      width: 100%;
+    }
+  }
+  
