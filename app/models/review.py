@@ -35,5 +35,10 @@ class Review(db.Model):
             'review': self.review,
             'star_rating': self.star_rating,
             'review_image': self.review_image,
-            'created_at': self.created_at
+            'created_at': self.created_at,
+            'user': {
+                'id': self.user.id,
+                'username': self.user.username,
+                'profile_picture': self.user.profile_picture
+            }
         }

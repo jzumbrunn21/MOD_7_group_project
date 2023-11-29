@@ -28,7 +28,7 @@
 }
 
 input[type="text"] {
-  width: 70%;
+  width: 80%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -38,12 +38,13 @@ input[type="text"] {
 button {
   background-color: #007bff;
   color: #fff;
-  border: none;
-  padding: 10px 20px;
+  /* border: none; */
+  padding: 10px;
   border-radius: 5px;
   font-size: 16px;
   margin-left: 10px;
   cursor: pointer;
+  /* background-color: transparent; */
 }
 
 .service-labels {
@@ -71,6 +72,11 @@ button {
 .popular-projects {
   text-align: center;
   margin: 20px 0;
+}
+
+.home-service-image {
+  height: 210px;
+  border: solid 1px black;
 }
 
 .services-grid {
@@ -109,10 +115,17 @@ button {
   object-fit: cover;
 }
 
-.service-info {
+.home-service-info {
   padding: 10px;
   text-align: center;
   color: #000;
+  display: flex;
+    flex: 1 1;
+    padding: 10px;
+    color: #000;
+    flex-direction: column;
+    justify-content: space-between;
+
 }
 
 .rating {

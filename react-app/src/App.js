@@ -41,6 +41,7 @@ function App() {
           <Route exact path="/my-booked-services" component={MyBookedServices} />
           <Route exact path="/create-service" component={CreateNewService} />
           <Route exact path='/create-review' component={PostReviewModal}/>
+          <Route exact path='/update-review' component={PostReviewModal}/>
           <Route exact path="/login">
             <LoginFormPage />
           </Route>

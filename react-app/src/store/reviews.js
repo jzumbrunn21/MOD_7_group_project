@@ -1,6 +1,7 @@
 // Partial CRUD: CRD
 const SET_REVIEW = "reviews/SET_REVIEWS";
 const READ_REVIEWS = "reviews/READ_REVIEW";
+const UPDATE_REVIEW = 'reviews/UPDATE_REVIEW';
 const DELETE_REVIEW = "reviews/DELETE_REVIEW";
 
 // Action Creators
@@ -15,30 +16,74 @@ const readReviews = (reviews) => ({
   reviews,
 });
 
+const updateReview = (reviewId, reviewData) => ({
+  type: UPDATE_REVIEW,
+  reviewId,
+  reviewData,
+});
+
 const removeReview = (reviewId) => ({
   type: DELETE_REVIEW,
   reviewId,
 });
 
 // Thunks
-export const createReviewThunk =
-  (reviewData) => async (dispatch) => {
+export const createReviewThunk = (reviewData) => async (dispatch) => {
+  reviewData.forEach((value, key) =>{
+    console.log(`From create review ${key}: ${value}`);
+  })
+  try {
+    console.log("review Data from thunk", reviewData.get('review_image'));
     const response = await fetch("/api/reviews/new", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(reviewData),
+      // body: JSON.stringify(reviewData),
+      body: reviewData,
     });
-    console.log(response)
+
+    console.log("Response", response);
+
     if (response.ok) {
       const data = await response.json();
       dispatch(setReview(data));
-      return data
+      return data;
     } else {
+      // Handle non-JSON response
+      const errorMessage = await response.text();
+      console.error(errorMessage);
       return "Error";
     }
-  };
+  } catch (error) {
+    console.error("Error in createReviewThunk:", error);
+    return "Error";
+  }
+};
+
+export const updateReviewThunk = (reviewId, reviewData) => async (dispatch) => {
+  reviewData.forEach((value, key) => {
+    console.log(`${key}: ${value}`);
+  });
+  
+  try {
+    const response = await fetch(`/api/reviews/update/${reviewId}`, {
+      method: "PUT",
+      body: reviewData,
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(updateReview( reviewId, data));
+      return data;
+    } else {
+      // Handle non-JSON response
+      const errorMessage = await response.text();
+      console.error(errorMessage);
+      return "Error";
+    }
+  } catch (error) {
+    console.error("Error in updateReviewThunk:", error);
+    return "Error";
+  }
+};
 
   export const getUserReviewsThunk = () => async (dispatch) => {
     const response = await fetch("/api/reviews/user", {
@@ -94,9 +139,13 @@ export default function reviewsReducer(state = initialState, action) {
         newState.reviews[review.id] = review;
       });
       return newState;
+    case UPDATE_REVIEW:
+      newState = {...state};
+      newState.reviews[action.reviewId] = action.reviewData
+      return newState;
     case DELETE_REVIEW:
       newState = { ...state };
-      delete newState[action.reviewId];
+      delete newState.reviews[action.reviewId];
       return newState;
     default:
       return state;

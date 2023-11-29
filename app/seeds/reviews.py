@@ -10,13 +10,14 @@ def seed_reviews():
     services = Service.query.all()
 
     for service in services:
-        num_reviews = randint(2, 5) 
+        num_reviews = randint(2, 5)
 
         for _ in range(num_reviews):
             user_id = randint(1, num_users)
+            user = User.query.get(user_id)
             review = fake.paragraph(nb_sentences=3)
             star_rating = randint(1, 5)
-            review_image = fake.image_url()
+            review_image = user.profile_picture
 
             # Check if this user has already reviewed this service
             existing_review = Review.query.filter_by(user_id=user_id, service_id=service.id).first()

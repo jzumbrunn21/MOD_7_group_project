@@ -6,13 +6,15 @@
   padding: 20px;
   border-radius: 5px;
   width: 600px;
-  text-align: center;
-  align-content: center;
 }
 
-.signup-header {
+/* .signup-container label {
+  align-self: center;
+} */
+
+/* .signup-header {
   text-align: center;
-}
+} */
 
 .error-list {
   list-style: none;
@@ -27,16 +29,18 @@
 
 .input-label {
   font-weight: bold;
+  /* align-self: center; */
 }
 
 .input-field {
   padding: 8px;
   margin: 5px 0;
   border-radius: 5px;
+  /* align-self: center; */
 }
 
 input[type="password"] {
-  width: 70%;
+  width: 80%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -57,7 +61,31 @@ input[type="password"] {
   background-color: #0056b3;
 }
 
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .signup-container input {
   position: relative;
-  right: -50px;
+  right: -10px;
+}
+
+.file-input-label {
+  display: block;
+  width: 200px;
+  height: 40px;
+  line-height: 40px;
+  color: white;
+  background-color: #007bff;
+  border-radius: 5px;
+  padding: 5px;
+  text-align: center;
+  margin: 0 auto;
+  cursor: pointer;
 }

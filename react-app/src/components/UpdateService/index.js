@@ -8,10 +8,10 @@ const UpdateService = (serviceData) => {
   // const serviceId = serviceData.match.params.serviceId
   const paramId = useParams();
   const dispatch = useDispatch();
-  console.log(typeof paramId);
-  console.log(paramId);
+  // console.log(typeof paramId);
+  // console.log(paramId);
   // console.log(serviceId)
-  console.log("The service data", serviceData);
+  // console.log("The service data", serviceData);
   const serviceDetail = useSelector(
     (state) => Object.values(state.services.singleService)[0]
   );
@@ -71,7 +71,7 @@ const UpdateService = (serviceData) => {
     let res = await dispatch(getServiceThunk(paramId.serviceId));
     let response = res.service;
     // console.log(response)
-    console.log("*** DISPATCH RETURN", res);
+    // console.log("*** DISPATCH RETURN", res);
     setTitle(response.service_title);
     setUrl(response.url);
     setDescription(response.service_description);
@@ -94,14 +94,14 @@ const UpdateService = (serviceData) => {
         "Description is required and must be between 1 and 2000 characters ";
     }
 
-    const validUrlEndings = [".jpg", ".jpeg", ".png"];
-    if (
-      !url ||
-      !validUrlEndings.some((ending) => url.toLowerCase().endsWith(ending))
-    ) {
-      newErrors.url =
-        "Image url is required and must end in .jpg, .jpeg, or .png";
-    }
+    // const validUrlEndings = [".jpg", ".jpeg", ".png"];
+    // if (
+    //   !url ||
+    //   !validUrlEndings.some((ending) => url.toLowerCase().endsWith(ending))
+    // ) {
+    //   newErrors.url =
+    //     "Image url is required and must end in .jpg, .jpeg, or .png";
+    // }
     if (!price || price < 1) {
       newErrors.price = "Price is required";
     }
@@ -117,24 +117,32 @@ const UpdateService = (serviceData) => {
       return;
     }
 
-    const service_title = title;
-    const service_description = description;
-    const service_price = price;
-    const service_length_est = lengthEstimate;
-    const service_category = category;
+    // const service_title = title;
+    // const service_description = description;
+    // const service_price = price;
+    // const service_length_est = lengthEstimate;
+    // const service_category = category;
     // const id = serviceData.id
 
-    const updatedServiceData = {
-      service_title,
-      service_description,
-      url,
-      service_price,
-      service_length_est,
-      service_category,
-    };
+    // const updatedServiceData = {
+    //   service_title,
+    //   service_description,
+    //   url,
+    //   service_price,
+    //   service_length_est,
+    //   service_category,
+    // };
+
+    const formData = new FormData();
+    if (url) formData.append("url", url);
+    formData.append("service_title", title);
+    formData.append("service_description", description);
+    formData.append("service_price", price);
+    formData.append("service_length_est", lengthEstimate);
+    formData.append("service_category", category);
 
     const updatedService = await dispatch(
-      updateServiceThunk(updatedServiceData, paramId.serviceId)
+      updateServiceThunk(formData, paramId.serviceId)
     );
     // console.log("THUNK", updatedService);
     // console.log("***updatedService****", updatedService);
@@ -150,7 +158,7 @@ const UpdateService = (serviceData) => {
     <div className="update-service-wrapper">
       <div className="update-service-container">
         <h1>Update Your Service</h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="update-service-title">
             <label>
               What's your service called?
@@ -177,7 +185,11 @@ const UpdateService = (serviceData) => {
           <div className="update-service-url">
             <label>
               ImageUrl
-              <textarea value={url} onChange={(e) => setUrl(e.target.value)} />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setUrl(e.target.files[0])}
+              />
               {errors.url && <span className="error">{errors.url}</span>}
             </label>
           </div>

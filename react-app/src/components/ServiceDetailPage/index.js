@@ -13,6 +13,8 @@ import OpenModalButton from "../OpenModalButton";
 import { useModal } from "../../context/Modal";
 import LoginFormModal from "../LoginFormModal";
 
+import noImage from "./no-photo-available.jpeg";
+
 const ServiceDetailPage = () => {
   const { openModal } = useModal();
   const { serviceId } = useParams();
@@ -27,19 +29,20 @@ const ServiceDetailPage = () => {
   const bannerImage =
     "https://st2.depositphotos.com/4612235/6944/i/450/depositphotos_69442233-stock-photo-man-with-lawn-mower.jpg";
 
-  const [averageRating, setAverageRating] = useState('0.00');
+  const [averageRating, setAverageRating] = useState("0.00");
 
   const serviceDetail = useSelector(
     (state) => Object.values(state.services.singleService)[0]
   );
 
-  console.log("SERVICE DETAIL provider_id", serviceDetail?.provider_id);
+  // console.log("SERVICE DETAIL provider_id", serviceDetail?.provider_id);
 
   const reviews = useSelector((state) => Object.values(state.reviews.reviews));
   const serviceReviews = reviews.filter(
     (review) => review.service_id === parseInt(serviceId)
   );
-  console.log("service reviews", serviceReviews);
+
+  // console.log("service reviews", serviceReviews[3].review_image);
 
   // Function to calculate the average rating
   const calculateAverageRating = () => {
@@ -64,7 +67,7 @@ const ServiceDetailPage = () => {
 
   useEffect(() => {
     dispatch(getReviewsThunk());
-  }, [dispatch]);
+  }, [dispatch, reviews.length]);
 
   // Update the average rating whenever the serviceReviews array changes
   useEffect(() => {
@@ -117,7 +120,7 @@ const ServiceDetailPage = () => {
   const handleConfirmBooking = async (paymentInfo) => {
     // Set the payment info and close the payment modal
     setShowPaymentModal(false);
-    console.log("Payment Information:", paymentInfo);
+    // console.log("Payment Information:", paymentInfo);
 
     // Proceed with creating the booking
     const bookingData = {
@@ -128,20 +131,22 @@ const ServiceDetailPage = () => {
     };
 
     const newBooking = await dispatch(createBookingThunk(bookingData));
-    console.log("NEWBOOKING", newBooking);
+    // console.log("NEWBOOKING", newBooking);
     // const bookingId = newBooking.id;
     if (newBooking) {
-      const newBilling = await dispatch(createBillingThunk(paymentInfo, newBooking.id));
-      console.log("NEW BILLING", newBilling)
+      const newBilling = await dispatch(
+        createBillingThunk(paymentInfo, newBooking.id)
+      );
+      // console.log("NEW BILLING", newBilling)
     }
 
-    console.log("Newly created booking data:", bookingData);
+    // console.log("Newly created booking data:", bookingData);
     history.push("/my-booked-services");
   };
 
   // Use useModal to access the openModal function
 
-  console.log("The service: ", serviceDetail);
+  // console.log("The service: ", serviceDetail);
 
   const openLoginModal = () => {
     openModal(<LoginFormModal />);
@@ -165,7 +170,9 @@ const ServiceDetailPage = () => {
       >
         {sessionUser ? (
           <div>
-            <h1 className="service-detail-header">{serviceDetail.service_title}</h1>
+            <h1 className="service-detail-header">
+              {serviceDetail.service_title}
+            </h1>
             {sessionUser.id !== serviceDetail.provider_id ? (
               <button onClick={handleBookNow}>Book Now</button>
             ) : null}
@@ -216,7 +223,7 @@ const ServiceDetailPage = () => {
           <p className="review-description">
             {serviceDetail.service_description}
           </p>
-          <p>Provider Name {serviceDetail.provider_id}</p>
+          {/* <p>Provider Name {serviceDetail.provider_id}</p> */}
           <p>${serviceDetail.service_price}</p>
         </div>
         <div>
@@ -235,7 +242,11 @@ const ServiceDetailPage = () => {
         <h2>Reviews</h2>
         {serviceReviews.map((review) => (
           <div key={review.id} className="review">
-            <img src={review.review_image} alt="Profile" />
+            {console.log("Review Image URL:", review.review_image)}
+            <img
+              src={review.review_image ? review.review_image : noImage}
+              alt="Profile"
+            />
             <div className="review-info">
               <p>{review.username}</p>
               <p>{review.review}</p>
