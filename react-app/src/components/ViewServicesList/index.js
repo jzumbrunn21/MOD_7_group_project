@@ -15,7 +15,7 @@ const ViewServicesList = () => {
   const services = useSelector((state) =>
     Object.values(state.services.services)
   );
-  const [categoryFilter, setCategoryFilter] = useState(null);
+  const [searchFilter, setSearchFilter] = useState("");
   const reviews = useSelector((state) => Object.values(state.reviews.reviews));
 
   // Calculate average ratings using useMemo
@@ -50,12 +50,7 @@ const ViewServicesList = () => {
   }, [dispatch]);
 
   const handleFilter = (e) => {
-    const inputCategory = e.target.value.toLowerCase();
-    if (inputCategory) {
-      setCategoryFilter(inputCategory);
-    } else {
-      setCategoryFilter(null);
-    }
+    setSearchFilter(e.target.value.toLowerCase());
   };
 
   const { openModal } = useModal();
@@ -65,26 +60,27 @@ const ViewServicesList = () => {
   };
 
   const clearFilter = () => {
-    setCategoryFilter(null);
+    setSearchFilter("");
   };
 
-  const filteredServices = categoryFilter
-    ? services.filter((service) =>
-      service.service_category.toLowerCase().startsWith(categoryFilter)
-    )
-    : services;
+  const filteredServices = services.filter((service) => {
+    const matchesCategory = service.service_category.toLowerCase().startsWith(searchFilter);
+    const matchesTitle = service.service_title.toLowerCase().includes(searchFilter);
+    
+    return matchesCategory || matchesTitle;
+  });
 
-  const testLabel = categoryFilter
-    ? `This is your result for category: ${categoryFilter}`
+  const testLabel = searchFilter
+    ? `This is your result for: ${searchFilter}`
     : "";
 
   const categories = ["Cleaning", "Lawn Service", "Moving"];
   const bannerImage =
     "https://as1.ftcdn.net/v2/jpg/04/27/47/64/1000_F_427476485_oTb1JxGzFAc5MnVb6KoCoZYTgCNm6fSk.jpg";
 
-    const invalidImage = (e) => {
-      e.currentTarget.src = noImage;
-    };
+  const invalidImage = (e) => {
+    e.currentTarget.src = noImage;
+  };
 
   return (
     <div className="services-list-container">
@@ -104,8 +100,9 @@ const ViewServicesList = () => {
           <div className="search-bar">
             <input
               type="text"
-              placeholder="Search for services"
+              placeholder="Search for services by category or title"
               onChange={handleFilter}
+              value={searchFilter}
             />
             <OpenModalButton
               buttonText="Get Help Today"
@@ -118,8 +115,9 @@ const ViewServicesList = () => {
           <div className="search-bar-with-login">
             <input
               type="text"
-              placeholder="Search for services"
+              placeholder="Search for services by category or title"
               onChange={handleFilter}
+              value={searchFilter}
             />
           </div>
         )}
@@ -127,7 +125,7 @@ const ViewServicesList = () => {
           {categories.map((category) => (
             <span
               key={category}
-              onClick={() => setCategoryFilter(category.toLowerCase())}
+              onClick={() => setSearchFilter(category.toLowerCase())}
             >
               {category}
             </span>
