@@ -223,7 +223,7 @@ const ServiceDetailPage = () => {
           <p className="review-description">
             {serviceDetail.service_description}
           </p>
-          <p>Provider Name {serviceDetail.provider_id}</p>
+          {/* <p>Provider Name {serviceDetail.provider_id}</p> */}
           <p>${serviceDetail.service_price}</p>
         </div>
         <div>
