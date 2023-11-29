@@ -42,7 +42,7 @@ const ServiceDetailPage = () => {
     (review) => review.service_id === parseInt(serviceId)
   );
 
-  console.log("service reviews", serviceReviews[3].review_image);
+  // console.log("service reviews", serviceReviews[3].review_image);
 
   // Function to calculate the average rating
   const calculateAverageRating = () => {
