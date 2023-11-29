@@ -13,6 +13,7 @@ function SignupFormModal() {
   const [lastName, setLastName] = useState("");
   const [address, setAddress] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
+  const [imageSelected, setImageSelected] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
   const { closeModal } = useModal();
@@ -21,6 +22,10 @@ function SignupFormModal() {
     e.preventDefault();
     const formData = new FormData();
     if (password === confirmPassword) {
+      if (!imageSelected) {
+        setErrors((prevErrors) => [...prevErrors, 'Please upload an image.']);
+        return;
+      }
       formData.append("email", email);
       formData.append("username", username);
       formData.append("password", password);
@@ -131,8 +136,13 @@ function SignupFormModal() {
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => setProfilePicture(e.target.files[0])}
-            required
+            onChange={(e) => {
+              setProfilePicture(e.target.files[0]);
+              setImageSelected(true);
+            }
+
+            }
+            // required
             style={{ display: "none" }}
           />
         </label>

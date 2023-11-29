@@ -58,11 +58,11 @@ function ProfileButton({ user }) {
                 {user.username}
                 {user.email}
               </div>
-              <Link to="/my-services">My services</Link>
+              <Link to="/my-services" onClick={closeMenu}>My services</Link>
 
-              <Link to="/my-booked-services">My booked services</Link>
+              <Link to="/my-booked-services" onClick={closeMenu}>My booked services</Link>
 
-              <Link to="/create-service">Create your service</Link>
+              <Link to="/create-service" onClick={closeMenu}>Create your service</Link>
 
               <button onClick={handleLogout} className="profile-button_logout">Log Out</button>
             </>
