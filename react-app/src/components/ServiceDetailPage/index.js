@@ -1,7 +1,7 @@
 import { getReviewsThunk } from "../../store/reviews";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, NavLink} from "react-router-dom";
 
 import PaymentInformationModal from "../PaymentInformationModal";
 import { getServiceThunk } from "../../store/services";
@@ -155,114 +155,118 @@ const ServiceDetailPage = () => {
   const handleDisable = !hasSelectedDate;
 
   return (
-    <div className="service-detail-container">
-      {/* Background Image Container */}
+  
+      <div className="service-detail-container">
+          <div className="service-detail-container__wrapper">
 
-      <div
-        className="service-detail-background-image-container"
-        style={{
-          backgroundImage: `url(${bannerImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundPositionY: "-100px",
-          // backgroundPositionX: "-80px"
-        }}
-      >
-        {sessionUser ? (
-          <div>
-            <h1 className="service-detail-header">
-              {serviceDetail.service_title}
-            </h1>
-            {sessionUser.id !== serviceDetail.provider_id ? (
-              <button onClick={handleBookNow}>Book Now</button>
-            ) : null}
-          </div>
-        ) : (
-          // <div className="background-image-container">
-          <>
-            <h1>{serviceDetail.service_title}</h1>
-            <OpenModalButton
-              buttonText="Book Now"
-              onItemClick={openLoginModal}
-              modalComponent={<LoginFormModal />}
-            />
-          </>
-          // </div>
-        )}
-
-        {/* Booking Modal */}
-        {showBookingModal && (
-          <div className="booking-modal">
-            <h2>Book a Service</h2>
-            <input
-              type="datetime-local"
-              placeholder="MM/DD/YYYY HH:mm AM"
-              value={bookingDate}
-              onChange={handleBookingDateChange}
-            />
-
-            {errors.selected_booking_date && (
-              <p className="error-message">{errors.selected_booking_date}</p>
-            )}
-            <button onClick={handleContinueToBilling} disabled={handleDisable}>
-              Continue to Billing
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Navigation Info */}
-      <div className="navigation-info">
-        Home &gt; {serviceDetail.service_title}
-      </div>
-
-      {/* Service Details */}
-      <div className="service-details">
-        <div>
-          <h2>Service Description</h2>
-          <p className="review-description">
-            {serviceDetail.service_description}
-          </p>
-          {/* <p>Provider Name {serviceDetail.provider_id}</p> */}
-          <p>${serviceDetail.service_price}</p>
+                    {/* Navigation Info */}
+        <div className="navigation-info"> <NavLink to='/' className='breadcrumbs'>Home</NavLink> &gt; {serviceDetail.service_title}
         </div>
-        <div>
-          <img src={serviceDetail.url} alt="Service" />
-        </div>
-      </div>
+        {/* Background Image Container */}
 
-      {/* Display the Average Rating */}
-      <div className="average-rating">
-        <h2>Average Rating</h2>
-        <p>★ {averageRating} / 5</p>
-      </div>
-
-      {/* Reviews Section */}
-      <div className="reviews-section">
-        <h2>Reviews</h2>
-        {serviceReviews.map((review) => (
-          <div key={review.id} className="review">
-            {console.log("Review Image URL:", review.review_image)}
-            <img
-              src={review.review_image ? review.review_image : noImage}
-              alt="Profile"
-            />
-            <div className="review-info">
-              <p>{review.username}</p>
-              <p>{review.review}</p>
-              {/* Convert star_rating to a number and display with 2 decimal places */}
-              <p>★ {parseFloat(review.star_rating).toFixed(2)}</p>
+        <div
+          className="service-detail-background-image-container"
+          style={{
+            backgroundImage: `url(${bannerImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundPositionY: "-100px",
+            // backgroundPositionX: "-80px"
+          }}
+        >
+          {sessionUser ? (
+            <div>
+              <h1 className="service-detail-header">
+                {serviceDetail.service_title}
+              </h1>
+              {sessionUser.id !== serviceDetail.provider_id ? (
+                <button onClick={handleBookNow}>Book Now</button>
+              ) : null}
             </div>
-          </div>
-        ))}
-      </div>
+          ) : (
+            // <div className="background-image-container">
+            <>
+              <h1>{serviceDetail.service_title}</h1>
+              <OpenModalButton
+                buttonText="Book Now"
+                onItemClick={openLoginModal}
+                modalComponent={<LoginFormModal />}
+              />
+            </>
+            // </div>
+          )}
 
-      {showPaymentModal && (
-        <PaymentInformationModal
-          onClose={() => setShowPaymentModal(false)}
-          onConfirmBooking={handleConfirmBooking}
-        />
-      )}
+          {/* Booking Modal */}
+          {showBookingModal && (
+            <div className="booking-modal">
+              <h2>Book a Service</h2>
+              <input
+                type="datetime-local"
+                placeholder="MM/DD/YYYY HH:mm AM"
+                value={bookingDate}
+                onChange={handleBookingDateChange}
+              />
+
+              {errors.selected_booking_date && (
+                <p className="error-message">{errors.selected_booking_date}</p>
+              )}
+              <button onClick={handleContinueToBilling} disabled={handleDisable}>
+                Continue to Billing
+              </button>
+            </div>
+          )}
+        </div>
+
+
+
+        {/* Service Details */}
+        <div className="service-details">
+          <div className="service-detaild-description">
+            <h2>Service Description</h2>
+            <p className="review-description">
+              {serviceDetail.service_description}
+            </p>
+            {/* <p>Provider Name {serviceDetail.provider_id}</p> */}
+            <p className="service-details__price">${serviceDetail.service_price}</p>
+          </div>
+          <div>
+            <img src={serviceDetail.url} alt="Service" />
+          </div>
+        </div>
+
+        {/* Display the Average Rating */}
+        <div className="average-rating">
+          <h2>Average Rating</h2>
+          <p>★ {averageRating} / 5</p>
+        </div>
+
+        {/* Reviews Section */}
+        <div className="reviews-section">
+          <h2>Reviews</h2>
+          {serviceReviews.map((review) => (
+            <div key={review.id} className="review">
+              {console.log("Review Image URL:", review.review_image)}
+              <img
+                src={review.review_image ? review.review_image : noImage}
+                alt="Profile"
+              />
+              <div className="review-info">
+                <p>{review.username}</p>
+                <p>{review.review}</p>
+                {/* Convert star_rating to a number and display with 2 decimal places */}
+                <p>★ {parseFloat(review.star_rating).toFixed(2)}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {showPaymentModal && (
+          <PaymentInformationModal
+            onClose={() => setShowPaymentModal(false)}
+            onConfirmBooking={handleConfirmBooking}
+          />
+        )}
+      </div>
     </div>
   );
 };
