@@ -1,7 +1,7 @@
 import { getReviewsThunk } from "../../store/reviews";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useHistory, NavLink} from "react-router-dom";
+import { useParams, useHistory, NavLink } from "react-router-dom";
 
 import PaymentInformationModal from "../PaymentInformationModal";
 import { getServiceThunk } from "../../store/services";
@@ -26,10 +26,14 @@ const ServiceDetailPage = () => {
   const [bookingDate, setBookingDate] = useState(new Date());
   const [errors, setErrors] = useState({});
   const [hasSelectedDate, setHasSelectedDate] = useState(false);
+  
+
   const bannerImage =
     "https://st2.depositphotos.com/4612235/6944/i/450/depositphotos_69442233-stock-photo-man-with-lawn-mower.jpg";
 
   const [averageRating, setAverageRating] = useState("0.00");
+  const [showFullDescription, setShowFullDescription] = useState(false);
+  const [isDescriptionLong, setIsDescriptionLong] = useState(false);
 
   const serviceDetail = useSelector(
     (state) => Object.values(state.services.singleService)[0]
@@ -61,6 +65,27 @@ const ServiceDetailPage = () => {
     return average;
   };
 
+
+  useEffect(() => {
+    if (serviceDetail && serviceDetail.service_description) {
+      setIsDescriptionLong(serviceDetail.service_description.length > 200);
+    } else {
+      setIsDescriptionLong(false);
+    }
+  }, [serviceDetail]);
+
+  // const calculateDescrptionLength = () => {
+  //   if (serviceDetail && serviceDetail.service_description) {
+  //   const descriptionLengthThreshold = 200;
+  //   console.log("Description Length", serviceDetail.service_description.length);
+  //   return serviceDetail.service_description.length > descriptionLengthThreshold;
+  //   }
+  // };
+
+  const toggleDescription = () => {
+    setShowFullDescription(!showFullDescription);
+  };
+
   useEffect(() => {
     dispatch(getServiceThunk(serviceId));
   }, [dispatch, serviceId]);
@@ -74,6 +99,11 @@ const ServiceDetailPage = () => {
     const newAverageRating = calculateAverageRating();
     setAverageRating(newAverageRating);
   }, [serviceReviews]);
+
+  // useEffect(() => {
+  //   const serviceDescriptionLength = calculateDescrptionLength();
+  //    setIsDescriptionLong(serviceDescriptionLength);
+  // }, [serviceDetail]);
 
   if (serviceDetail === undefined) {
     return null;
@@ -154,12 +184,14 @@ const ServiceDetailPage = () => {
 
   const handleDisable = !hasSelectedDate;
 
-  return (
-  
-      <div className="service-detail-container">
-          <div className="service-detail-container__wrapper">
+  // const shouldShowButton = isDescriptionLong && window.innerWidth < 600;
 
-                    {/* Navigation Info */}
+  return (
+
+    <div className="service-detail-container">
+      <div className="service-detail-container__wrapper">
+
+        {/* Navigation Info */}
         <div className="navigation-info"> <NavLink to='/' className='breadcrumbs'>Home</NavLink> &gt; {serviceDetail.service_title}
         </div>
         {/* Background Image Container */}
@@ -223,13 +255,20 @@ const ServiceDetailPage = () => {
         <div className="service-details">
           <div className="service-detaild-description">
             <h2>Service Description</h2>
-            <p className="review-description">
-              {serviceDetail.service_description}
-            </p>
-            {/* <p>Provider Name {serviceDetail.provider_id}</p> */}
-            <p className="service-details__price">${serviceDetail.service_price}</p>
+            <div>
+              <p className={showFullDescription ? 'service-description' : 'truncated-description'}>
+                {serviceDetail.service_description}
+              </p>
+              {/* <p>Provider Name {serviceDetail.provider_id}</p> */}
+              {isDescriptionLong && (
+                <button onClick={toggleDescription} className="description-toggle__btn">
+                  {showFullDescription ? 'Read Less' : 'Read Full'}
+                </button>
+              )}
+            </div>
+            <p className="service-details__price">${serviceDetail.service_price}/hour</p>
           </div>
-          <div>
+          <div className="service-details__img">
             <img src={serviceDetail.url} alt="Service" />
           </div>
         </div>
@@ -238,7 +277,7 @@ const ServiceDetailPage = () => {
         <div className="average-rating">
           <h2>Average Rating</h2>
           <p>★ {averageRating} / 5</p>
-        </div>
+        </div>  
 
         {/* Reviews Section */}
         <div className="reviews-section">
