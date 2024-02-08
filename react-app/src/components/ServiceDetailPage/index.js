@@ -26,6 +26,7 @@ const ServiceDetailPage = () => {
   const [bookingDate, setBookingDate] = useState(new Date());
   const [errors, setErrors] = useState({});
   const [hasSelectedDate, setHasSelectedDate] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
 
   const bannerImage =
@@ -189,13 +190,22 @@ const ServiceDetailPage = () => {
       year: 'numeric',
       month: 'long',
       day: '2-digit',
-    //   hour: '2-digit',
-    // minute: '2-digit',
-    // second: '2-digit',
-    // hour12: false
+      //   hour: '2-digit',
+      // minute: '2-digit',
+      // second: '2-digit',
+      // hour12: false
     });
     return formattedDate;
   }
+
+  const toggleFullScreenImage = (imageUrl) => {
+    if (selectedImage === imageUrl) {
+      // setSelectedImage(null); // Close fullscreen mode if the same image is clicked again
+      return
+    } else {
+      setSelectedImage(imageUrl); // Open image in fullscreen mode
+    }
+  };
 
 
   return (
@@ -267,7 +277,7 @@ const ServiceDetailPage = () => {
             <h2>Service Description</h2>
             <div>
               {/* <p className={showFullDescription ? 'service-description' : 'truncated-description'}> */}
-              <p className={showFullDescription ? 'service-description' : 'truncated-description'}> 
+              <p className={showFullDescription ? 'service-description' : 'truncated-description'}>
                 {serviceDetail.service_description}
               </p>
               {/* <p>Provider Name {serviceDetail.provider_id}</p> */}
@@ -287,7 +297,7 @@ const ServiceDetailPage = () => {
         {/* Display the Average Rating */}
         <div className="average-rating">
           <h2>Average Rating</h2>
-          <p>★ {averageRating} / 5</p>
+          <p><span className="star-rating">★</span> {averageRating} / 5</p>
           <div>
             {/* <p>Dropdown menu</p> */}
           </div>
@@ -302,14 +312,19 @@ const ServiceDetailPage = () => {
               {console.log("Review Image URL:", review.review_image)}
               <img
                 src={review.review_image ? review.review_image : noImage}
-                alt="Profile"
+                alt="Review"
+                className={selectedImage === review.review_image ? "fullscreen" : ""}
+                onClick={() => toggleFullScreenImage(review.review_image ? review.review_image : noImage)}
               />
+              {selectedImage === review.review_image && (
+                <div className="close-icon" onClick={() => setSelectedImage(null)}>×</div>
+              )}
               <div className="review-info">
                 <p>{review.username}</p>
                 <p>{review.review}</p>
                 {/* Convert star_rating to a number and display with 2 decimal places */}
-                <p>★ {parseFloat(review.star_rating).toFixed(2)}</p>
-                {review.created_at === review.updated_at ? (<p>{formatDate(review.created_at)}</p>) : (<p>{formatDate(review.updated_at)}</p>)}
+                <p><span className="star-rating">★</span> {parseFloat(review.star_rating).toFixed(2)}</p>
+                {review.created_at === review.updated_at ? (<p className="review-date">{formatDate(review.created_at)}</p>) : (<p className="review-date">{formatDate(review.updated_at)}</p>)}
 
               </div>
             </div>
