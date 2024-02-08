@@ -26,7 +26,7 @@ const ServiceDetailPage = () => {
   const [bookingDate, setBookingDate] = useState(new Date());
   const [errors, setErrors] = useState({});
   const [hasSelectedDate, setHasSelectedDate] = useState(false);
-  
+
 
   const bannerImage =
     "https://st2.depositphotos.com/4612235/6944/i/450/depositphotos_69442233-stock-photo-man-with-lawn-mower.jpg";
@@ -174,9 +174,7 @@ const ServiceDetailPage = () => {
     history.push("/my-booked-services");
   };
 
-  // Use useModal to access the openModal function
 
-  // console.log("The service: ", serviceDetail);
 
   const openLoginModal = () => {
     openModal(<LoginFormModal />);
@@ -184,7 +182,21 @@ const ServiceDetailPage = () => {
 
   const handleDisable = !hasSelectedDate;
 
-  // const shouldShowButton = isDescriptionLong && window.innerWidth < 600;
+
+  const formatDate = (dateToFormat) => {
+    const dateObject = new Date(dateToFormat);
+    const formattedDate = dateObject.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: '2-digit',
+    //   hour: '2-digit',
+    // minute: '2-digit',
+    // second: '2-digit',
+    // hour12: false
+    });
+    return formattedDate;
+  }
+
 
   return (
 
@@ -231,7 +243,7 @@ const ServiceDetailPage = () => {
           {/* Booking Modal */}
           {showBookingModal && (
             <div className="booking-modal">
-              <h2>Book a Service</h2>
+              {/* <h2>Book a Service</h2> */}
               <input
                 type="datetime-local"
                 placeholder="MM/DD/YYYY HH:mm AM"
@@ -249,14 +261,13 @@ const ServiceDetailPage = () => {
           )}
         </div>
 
-
-
         {/* Service Details */}
         <div className="service-details">
           <div className="service-detaild-description">
             <h2>Service Description</h2>
             <div>
-              <p className={showFullDescription ? 'service-description' : 'truncated-description'}>
+              {/* <p className={showFullDescription ? 'service-description' : 'truncated-description'}> */}
+              <p className={showFullDescription ? 'service-description' : 'truncated-description'}> 
                 {serviceDetail.service_description}
               </p>
               {/* <p>Provider Name {serviceDetail.provider_id}</p> */}
@@ -277,11 +288,15 @@ const ServiceDetailPage = () => {
         <div className="average-rating">
           <h2>Average Rating</h2>
           <p>★ {averageRating} / 5</p>
-        </div>  
+          <div>
+            {/* <p>Dropdown menu</p> */}
+          </div>
+        </div>
 
         {/* Reviews Section */}
         <div className="reviews-section">
           <h2>Reviews</h2>
+
           {serviceReviews.map((review) => (
             <div key={review.id} className="review">
               {console.log("Review Image URL:", review.review_image)}
@@ -294,6 +309,8 @@ const ServiceDetailPage = () => {
                 <p>{review.review}</p>
                 {/* Convert star_rating to a number and display with 2 decimal places */}
                 <p>★ {parseFloat(review.star_rating).toFixed(2)}</p>
+                {review.created_at === review.updated_at ? (<p>{formatDate(review.created_at)}</p>) : (<p>{formatDate(review.updated_at)}</p>)}
+
               </div>
             </div>
           ))}

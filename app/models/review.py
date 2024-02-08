@@ -16,6 +16,7 @@ class Review(db.Model):
     star_rating = db.Column(db.Float(2, 1), nullable=False)
     review_image = db.Column(db.String(255))
     created_at = db.Column(DateTime, default=func.now())
+    updated_at = db.Column(DateTime, default=func.now(), onupdate=func.now())
 
     user = db.relationship(
         "User",
@@ -36,6 +37,7 @@ class Review(db.Model):
             'star_rating': self.star_rating,
             'review_image': self.review_image,
             'created_at': self.created_at,
+            'updated_at': self.created_at,
             'user': {
                 'id': self.user.id,
                 'username': self.user.username,

@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   align-content: center;
+
 }
 
 .service-detail-container {
@@ -100,7 +101,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   /* Number of lines you want to show */
   -webkit-box-orient: vertical;
 }
@@ -163,16 +164,16 @@
 .booking-modal {
   text-align: center;
 
-  margin: 10px;
 }
 
 .booking-modal h2 {
   font-size: 18px;
   margin-bottom: 10px;
+
 }
 
 .booking-modal input {
-  width: 100%;
+  /* width: 100%; */
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -186,6 +187,7 @@
   padding: 10px 20px;
   border: none;
   cursor: pointer;
+
 }
 
 .booking-modal button:disabled {
@@ -240,11 +242,32 @@
 }
 
 @media (max-width: 705px) {
-  .truncated-description {
+ .service-description {
+    margin-right: 20px;
+  }
+
+  /* .truncated-description {
     overflow: visible;
     text-overflow: none;
-    /* display: -webkit-box;
-    -webkit-line-clamp: 3; 
-    -webkit-box-orient: vertical; */
-  }
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  } */
 }
+
+@media (max-width: 670px) {
+  /* .service-description {
+     margin-right: 20px;
+     background-color: #007bff;
+   } */
+ 
+   .truncated-description {
+     /* overflow: visible; */
+     text-overflow: none;
+     display: -webkit-box;
+     -webkit-line-clamp: 10;
+     -webkit-box-orient: vertical;
+     background-color: #007bff;
+   }
+ }
+ 
