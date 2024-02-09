@@ -7,6 +7,7 @@ import PaymentInformationModal from "../PaymentInformationModal";
 import { getServiceThunk } from "../../store/services";
 import { createBookingThunk } from "../../store/bookings";
 import { createBillingThunk } from "../../store/billings";
+import { fetchUsers } from "../../store/session";
 
 import "./ServiceDetailPage.css";
 import OpenModalButton from "../OpenModalButton";
@@ -27,6 +28,7 @@ const ServiceDetailPage = () => {
   const [errors, setErrors] = useState({});
   const [hasSelectedDate, setHasSelectedDate] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [overlay, setOverlay] = useState(false);
 
 
   const bannerImage =
@@ -48,6 +50,10 @@ const ServiceDetailPage = () => {
   );
 
   // console.log("service reviews", serviceReviews[3].review_image);
+  const users = useSelector((state) => state.session.users || []);
+  console.log("All Users:", users);
+
+
 
   // Function to calculate the average rating
   const calculateAverageRating = () => {
@@ -65,6 +71,8 @@ const ServiceDetailPage = () => {
     const average = (sum / serviceReviews.length).toFixed(2);
     return average;
   };
+
+
 
 
   useEffect(() => {
@@ -95,11 +103,17 @@ const ServiceDetailPage = () => {
     dispatch(getReviewsThunk());
   }, [dispatch, reviews.length]);
 
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, [dispatch], users.length);
+
   // Update the average rating whenever the serviceReviews array changes
   useEffect(() => {
     const newAverageRating = calculateAverageRating();
     setAverageRating(newAverageRating);
   }, [serviceReviews]);
+
+
 
   // useEffect(() => {
   //   const serviceDescriptionLength = calculateDescrptionLength();
@@ -204,6 +218,25 @@ const ServiceDetailPage = () => {
       return
     } else {
       setSelectedImage(imageUrl); // Open image in fullscreen mode
+      setOverlay(true);
+    }
+  };
+
+  const renderStars = (rating) => {
+    let stars = [];
+    for (let i = 0; i < Math.round(rating); i++) {
+      stars.push('★');
+    }
+    return stars.join('');
+  }
+
+
+  const findReviewOwner = (userId) => {
+    const user = users.find(user => user.id === userId);
+    if (user) {
+      return user.first_name;
+    } else {
+      return 'User not found';
     }
   };
 
@@ -316,14 +349,16 @@ const ServiceDetailPage = () => {
                 className={selectedImage === review.review_image ? "fullscreen" : ""}
                 onClick={() => toggleFullScreenImage(review.review_image ? review.review_image : noImage)}
               />
-              {selectedImage === review.review_image && (
-                <div className="close-icon" onClick={() => setSelectedImage(null)}>×</div>
+              {selectedImage === review.review_image && overlay && (
+                <div>
+                  <div className="overlay"></div>
+                  <div className="close-icon" onClick={() => setSelectedImage(null)}>×</div>
+                </div>
               )}
               <div className="review-info">
-                <p>{review.username}</p>
+                <p className="review-owner">{findReviewOwner(review.user_id)}{console.log(review.user_id)}</p>
+                <p><span className="star-rating">{renderStars(parseFloat(review.star_rating))}</span> </p> {/*parseFloat(review.star_rating).toFixed(2)*/}
                 <p>{review.review}</p>
-                {/* Convert star_rating to a number and display with 2 decimal places */}
-                <p><span className="star-rating">★</span> {parseFloat(review.star_rating).toFixed(2)}</p>
                 {review.created_at === review.updated_at ? (<p className="review-date">{formatDate(review.created_at)}</p>) : (<p className="review-date">{formatDate(review.updated_at)}</p>)}
 
               </div>
