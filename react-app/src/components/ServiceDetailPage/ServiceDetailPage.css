@@ -50,6 +50,7 @@
 .breadcrumbs {
   text-decoration: none;
   font-size: 16px;
+  color: #543B23;
 
 }
 
@@ -198,6 +199,19 @@
 /* Reviews Section */
 .reviews-section {
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.no-review-text{
+  background-color: #81BE1C;
+  padding: 10px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: #fff;
+  position: relative;
+  max-width: 300px;
 }
 
 .review {
@@ -234,6 +248,12 @@
   margin: 0 10px;
 }
 
+.review img:hover {
+  cursor:nesw-resize;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  
+}
+
 .navigation-info {
   text-align: left;
 }
@@ -247,6 +267,16 @@
   color: #000;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.average-rating{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.average-rating h2{
+  margin-right: 20px;
 }
 
 .star-rating {
@@ -287,7 +317,6 @@
 
 .review-owner{
   font-style: italic;
-
 }
 
 

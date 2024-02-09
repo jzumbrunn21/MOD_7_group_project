@@ -338,16 +338,17 @@ const ServiceDetailPage = () => {
 
         {/* Reviews Section */}
         <div className="reviews-section">
-          <h2>Reviews</h2>
+          <h2>Reviews: </h2>
 
-          {serviceReviews.map((review) => (
+          {serviceReviews.length ? serviceReviews.map((review) => (
             <div key={review.id} className="review">
               {console.log("Review Image URL:", review.review_image)}
               <img
                 src={review.review_image ? review.review_image : noImage}
-                alt="Review"
+                alt="Review Image"
                 className={selectedImage === review.review_image ? "fullscreen" : ""}
                 onClick={() => toggleFullScreenImage(review.review_image ? review.review_image : noImage)}
+
               />
               {selectedImage === review.review_image && overlay && (
                 <div>
@@ -363,7 +364,7 @@ const ServiceDetailPage = () => {
 
               </div>
             </div>
-          ))}
+          )) : (sessionUser.id === serviceDetail.provider_id ? (<p className="no-review-text">Wait till someone book your service!</p>):(<p className="no-review-text">Be the first to left the review!</p>))}
         </div>
 
         {showPaymentModal && (
